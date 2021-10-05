@@ -1,0 +1,33 @@
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # https://github.com/axel-op/googlejavaformat-action
+      - name: Lint code base and exit on failure
+        uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--dry-run --set-exit-if-changed"
+          version: 1.7
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+
+      # https://github.com/gradle/wrapper-validation-action
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Display version
+        run: ./gradlew --version
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon

@@ -26,6 +26,8 @@ spotless {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.2'
 }
 
 test {

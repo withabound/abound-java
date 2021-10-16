@@ -1,7 +1,5 @@
 package com.withabound;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class AboundConfig {
   private final String appId;
   private final String appSecret;
@@ -39,11 +37,11 @@ public class AboundConfig {
 
   /** Validates that the {@link AboundConfig} has been constructed with all required fields. */
   private void validate() {
-    if (StringUtils.isEmpty(appId)) {
+    if (appId == null || appId.isEmpty()) {
       throw new IllegalArgumentException("appId cannot be empty!");
     }
 
-    if (StringUtils.isEmpty(appSecret)) {
+    if (appSecret == null || appSecret.isEmpty()) {
       throw new IllegalArgumentException("appSecret cannot be empty!");
     }
 

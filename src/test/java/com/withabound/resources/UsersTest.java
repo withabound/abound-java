@@ -1,7 +1,6 @@
 package com.withabound.resources;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.users.UserRequest;
@@ -41,7 +40,7 @@ public class UsersTest extends AbstractAboundTest {
 
     final List<UserResponse> users = response.getData();
 
-    assertEquals(1, users.size());
+    assertThat(users).hasSize(1);
 
     UserResponseAssert.assertThat(users.get(0)).isSamWilson();
   }

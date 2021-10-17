@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.util.Optional;
 
+/**
+ * Request body for creating or update User resources
+ */
 @Setter
 @Builder
 public class UserRequest {

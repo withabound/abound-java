@@ -3,10 +3,9 @@ package com.withabound.resources.asserts;
 import com.withabound.models.users.UserProfile;
 import com.withabound.models.users.UserResponse;
 import com.withabound.resources.UsersTest;
+import java.util.Optional;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
-
-import java.util.Optional;
 
 public class UserResponseAssert extends AbstractAssert<UserResponseAssert, UserResponse> {
   public static UserResponseAssert assertThat(final UserResponse actual) {

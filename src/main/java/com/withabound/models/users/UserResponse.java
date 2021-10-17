@@ -1,8 +1,6 @@
 package com.withabound.models.users;
 
-/**
- * Response body returned from the Abound Users APIs
- */
+/** Response body returned from the Abound Users APIs */
 public class UserResponse extends UserRequest {
   private String userId;
 

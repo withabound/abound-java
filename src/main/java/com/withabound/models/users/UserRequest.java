@@ -1,13 +1,10 @@
 package com.withabound.models.users;
 
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
 
-import java.util.Optional;
-
-/**
- * Request body for creating or update User resources
- */
+/** Request body for creating or update User resources */
 @Setter
 @Builder
 public class UserRequest {

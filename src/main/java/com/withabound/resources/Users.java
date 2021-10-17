@@ -7,7 +7,7 @@ import com.withabound.resources.base.AboundBaseResource;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 import okhttp3.OkHttpClient;
 
@@ -23,8 +23,7 @@ public class Users extends AboundBaseResource<UserRequest, UserResponse> {
   }
 
   public AboundResponse<UserResponse> create(final UserRequest toCreate) throws IOException {
-    final Map<String, UserRequest> requestPayload = new HashMap<>();
-    requestPayload.put("user", toCreate);
+    final Map<String, UserRequest> requestPayload = Collections.singletonMap("user", toCreate);
 
     return super.create(requestPayload);
   }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.withabound.AboundConfig;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -21,18 +22,29 @@ import okhttp3.Response;
 public abstract class AbstractAboundResource<I, O> {
   private static final MediaType JSON = MediaType.parse("application/json");
   private static final Gson GSON = new Gson();
-  private final Class<O> clazz;
+
+  private final Type singleType;
+  private final Type bulkType;
 
   protected final AboundConfig aboundConfig;
   private final OkHttpClient httpClient;
 
+  /** @return the endpoint path of the resource. e.g., "/users", "/taxes", "/documents", etc. */
   protected abstract String getPath();
 
+  /**
+   * @param aboundConfig a valid config object
+   * @param httpClient the OkHttpClient responsible for issuing network calls
+   * @param clazz the explicit class used to unmarshal raw JSON to a POJO. This should be the class
+   *     of the <O> type parameter, and is required due to type erasure in Java.
+   */
   protected AbstractAboundResource(
       final AboundConfig aboundConfig, final OkHttpClient httpClient, final Class<O> clazz) {
     this.aboundConfig = aboundConfig;
     this.httpClient = httpClient;
-    this.clazz = clazz;
+
+    this.singleType = TypeToken.getParameterized(AboundResponse.class, clazz).getType();
+    this.bulkType = TypeToken.getParameterized(AboundBulkResponse.class, clazz).getType();
   }
 
   protected AboundResponse<O> create(final String url, final Map<String, I> requestPayload)
@@ -54,25 +66,30 @@ public abstract class AbstractAboundResource<I, O> {
     return performRequest(request);
   }
 
+  /**
+   * Performs the {@link Request} and deserializes the response body to {@link AboundResponse}. Use
+   * this method when the API returns one element in its `data` field.
+   */
   private AboundResponse<O> performRequest(final Request request) throws IOException {
-    try (Response response = httpClient.newCall(request).execute()) {
-      if (response.isSuccessful()) {
-        return GSON.fromJson(
-            response.body().string(),
-            TypeToken.getParameterized(AboundResponse.class, clazz).getType());
-      }
-
-      // TODO throw an ApiException
-      return null;
-    }
+    return doRequest(request, singleType);
   }
 
+  /**
+   * Performs the {@link Request} and deserializes the response body to {@link AboundBulkResponse}.
+   * Use this method when the API returns a list of elements in its `data` field.
+   */
   private AboundBulkResponse<O> performBulkRequest(final Request request) throws IOException {
+    return doRequest(request, bulkType);
+  }
+
+  /**
+   * Makes the HTTP call, deserializing the response body to the appropriate single or bulk type.
+   */
+  private <RESP> RESP doRequest(final Request request, final Type serializationType)
+      throws IOException {
     try (Response response = httpClient.newCall(request).execute()) {
       if (response.isSuccessful()) {
-        return GSON.fromJson(
-            response.body().string(),
-            TypeToken.getParameterized(AboundBulkResponse.class, clazz).getType());
+        return GSON.fromJson(response.body().string(), serializationType);
       }
 
       // TODO throw an ApiException

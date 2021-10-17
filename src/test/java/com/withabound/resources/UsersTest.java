@@ -33,7 +33,7 @@ public class UsersTest extends AbstractAboundTest {
 
     assertThat(response.getData()).isNotNull();
     assertThat(response.getData().getUserId()).isEqualTo(TEST_USER_ID);
-    assertThat(response.getData().getEmail()).isEqualTo(email);
+    assertThat(response.getData().getEmail().orElse(null)).isEqualTo(email);
   }
 
   @Test

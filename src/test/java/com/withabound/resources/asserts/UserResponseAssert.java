@@ -15,8 +15,8 @@ public class UserResponseAssert extends AbstractAssert<UserResponseAssert, UserR
   public UserResponseAssert isSamWilson() {
     Assertions.assertThat(actual).isNotNull();
     Assertions.assertThat(actual.getUserId()).isEqualTo(UsersTest.TEST_USER_ID);
-    Assertions.assertThat(actual.getEmail()).isEqualTo("your_users_email@domain.com");
-    Assertions.assertThat(actual.getForeignId()).isEqualTo("your_foreign_id");
+    Assertions.assertThat(actual.getEmail()).isEqualTo(Optional.of("your_users_email@domain.com"));
+    Assertions.assertThat(actual.getForeignId()).isEqualTo(Optional.of("your_foreign_id"));
 
     final UserProfile profile = actual.getProfile().orElse(null);
 
@@ -30,7 +30,7 @@ public class UserResponseAssert extends AbstractAssert<UserResponseAssert, UserR
     Assertions.assertThat(profile.getZipcode()).isEqualTo(Optional.of("20220"));
     Assertions.assertThat(profile.getPhoneNumber()).isEqualTo(Optional.of("2026229979"));
     Assertions.assertThat(profile.getDateOfBirth()).isEqualTo(Optional.of("1776-07-04"));
-    Assertions.assertThat(profile.getIpAddress()).isEqualTo(Optional.empty());
+    Assertions.assertThat(profile.getIpAddress()).isEmpty();
 
     return this;
   }

@@ -18,6 +18,8 @@ public final class Abound {
 
   /**
    * Creates an {@link Abound} client, allowing you to customize the {@link OkHttpClient} settings.
+   * This could be preferable if the default OkHttp settings do not meet your requirements for
+   * connection pooling, request timeouts, etc.
    *
    * <p>See
    * https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/#customize-your-client-with-newbuilder

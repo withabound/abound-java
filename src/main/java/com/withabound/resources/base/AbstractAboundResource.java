@@ -19,7 +19,7 @@ import okhttp3.Response;
  * @param <I> the data type of the request body
  * @param <O> the data type of the payloads returned by SDK methods
  */
-public abstract class AbstractAboundResource<I, O> {
+abstract class AbstractAboundResource<I, O> {
   private static final MediaType JSON = MediaType.parse("application/json");
   private static final Gson GSON = new Gson();
 

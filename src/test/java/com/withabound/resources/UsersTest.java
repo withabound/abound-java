@@ -6,12 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.users.UserRequest;
 import com.withabound.models.users.UserResponse;
+import com.withabound.resources.asserts.AboundBulkResponseAssert;
+import com.withabound.resources.asserts.AboundResponseAssert;
 import com.withabound.resources.asserts.UserResponseAssert;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
 import java.io.IOException;
 import java.util.List;
-import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 
 public class UsersTest extends AbstractAboundTest {
@@ -25,11 +26,7 @@ public class UsersTest extends AbstractAboundTest {
 
     final AboundResponse<UserResponse> response = getAboundClient().users().create(toCreate);
 
-    assertThat(response).isNotNull();
-    assertThat(response.getRequest()).isNotNull();
-    assertThat(response.getRequest().getTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
-    assertThat(response.getRequest().getRequestId()).isNotEmpty();
+    AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
     assertThat(response.getData()).isNotNull();
     assertThat(response.getData().getUserId()).isEqualTo(TEST_USER_ID);
@@ -40,11 +37,7 @@ public class UsersTest extends AbstractAboundTest {
   public void testList() throws IOException {
     final AboundBulkResponse<UserResponse> response = getAboundClient().users().list();
 
-    assertThat(response).isNotNull();
-    assertThat(response.getRequest()).isNotNull();
-    assertThat(response.getRequest().getRequestId()).isNotEmpty();
-    assertThat(response.getRequest().getTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
     final List<UserResponse> users = response.getData();
 
@@ -57,11 +50,7 @@ public class UsersTest extends AbstractAboundTest {
   public void testRetrieve() throws IOException {
     final AboundResponse<UserResponse> response = getAboundClient().users().retrieve(TEST_USER_ID);
 
-    assertThat(response).isNotNull();
-    assertThat(response.getRequest()).isNotNull();
-    assertThat(response.getRequest().getRequestId()).isNotEmpty();
-    assertThat(response.getRequest().getTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+    AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
     UserResponseAssert.assertThat(response.getData()).isSamWilson();
   }

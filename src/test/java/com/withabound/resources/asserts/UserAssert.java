@@ -1,18 +1,18 @@
 package com.withabound.resources.asserts;
 
+import com.withabound.models.users.User;
 import com.withabound.models.users.UserProfile;
-import com.withabound.models.users.UserResponse;
 import com.withabound.resources.UsersTest;
 import java.util.Optional;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-public class UserResponseAssert extends AbstractAssert<UserResponseAssert, UserResponse> {
-  public static UserResponseAssert assertThat(final UserResponse actual) {
-    return new UserResponseAssert(actual);
+public class UserAssert extends AbstractAssert<UserAssert, User> {
+  public static UserAssert assertThat(final User actual) {
+    return new UserAssert(actual);
   }
 
-  public UserResponseAssert isSamWilson() {
+  public UserAssert isSamWilson() {
     Assertions.assertThat(actual).isNotNull();
     Assertions.assertThat(actual.getUserId()).isEqualTo(UsersTest.TEST_USER_ID);
     Assertions.assertThat(actual.getEmail()).isEqualTo(Optional.of("your_users_email@domain.com"));
@@ -35,7 +35,7 @@ public class UserResponseAssert extends AbstractAssert<UserResponseAssert, UserR
     return this;
   }
 
-  private UserResponseAssert(final UserResponse actual) {
-    super(actual, UserResponseAssert.class);
+  private UserAssert(final User actual) {
+    super(actual, UserAssert.class);
   }
 }

@@ -76,7 +76,8 @@ abstract class AbstractAboundResource<I, O> {
   protected AboundResponse<EmptyJsonObject> delete(final String url) throws IOException {
     final Request request = httpDelete(url);
 
-    return sendRequest(request, TypeToken.getParameterized(AboundResponse.class, EmptyJsonObject.class).getType());
+    return sendRequest(
+        request, TypeToken.getParameterized(AboundResponse.class, EmptyJsonObject.class).getType());
   }
 
   /**

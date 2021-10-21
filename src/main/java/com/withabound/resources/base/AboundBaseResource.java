@@ -19,21 +19,52 @@ public abstract class AboundBaseResource<I, O> extends AbstractAboundResource<I,
   }
 
   protected AboundResponse<O> create(final Map<String, I> requestPayload) throws IOException {
-    final String url = String.format("%s%s", aboundConfig.getBaseUrl(), getPath());
+    final String url = getResourcesUrl();
 
     return super.create(url, requestPayload);
   }
 
   protected AboundBulkResponse<O> list() throws IOException {
-    final String url = String.format("%s%s", aboundConfig.getBaseUrl(), getPath());
+    final String url = getResourcesUrl();
 
     return super.list(url);
   }
 
   @Override
   protected AboundResponse<O> retrieve(final String id) throws IOException {
-    final String url = String.format("%s%s/%s", aboundConfig.getBaseUrl(), getPath(), id);
+    final String url = getResourceUrl(id);
 
     return super.retrieve(url);
+  }
+
+  /** Updates a single object by issuing a PUT request to /v2/{resourceName}/{resourceId} */
+  protected AboundResponse<O> update(final String id, final Map<String, I> requestPayload)
+      throws IOException {
+    final String url = getResourceUrl(id);
+
+    return super.update(url, requestPayload);
+  }
+
+  @Override
+  protected AboundResponse<EmptyJsonObject> delete(final String id) throws IOException {
+    final String url = getResourceUrl(id);
+
+    return super.delete(url);
+  }
+
+  /**
+   * @return returns the baseUrl + the resource path. e.g.,
+   *     "https://sandbox-api.withabound.com/v2/users"
+   */
+  private String getResourcesUrl() {
+    return String.format("%s%s", aboundConfig.getBaseUrl(), getPath());
+  }
+
+  /**
+   * @return returns the baseUrl + the resource path + the id of the resource. e.g.,
+   *     "https://sandbox-api.withabound.com/v2/users/{userId}"
+   */
+  private String getResourceUrl(final String id) {
+    return String.format("%s%s/%s", aboundConfig.getBaseUrl(), getPath(), id);
   }
 }

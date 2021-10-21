@@ -37,4 +37,11 @@ public class Users extends AboundBaseResource<UserRequest, UserResponse> {
   public AboundResponse<UserResponse> retrieve(final String userId) throws IOException {
     return super.retrieve(userId);
   }
+
+  public AboundResponse<UserResponse> update(final String userId, final UserRequest toUpdate)
+      throws IOException {
+    final Map<String, UserRequest> requestPayload = Collections.singletonMap("user", toUpdate);
+
+    return super.update(userId, requestPayload);
+  }
 }

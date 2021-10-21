@@ -51,41 +51,56 @@ abstract class AbstractAboundResource<I, O> {
       throws IOException {
     final Request request = httpPost(url, requestPayload);
 
-    return performRequest(request);
+    return performRequestAndHandleSingleElementResponse(request);
   }
 
   protected AboundBulkResponse<O> list(final String url) throws IOException {
     final Request request = httpGet(url);
 
-    return performBulkRequest(request);
+    return performRequestAndHandleBulkElementsResponse(request);
   }
 
   protected AboundResponse<O> retrieve(final String url) throws IOException {
     final Request request = httpGet(url);
 
-    return performRequest(request);
+    return performRequestAndHandleSingleElementResponse(request);
+  }
+
+  protected AboundResponse<O> update(final String url, final Map<String, I> requestPayload)
+      throws IOException {
+    final Request request = httpPut(url, requestPayload);
+
+    return performRequestAndHandleSingleElementResponse(request);
+  }
+
+  protected AboundResponse<EmptyJsonObject> delete(final String url) throws IOException {
+    final Request request = httpDelete(url);
+
+    return sendRequest(request, EmptyJsonObject.class);
   }
 
   /**
    * Performs the {@link Request} and deserializes the response body to {@link AboundResponse}. Use
    * this method when the API returns one element in its `data` field.
    */
-  private AboundResponse<O> performRequest(final Request request) throws IOException {
-    return doRequest(request, singleType);
+  private AboundResponse<O> performRequestAndHandleSingleElementResponse(final Request request)
+      throws IOException {
+    return sendRequest(request, singleType);
   }
 
   /**
    * Performs the {@link Request} and deserializes the response body to {@link AboundBulkResponse}.
    * Use this method when the API returns a list of elements in its `data` field.
    */
-  private AboundBulkResponse<O> performBulkRequest(final Request request) throws IOException {
-    return doRequest(request, bulkType);
+  private AboundBulkResponse<O> performRequestAndHandleBulkElementsResponse(final Request request)
+      throws IOException {
+    return sendRequest(request, bulkType);
   }
 
   /**
    * Makes the HTTP call, deserializing the response body to the appropriate single or bulk type.
    */
-  private <RESP> RESP doRequest(final Request request, final Type serializationType)
+  private <RESP> RESP sendRequest(final Request request, final Type serializationType)
       throws IOException {
     try (Response response = httpClient.newCall(request).execute()) {
       if (response.isSuccessful()) {
@@ -105,5 +120,15 @@ abstract class AbstractAboundResource<I, O> {
     final RequestBody requestBody = RequestBody.Companion.create(GSON.toJson(rawRequestBody), JSON);
 
     return new Request.Builder().post(requestBody).url(url).build();
+  }
+
+  private Request httpPut(final String url, final Map<String, I> rawRequestBody) {
+    final RequestBody requestBody = RequestBody.Companion.create(GSON.toJson(rawRequestBody), JSON);
+
+    return new Request.Builder().put(requestBody).url(url).build();
+  }
+
+  private static Request httpDelete(final String url) {
+    return new Request.Builder().delete().url(url).build();
   }
 }

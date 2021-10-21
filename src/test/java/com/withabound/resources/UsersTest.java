@@ -12,6 +12,7 @@ import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 public class UsersTest extends AbstractAboundTest {
@@ -19,7 +20,7 @@ public class UsersTest extends AbstractAboundTest {
 
   @Test
   public void testCreate() throws IOException {
-    final String email = "test@example.com";
+    final String email = UUID.randomUUID().toString() + "@example.com";
 
     final UserRequest toCreate = UserRequest.builder().email(email).build();
 
@@ -52,5 +53,24 @@ public class UsersTest extends AbstractAboundTest {
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
     UserResponseAssert.assertThat(response.getData()).isSamWilson();
+  }
+
+  @Test
+  public void testUpdate() throws IOException {
+    final AboundResponse<UserResponse> original = getAboundClient().users().retrieve(TEST_USER_ID);
+    AboundResponseAssert.assertThat(original).hasResponseMetadata();
+    UserResponseAssert.assertThat(original.getData()).isSamWilson();
+
+    final String newEmail = UUID.randomUUID().toString() + "@example.com";
+    final UserResponse originalUser = original.getData();
+
+    final UserRequest toUpdate = originalUser;
+    toUpdate.setEmail(newEmail);
+
+    final AboundResponse<UserResponse> updated =
+        getAboundClient().users().update(originalUser.getUserId(), toUpdate);
+
+    AboundResponseAssert.assertThat(updated).hasResponseMetadata();
+    assertThat(updated.getData().getEmail().orElse(null)).isEqualTo(newEmail);
   }
 }

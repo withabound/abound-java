@@ -1,10 +1,14 @@
 package com.withabound;
 
+import lombok.Getter;
+
+@Getter
 public class AboundConfig {
   private final String appId;
   private final String appSecret;
   private final AboundEnvironment environment;
   private final AboundApiVersion apiVersion;
+  private final String baseUrl;
 
   public AboundConfig(
       final String appId,
@@ -17,22 +21,12 @@ public class AboundConfig {
     this.apiVersion = apiVersion;
 
     validate();
+
+    this.baseUrl = environment.getBaseUrl() + apiVersion.toString().toLowerCase();
   }
 
-  public String getAppId() {
-    return appId;
-  }
-
-  public String getAppSecret() {
-    return appSecret;
-  }
-
-  public AboundEnvironment getEnvironment() {
-    return environment;
-  }
-
-  public AboundApiVersion getApiVersion() {
-    return apiVersion;
+  public String getBaseUrl() {
+    return baseUrl;
   }
 
   /** Validates that the {@link AboundConfig} has been constructed with all required fields. */

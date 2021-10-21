@@ -1,7 +1,7 @@
 package com.withabound;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -9,71 +9,70 @@ import org.junit.jupiter.api.Test;
 class AboundConfigTest {
   @Test
   public void testAboundConfigValidatesAppId() {
-    IllegalArgumentException thrown =
-        assertThrows(
-            IllegalArgumentException.class,
+    assertThatThrownBy(
             () ->
                 new AboundConfig(
                     null,
                     UUID.randomUUID().toString(),
                     AboundEnvironment.SANDBOX,
-                    AboundApiVersion.V2));
+                    AboundApiVersion.V2))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("appId cannot be empty!");
 
-    assertEquals("appId cannot be empty!", thrown.getMessage());
-
-    thrown =
-        assertThrows(
-            IllegalArgumentException.class,
+    assertThatThrownBy(
             () ->
                 new AboundConfig(
                     "",
                     UUID.randomUUID().toString(),
                     AboundEnvironment.SANDBOX,
-                    AboundApiVersion.V2));
-
-    assertEquals("appId cannot be empty!", thrown.getMessage());
+                    AboundApiVersion.V2))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("appId cannot be empty!");
   }
 
   @Test
   public void testAboundConfigValidatesAppSecret() {
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            new AboundConfig(
-                UUID.randomUUID().toString(),
-                null,
-                AboundEnvironment.SANDBOX,
-                AboundApiVersion.V2));
+    assertThatThrownBy(
+            () ->
+                new AboundConfig(
+                    UUID.randomUUID().toString(),
+                    null,
+                    AboundEnvironment.SANDBOX,
+                    AboundApiVersion.V2))
+        .isInstanceOf(IllegalArgumentException.class);
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            new AboundConfig(
-                UUID.randomUUID().toString(), "", AboundEnvironment.SANDBOX, AboundApiVersion.V2));
+    assertThatThrownBy(
+            () ->
+                new AboundConfig(
+                    UUID.randomUUID().toString(),
+                    "",
+                    AboundEnvironment.SANDBOX,
+                    AboundApiVersion.V2))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   public void testAboundConfigValidatesEnvironment() {
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            new AboundConfig(
-                UUID.randomUUID().toString(),
-                UUID.randomUUID().toString(),
-                null,
-                AboundApiVersion.V2));
+    assertThatThrownBy(
+            () ->
+                new AboundConfig(
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID().toString(),
+                    null,
+                    AboundApiVersion.V2))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   public void testAboundConfigValidatesApiVersion() {
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            new AboundConfig(
-                UUID.randomUUID().toString(),
-                UUID.randomUUID().toString(),
-                AboundEnvironment.SANDBOX,
-                null));
+    assertThatThrownBy(
+            () ->
+                new AboundConfig(
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID().toString(),
+                    AboundEnvironment.SANDBOX,
+                    null))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
@@ -84,9 +83,9 @@ class AboundConfigTest {
     final AboundConfig validConfig =
         new AboundConfig(appId, appSecret, AboundEnvironment.SANDBOX, AboundApiVersion.V2);
 
-    assertEquals(appId, validConfig.getAppId());
-    assertEquals(appSecret, validConfig.getAppSecret());
-    assertEquals(AboundEnvironment.SANDBOX, validConfig.getEnvironment());
-    assertEquals(AboundApiVersion.V2, validConfig.getApiVersion());
+    assertThat(validConfig.getAppId()).isEqualTo(appId);
+    assertThat(validConfig.getAppSecret()).isEqualTo(appSecret);
+    assertThat(validConfig.getEnvironment()).isEqualTo(AboundEnvironment.SANDBOX);
+    assertThat(validConfig.getApiVersion()).isEqualTo(AboundApiVersion.V2);
   }
 }

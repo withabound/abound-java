@@ -10,14 +10,13 @@ import com.withabound.resources.asserts.AboundResponseAssert;
 import com.withabound.resources.asserts.UserAssert;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
+import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 public class UsersTest extends AbstractAboundTest {
-  public static final String TEST_USER_ID = "userId_test24b05d761ff58b5931bd07778c67b4e818e4";
-
   @Test
   public void testCreate() throws IOException {
     final String email = UUID.randomUUID().toString() + "@example.com";
@@ -29,7 +28,7 @@ public class UsersTest extends AbstractAboundTest {
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
     assertThat(response.getData()).isNotNull();
-    assertThat(response.getData().getUserId()).isEqualTo(TEST_USER_ID);
+    assertThat(response.getData().getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
     assertThat(response.getData().getEmail().orElse(null)).isEqualTo(email);
   }
 
@@ -48,7 +47,8 @@ public class UsersTest extends AbstractAboundTest {
 
   @Test
   public void testRetrieve() throws IOException {
-    final AboundResponse<User> response = getAboundClient().users().retrieve(TEST_USER_ID);
+    final AboundResponse<User> response =
+        getAboundClient().users().retrieve(TestUtils.TEST_USER_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -57,7 +57,8 @@ public class UsersTest extends AbstractAboundTest {
 
   @Test
   public void testUpdate() throws IOException {
-    final AboundResponse<User> original = getAboundClient().users().retrieve(TEST_USER_ID);
+    final AboundResponse<User> original =
+        getAboundClient().users().retrieve(TestUtils.TEST_USER_ID);
     AboundResponseAssert.assertThat(original).hasResponseMetadata();
     UserAssert.assertThat(original.getData()).isSamWilson();
 

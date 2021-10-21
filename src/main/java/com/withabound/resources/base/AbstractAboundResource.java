@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.withabound.AboundConfig;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -52,6 +53,13 @@ abstract class AbstractAboundResource<I, O> {
     final Request request = httpPost(url, requestPayload);
 
     return performRequestAndHandleSingleElementResponse(request);
+  }
+
+  protected AboundBulkResponse<O> bulkCreate(
+      final String url, final Map<String, List<I>> requestPayload) throws IOException {
+    final Request request = httpPost(url, requestPayload);
+
+    return performRequestAndHandleBulkElementsResponse(request);
   }
 
   protected AboundBulkResponse<O> list(final String url) throws IOException {
@@ -117,7 +125,7 @@ abstract class AbstractAboundResource<I, O> {
     return new Request.Builder().get().url(url).build();
   }
 
-  private Request httpPost(final String url, final Map<String, I> rawRequestBody) {
+  private Request httpPost(final String url, final Map<String, ?> rawRequestBody) {
     final RequestBody requestBody = RequestBody.Companion.create(GSON.toJson(rawRequestBody), JSON);
 
     return new Request.Builder().post(requestBody).url(url).build();

@@ -24,7 +24,7 @@ public class Expenses extends AboundUserScopedResource<ExpenseRequest, Expense> 
     return "/expenses";
   }
 
-  public AboundBulkResponse<Expense> bulkCreate(
+  public AboundBulkResponse<Expense> create(
       final String userId, final List<ExpenseRequest> toCreate) throws IOException {
     final Map<String, List<ExpenseRequest>> requestPayload =
         Collections.singletonMap("expenses", toCreate);
@@ -33,12 +33,11 @@ public class Expenses extends AboundUserScopedResource<ExpenseRequest, Expense> 
   }
 
   @Override
-  public AboundBulkResponse<Expense> listForUser(final String userId) throws IOException {
+  public AboundBulkResponse<Expense> list(final String userId) throws IOException {
     return super.listForUser(userId);
   }
 
-  @Override
-  public AboundResponse<Expense> retrieveForUser(final String userId, final String expenseId)
+  public AboundResponse<Expense> retrieve(final String userId, final String expenseId)
       throws IOException {
     return super.retrieveForUser(userId, expenseId);
   }
@@ -52,8 +51,7 @@ public class Expenses extends AboundUserScopedResource<ExpenseRequest, Expense> 
     return super.updateForUser(userId, expenseId, requestPayload);
   }
 
-  @Override
-  public AboundResponse<EmptyJsonObject> deleteForUser(final String userId, final String expenseId)
+  public AboundResponse<EmptyJsonObject> delete(final String userId, final String expenseId)
       throws IOException {
     return super.deleteForUser(userId, expenseId);
   }

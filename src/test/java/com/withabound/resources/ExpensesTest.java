@@ -24,7 +24,7 @@ public class ExpensesTest extends AbstractAboundTest {
   @Test
   public void testList() throws IOException {
     final AboundBulkResponse<Expense> response =
-        getAboundClient().expenses().listForUser(TestUtils.TEST_USER_ID);
+        getAboundClient().expenses().list(TestUtils.TEST_USER_ID);
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -36,7 +36,7 @@ public class ExpensesTest extends AbstractAboundTest {
   @Test
   public void testRetrieve() throws IOException {
     final AboundResponse<Expense> response =
-        getAboundClient().expenses().retrieveForUser(TestUtils.TEST_USER_ID, TEST_EXPENSE_ID);
+        getAboundClient().expenses().retrieve(TestUtils.TEST_USER_ID, TEST_EXPENSE_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -62,7 +62,7 @@ public class ExpensesTest extends AbstractAboundTest {
     final AboundBulkResponse<Expense> response =
         getAboundClient()
             .expenses()
-            .bulkCreate(TestUtils.TEST_USER_ID, Arrays.asList(randomExpense, tires));
+            .create(TestUtils.TEST_USER_ID, Arrays.asList(randomExpense, tires));
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
     assertThat(response.getData()).hasSize(2);
@@ -113,7 +113,7 @@ public class ExpensesTest extends AbstractAboundTest {
   @Test
   public void testDelete() throws IOException {
     final AboundResponse<EmptyJsonObject> response =
-        getAboundClient().expenses().deleteForUser(TestUtils.TEST_USER_ID, TEST_EXPENSE_ID);
+        getAboundClient().expenses().delete(TestUtils.TEST_USER_ID, TEST_EXPENSE_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata().hasEmptyDataObject();
   }

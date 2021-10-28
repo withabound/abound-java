@@ -22,10 +22,10 @@ public class MileagesTest extends AbstractAboundTest {
   @Test
   public void testCreate() throws IOException {
     final String randomDate1 = TestUtils.randomDate();
-    final String randomDescription1 = TestUtils.randomString();
+    final String randomDescription1 = TestUtils.randomAlphabetic();
 
     final String randomDate2 = TestUtils.randomDate();
-    final String randomDescription2 = TestUtils.randomString();
+    final String randomDescription2 = TestUtils.randomAlphabetic();
 
     final List<MileageRequest> toCreate =
         Arrays.asList(

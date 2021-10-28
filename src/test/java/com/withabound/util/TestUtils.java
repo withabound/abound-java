@@ -15,6 +15,22 @@ public class TestUtils {
 
   private static final Random RND = new Random();
   private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+  private static final String NUMERIC = "0123456789";
+
+  public static String randomNumberString() {
+    return randomNumberString(13);
+  }
+
+  /** returns a string containing only numbers */
+  public static String randomNumberString(final int length) {
+    StringBuilder result = new StringBuilder();
+
+    for (int i = 0; i < length; i++) {
+      result.append(randomNumber());
+    }
+
+    return result.toString();
+  }
 
   public static Double randomDouble() {
     return randomDouble(100);
@@ -30,26 +46,35 @@ public class TestUtils {
     return currencyAmount.setScale(2, RoundingMode.HALF_UP).doubleValue();
   }
 
-  public static Character randomChar() {
-    return ALPHABET.charAt(RND.nextInt(ALPHABET.length()));
+  public static Character randomNumber() {
+    return random(NUMERIC);
   }
 
-  public static String randomString() {
-    return randomString(13);
+  public static Character randomAlphabeticChar() {
+    return random(ALPHABET);
   }
 
-  public static String randomString(final int length) {
+  public static Character random(final String characterSequence) {
+    return characterSequence.charAt(RND.nextInt(characterSequence.length()));
+  }
+
+  public static String randomAlphabetic() {
+    return randomAlphabetic(13);
+  }
+
+  /** returns a string with only letters */
+  public static String randomAlphabetic(final int length) {
     StringBuilder str = new StringBuilder();
 
     for (int i = 0; i < length; i++) {
-      str.append(randomChar());
+      str.append(randomAlphabeticChar());
     }
 
     return str.toString();
   }
 
   public static String randomEmail() {
-    return randomString() + "@example.com";
+    return randomAlphabetic() + "@example.com";
   }
 
   /** @return a random date in the past 2 years, formatted as YYYY-MM-DD */

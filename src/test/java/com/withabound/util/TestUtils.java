@@ -16,8 +16,6 @@ public class TestUtils {
   private static final Random RND = new Random();
   private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
-  private static final long ONE_YEAR_IN_MILLIS = 60L * 60 * 24 * 365 * 2 * 1000;
-
   public static Double randomDouble() {
     return randomDouble(100);
   }

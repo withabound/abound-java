@@ -1,7 +1,5 @@
 package com.withabound.resources;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.users.User;
 import com.withabound.models.users.UserRequest;
@@ -11,15 +9,17 @@ import com.withabound.resources.asserts.UserAssert;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
 import com.withabound.util.TestUtils;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UsersTest extends AbstractAboundTest {
   @Test
   public void testCreate() throws IOException {
-    final String email = UUID.randomUUID().toString() + "@example.com";
+    final String email = TestUtils.randomEmail();
 
     final UserRequest toCreate = UserRequest.builder().email(email).build();
 
@@ -62,7 +62,7 @@ public class UsersTest extends AbstractAboundTest {
     AboundResponseAssert.assertThat(original).hasResponseMetadata();
     UserAssert.assertThat(original.getData()).isSamWilson();
 
-    final String newEmail = UUID.randomUUID().toString() + "@example.com";
+    final String newEmail = TestUtils.randomEmail();
     final User originalUser = original.getData();
 
     final UserRequest toUpdate = originalUser;

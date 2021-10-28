@@ -1,6 +1,7 @@
 package com.withabound;
 
 import com.withabound.resources.Expenses;
+import com.withabound.resources.Mileages;
 import com.withabound.resources.Users;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -12,6 +13,7 @@ import okhttp3.Request;
 public final class Abound {
   private final Users users;
   private final Expenses expenses;
+  private final Mileages mileages;
 
   /** Creates an {@link Abound} client with the default {@link OkHttpClient} settings */
   public Abound(final AboundConfig aboundConfig) {
@@ -31,6 +33,7 @@ public final class Abound {
 
     this.users = new Users(aboundConfig, httpClient);
     this.expenses = new Expenses(aboundConfig, httpClient);
+    this.mileages = new Mileages(aboundConfig, httpClient);
   }
 
   /**

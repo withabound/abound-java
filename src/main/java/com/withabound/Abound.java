@@ -1,5 +1,6 @@
 package com.withabound;
 
+import com.withabound.resources.Expenses;
 import com.withabound.resources.Users;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -10,6 +11,7 @@ import okhttp3.Request;
 @Getter
 public final class Abound {
   private final Users users;
+  private final Expenses expenses;
 
   /** Creates an {@link Abound} client with the default {@link OkHttpClient} settings */
   public Abound(final AboundConfig aboundConfig) {
@@ -28,6 +30,7 @@ public final class Abound {
     final OkHttpClient httpClient = decorateAndBuildHttpClient(aboundConfig, httpClientBuilder);
 
     this.users = new Users(aboundConfig, httpClient);
+    this.expenses = new Expenses(aboundConfig, httpClient);
   }
 
   /**

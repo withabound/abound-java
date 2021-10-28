@@ -2,7 +2,7 @@ package com.withabound.resources.asserts;
 
 import com.withabound.models.users.User;
 import com.withabound.models.users.UserProfile;
-import com.withabound.resources.UsersTest;
+import com.withabound.util.TestUtils;
 import java.util.Optional;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
@@ -14,7 +14,7 @@ public class UserAssert extends AbstractAssert<UserAssert, User> {
 
   public UserAssert isSamWilson() {
     Assertions.assertThat(actual).isNotNull();
-    Assertions.assertThat(actual.getUserId()).isEqualTo(UsersTest.TEST_USER_ID);
+    Assertions.assertThat(actual.getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
     Assertions.assertThat(actual.getEmail()).isEqualTo(Optional.of("your_users_email@domain.com"));
     Assertions.assertThat(actual.getForeignId()).isEqualTo(Optional.of("your_foreign_id"));
 

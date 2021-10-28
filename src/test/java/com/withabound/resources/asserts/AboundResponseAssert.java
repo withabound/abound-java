@@ -1,6 +1,7 @@
 package com.withabound.resources.asserts;
 
 import com.withabound.resources.base.AboundResponse;
+import com.withabound.resources.base.EmptyJsonObject;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Offset;
@@ -17,6 +18,12 @@ public class AboundResponseAssert<T>
     Assertions.assertThat(actual.getRequest().getTimestamp())
         .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
     Assertions.assertThat(actual.getRequest().getRequestId()).isNotEmpty();
+
+    return this;
+  }
+
+  public AboundResponseAssert<T> hasEmptyDataObject() {
+    Assertions.assertThat(actual.getData()).isInstanceOf(EmptyJsonObject.class);
 
     return this;
   }

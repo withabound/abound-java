@@ -1,5 +1,7 @@
 package com.withabound.resources;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.users.User;
 import com.withabound.models.users.UserRequest;
@@ -9,12 +11,9 @@ import com.withabound.resources.asserts.UserAssert;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
 import com.withabound.util.TestUtils;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 public class UsersTest extends AbstractAboundTest {
   @Test

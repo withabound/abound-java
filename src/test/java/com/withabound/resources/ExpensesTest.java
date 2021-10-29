@@ -46,7 +46,7 @@ public class ExpensesTest extends AbstractAboundTest {
   @Test
   public void testCreate() throws IOException {
     final Double randAmount = TestUtils.randomCurrencyAmount();
-    final String randDescription = TestUtils.randomString();
+    final String randDescription = TestUtils.randomAlphabetic();
 
     final ExpenseRequest randomExpense =
         ExpenseRequest.builder()

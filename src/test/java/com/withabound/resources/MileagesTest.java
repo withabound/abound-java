@@ -3,6 +3,7 @@ package com.withabound.resources;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.withabound.AbstractAboundTest;
+import com.withabound.exceptions.AboundApiException;
 import com.withabound.models.mileages.Mileage;
 import com.withabound.models.mileages.MileageRequest;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
@@ -13,7 +14,9 @@ import com.withabound.resources.base.AboundResponse;
 import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class MileagesTest extends AbstractAboundTest {
@@ -54,6 +57,17 @@ public class MileagesTest extends AbstractAboundTest {
     assertThat(createdMileages.get(1).getDate()).isEqualTo(randomDate2);
     assertThat(createdMileages.get(1).getDescription().orElse(null)).isEqualTo(randomDescription2);
     assertThat(createdMileages.get(1).getDistance()).isEqualTo(81.9);
+  }
+
+  @Test
+  public void testCreateWithEmptyListThrowsAboundApiException() {
+    final List<MileageRequest> toCreate = Collections.emptyList();
+
+    Assertions.assertThatThrownBy(
+            () -> getAboundClient().mileages().create(TestUtils.TEST_USER_ID, toCreate))
+        .isInstanceOf(AboundApiException.class)
+        .hasMessage("Missing mileages objects in request body (code b7c845bd)")
+        .hasFieldOrPropertyWithValue("statusCode", 400);
   }
 
   @Test

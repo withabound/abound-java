@@ -3,6 +3,7 @@ package com.withabound.resources;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.withabound.AbstractAboundTest;
+import com.withabound.exceptions.AboundApiException;
 import com.withabound.models.expenses.Expense;
 import com.withabound.models.expenses.ExpenseRequest;
 import com.withabound.models.expenses.ExpenseType;
@@ -15,6 +16,8 @@ import com.withabound.resources.base.EmptyJsonObject;
 import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -85,6 +88,18 @@ public class ExpensesTest extends AbstractAboundTest {
     assertThat(second.getExpenseType().orElse(null)).isEqualTo(ExpenseType.BUSINESS);
     assertThat(second.getTaxCategory().orElse(null)).isEqualTo("Meals");
     assertThat(second.getDate().orElse(null)).isEqualTo("2020-12-12");
+  }
+
+  @Test
+  public void testCreateWithMissingRequiredPropertiesThrowsAboundApiException() {
+    final List<ExpenseRequest> toCreate =
+        Collections.singletonList(ExpenseRequest.builder().build());
+
+    Assertions.assertThatThrownBy(
+            () -> getAboundClient().expenses().create(TestUtils.TEST_USER_ID, toCreate))
+        .isInstanceOf(AboundApiException.class)
+        .hasMessage("Expected amount to be of type number, but received undefined")
+        .hasFieldOrPropertyWithValue("statusCode", 400);
   }
 
   @Test

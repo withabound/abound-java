@@ -120,7 +120,7 @@ abstract class AbstractAboundResource<I, O> {
       final AboundErrorResponse error =
           GSON.fromJson(response.body().string(), AboundErrorResponse.class);
 
-      throw new AboundApiException(error.getMessage(), response.code());
+      throw new AboundApiException(error, response.code());
     }
   }
 

@@ -99,7 +99,8 @@ public class ExpensesTest extends AbstractAboundTest {
             () -> getAboundClient().expenses().create(TestUtils.TEST_USER_ID, toCreate))
         .isInstanceOf(AboundApiException.class)
         .hasMessage("Expected amount to be of type number, but received undefined")
-        .hasFieldOrPropertyWithValue("statusCode", 400);
+        .hasFieldOrPropertyWithValue("statusCode", 400)
+        .hasFieldOrProperty("request");
   }
 
   @Test

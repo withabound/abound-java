@@ -67,7 +67,8 @@ public class MileagesTest extends AbstractAboundTest {
             () -> getAboundClient().mileages().create(TestUtils.TEST_USER_ID, toCreate))
         .isInstanceOf(AboundApiException.class)
         .hasMessage("Missing mileages objects in request body (code b7c845bd)")
-        .hasFieldOrPropertyWithValue("statusCode", 400);
+        .hasFieldOrPropertyWithValue("statusCode", 400)
+        .hasFieldOrProperty("request");
   }
 
   @Test

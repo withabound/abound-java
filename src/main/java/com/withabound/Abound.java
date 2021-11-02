@@ -3,6 +3,7 @@ package com.withabound;
 import com.withabound.resources.Expenses;
 import com.withabound.resources.Mileages;
 import com.withabound.resources.PaymentMethods;
+import com.withabound.resources.TaxPayments;
 import com.withabound.resources.Users;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -16,6 +17,7 @@ public final class Abound {
   private final Expenses expenses;
   private final Mileages mileages;
   private final PaymentMethods paymentMethods;
+  private final TaxPayments taxPayments;
 
   /** Creates an {@link Abound} client with the default {@link OkHttpClient} settings */
   public Abound(final AboundConfig aboundConfig) {
@@ -37,6 +39,7 @@ public final class Abound {
     this.expenses = new Expenses(aboundConfig, httpClient);
     this.mileages = new Mileages(aboundConfig, httpClient);
     this.paymentMethods = new PaymentMethods(aboundConfig, httpClient);
+    this.taxPayments = new TaxPayments(aboundConfig, httpClient);
   }
 
   /**

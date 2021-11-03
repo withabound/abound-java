@@ -3,6 +3,7 @@ package com.withabound.resources.base;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.withabound.AboundConfig;
+import com.withabound.exceptions.AboundApiException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -116,8 +117,10 @@ abstract class AbstractAboundResource<I, O> {
         return GSON.fromJson(response.body().string(), serializationType);
       }
 
-      // TODO throw an ApiException
-      return null;
+      final AboundErrorResponse error =
+          GSON.fromJson(response.body().string(), AboundErrorResponse.class);
+
+      throw new AboundApiException(error, response.code());
     }
   }
 

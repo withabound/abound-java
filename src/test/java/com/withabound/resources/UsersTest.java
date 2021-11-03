@@ -3,6 +3,7 @@ package com.withabound.resources;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.withabound.AbstractAboundTest;
+import com.withabound.exceptions.AboundApiException;
 import com.withabound.models.users.User;
 import com.withabound.models.users.UserRequest;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
@@ -13,6 +14,8 @@ import com.withabound.resources.base.AboundResponse;
 import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class UsersTest extends AbstractAboundTest {
@@ -29,6 +32,15 @@ public class UsersTest extends AbstractAboundTest {
     assertThat(response.getData()).isNotNull();
     assertThat(response.getData().getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
     assertThat(response.getData().getEmail().orElse(null)).isEqualTo(email);
+  }
+
+  @Test
+  public void testCreateWithNullRequestBodyThrowsAboundApiException() {
+    Assertions.assertThatThrownBy(() -> getAboundClient().users().create(null))
+        .isInstanceOf(AboundApiException.class)
+        .hasMessage("Missing user object in request (Code 1324d9e6)")
+        .hasFieldOrPropertyWithValue("statusCode", 400)
+        .hasFieldOrPropertyWithValue("request", Optional.empty());
   }
 
   @Test

@@ -1,5 +1,7 @@
 package com.withabound.models.incomes;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.withabound.AbstractAboundTest;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
 import com.withabound.resources.asserts.AboundResponseAssert;
@@ -8,14 +10,11 @@ import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
 import com.withabound.resources.base.EmptyJsonObject;
 import com.withabound.util.TestUtils;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 public class IncomesTest extends AbstractAboundTest {
   public static final String TEST_INCOME_ID = "incomeId_test8cb0d56b942722b6d719fa5aa9c5a8dbaa0f";

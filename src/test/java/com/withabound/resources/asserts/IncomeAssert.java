@@ -25,7 +25,7 @@ public class IncomeAssert extends AbstractAssert<IncomeAssert, Income> {
     return this;
   }
 
-  private IncomeAssert(Income actual) {
+  private IncomeAssert(final Income actual) {
     super(actual, IncomeAssert.class);
   }
 }

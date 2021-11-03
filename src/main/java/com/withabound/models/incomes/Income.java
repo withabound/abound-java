@@ -8,12 +8,12 @@ public class Income extends IncomeRequest {
   private String incomeId;
 
   Income(
-      IncomeType incomeType,
-      Double amount,
-      String date,
-      String description,
-      String category,
-      String foreignId) {
+      final IncomeType incomeType,
+      final Double amount,
+      final String date,
+      final String description,
+      final String category,
+      final String foreignId) {
     super(incomeType, amount, date, description, category, foreignId);
   }
 }

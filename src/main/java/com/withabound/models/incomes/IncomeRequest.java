@@ -4,6 +4,7 @@ import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
 
+/** See https://docs.withabound.com/reference/incomes */
 @Builder
 @Setter
 public class IncomeRequest {

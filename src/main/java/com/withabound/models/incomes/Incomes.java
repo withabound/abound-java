@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import okhttp3.OkHttpClient;
 
+/** See https://docs.withabound.com/reference/incomes */
 public class Incomes extends AboundUserScopedResource<IncomeRequest, Income> {
   public Incomes(final AboundConfig aboundConfig, final OkHttpClient httpClient) {
     super(aboundConfig, httpClient, Income.class);

@@ -1,8 +1,11 @@
-package com.withabound.models.incomes;
+package com.withabound.resources;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.withabound.AbstractAboundTest;
+import com.withabound.models.incomes.Income;
+import com.withabound.models.incomes.IncomeRequest;
+import com.withabound.models.incomes.IncomeType;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
 import com.withabound.resources.asserts.AboundResponseAssert;
 import com.withabound.resources.asserts.IncomeAssert;

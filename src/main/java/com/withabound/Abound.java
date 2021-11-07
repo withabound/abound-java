@@ -1,6 +1,6 @@
 package com.withabound;
 
-import com.withabound.models.incomes.Incomes;
+import com.withabound.resources.Incomes;
 import com.withabound.resources.Expenses;
 import com.withabound.resources.Mileages;
 import com.withabound.resources.PaymentMethods;

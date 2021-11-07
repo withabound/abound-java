@@ -5,6 +5,7 @@ import com.withabound.resources.Expenses;
 import com.withabound.resources.Mileages;
 import com.withabound.resources.PaymentMethods;
 import com.withabound.resources.TaxPayments;
+import com.withabound.resources.Taxes;
 import com.withabound.resources.Users;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -20,6 +21,7 @@ public final class Abound {
   private final PaymentMethods paymentMethods;
   private final TaxPayments taxPayments;
   private final Incomes incomes;
+  private final Taxes taxes;
 
   /** Creates an {@link Abound} client with the default {@link OkHttpClient} settings */
   public Abound(final AboundConfig aboundConfig) {
@@ -43,6 +45,7 @@ public final class Abound {
     this.paymentMethods = new PaymentMethods(aboundConfig, httpClient);
     this.taxPayments = new TaxPayments(aboundConfig, httpClient);
     this.incomes = new Incomes(aboundConfig, httpClient);
+    this.taxes = new Taxes(aboundConfig, httpClient);
   }
 
   /**

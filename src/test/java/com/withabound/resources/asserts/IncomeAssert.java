@@ -2,7 +2,7 @@ package com.withabound.resources.asserts;
 
 import com.withabound.models.incomes.Income;
 import com.withabound.models.incomes.IncomeType;
-import com.withabound.models.incomes.IncomesTest;
+import com.withabound.resources.IncomesTest;
 import java.util.Optional;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;

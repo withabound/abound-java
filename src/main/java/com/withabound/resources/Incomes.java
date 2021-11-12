@@ -2,6 +2,7 @@ package com.withabound.resources;
 
 import com.withabound.AboundConfig;
 import com.withabound.models.incomes.Income;
+import com.withabound.models.incomes.IncomeParams;
 import com.withabound.models.incomes.IncomeRequest;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;

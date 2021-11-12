@@ -14,7 +14,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Base resource from which all other Abound Resources shall extend that maps an SDK action (e.g.
@@ -66,11 +65,11 @@ abstract class AbstractAboundResource<I, O> {
   }
 
   protected AboundBulkResponse<O> list(final String url) throws IOException {
-    return list(url, null);
+    return list(url, EmptyQueryParameters.getInstance());
   }
 
-  protected AboundBulkResponse<O> list(
-      final String url, @Nullable final AboundQueryParameters params) throws IOException {
+  protected AboundBulkResponse<O> list(final String url, final AboundQueryParameters params)
+      throws IOException {
     final Request request = httpGet(url, params);
 
     return performRequestAndHandleBulkElementsResponse(request);
@@ -131,7 +130,7 @@ abstract class AbstractAboundResource<I, O> {
     }
   }
 
-  private static Request httpGet(final String url, @Nullable final AboundQueryParameters params) {
+  private static Request httpGet(final String url, final AboundQueryParameters params) {
     final String urlWithParams = HttpUtils.appendQueryParams(url, params);
 
     return new Request.Builder().get().url(urlWithParams).build();

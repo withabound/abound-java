@@ -2,6 +2,7 @@ package com.withabound.resources;
 
 import com.withabound.AboundConfig;
 import com.withabound.models.payment_methods.PaymentMethod;
+import com.withabound.models.payment_methods.PaymentMethodParams;
 import com.withabound.models.payment_methods.PaymentMethodRequest;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
@@ -33,6 +34,11 @@ public class PaymentMethods extends AboundUserScopedResource<PaymentMethodReques
   @Override
   public AboundBulkResponse<PaymentMethod> list(final String userId) throws IOException {
     return super.listForUser(userId);
+  }
+
+  public AboundBulkResponse<PaymentMethod> list(
+      final String userId, final PaymentMethodParams params) throws IOException {
+    return super.listForUser(userId, params);
   }
 
   public AboundResponse<PaymentMethod> retrieve(final String userId, final String paymentMethodId)

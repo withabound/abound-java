@@ -20,9 +20,14 @@ public abstract class AboundUserScopedResource<I, O> extends AbstractAboundResou
   }
 
   protected AboundBulkResponse<O> listForUser(final String userId) throws IOException {
+    return listForUser(userId, EmptyQueryParameters.getInstance());
+  }
+
+  protected AboundBulkResponse<O> listForUser(
+      final String userId, final AboundQueryParameters params) throws IOException {
     final String url = getUserScopedResourcesUrl(userId);
 
-    return super.list(url);
+    return super.list(url, params);
   }
 
   protected AboundResponse<O> retrieveForUser(final String userId, final String id)

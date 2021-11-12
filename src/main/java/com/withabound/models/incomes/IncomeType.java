@@ -4,14 +4,25 @@ import com.google.gson.annotations.SerializedName;
 
 public enum IncomeType {
   @SerializedName("1099")
-  TEN99,
+  TEN99("1099"),
 
   @SerializedName("1099-INT")
-  TEN99INT,
+  TEN99INT("1099-INT"),
 
   @SerializedName("w2")
-  W2,
+  W2("w2"),
 
   @SerializedName("personal")
-  PERSONAL,
+  PERSONAL("personal");
+
+  private final String name;
+
+  IncomeType(final String name) {
+    this.name = name;
+  }
+
+  @Override
+  public String toString() {
+    return name;
+  }
 }

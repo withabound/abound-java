@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.withabound.AbstractAboundTest;
 import com.withabound.exceptions.AboundApiException;
 import com.withabound.models.users.User;
+import com.withabound.models.users.UserParams;
 import com.withabound.models.users.UserRequest;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
 import com.withabound.resources.asserts.AboundResponseAssert;
@@ -15,6 +16,7 @@ import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -54,6 +56,44 @@ public class UsersTest extends AbstractAboundTest {
     assertThat(users).hasSize(1);
 
     UserAssert.assertThat(users.get(0)).isSamWilson();
+  }
+
+  @Test
+  public void testListWithForeignIdParam() throws IOException, InterruptedException {
+    final String foreignId = TestUtils.randomAlphabetic();
+    final UserParams params = UserParams.builder().foreignId(foreignId).build();
+
+    getMockAboundClient().users().list(params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final String requestUrl = recordedRequest.getPath();
+    assertThat(requestUrl).isEqualTo(String.format("/users?foreignId=%s", foreignId));
+  }
+
+  @Test
+  public void testListWithPageParam() throws IOException, InterruptedException {
+    final String nextPage = TestUtils.randomAlphabetic();
+    final UserParams params = UserParams.builder().page(nextPage).build();
+
+    getMockAboundClient().users().list(params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final String requestUrl = recordedRequest.getPath();
+    assertThat(requestUrl).isEqualTo(String.format("/users?page=%s", nextPage));
+  }
+
+  @Test
+  public void testListWithManyParams() throws IOException, InterruptedException {
+    final String nextPage = TestUtils.randomAlphabetic();
+    final String foreignId = TestUtils.randomAlphabetic();
+    final UserParams params = UserParams.builder().page(nextPage).foreignId(foreignId).build();
+
+    getMockAboundClient().users().list(params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final String requestUrl = recordedRequest.getPath();
+    assertThat(requestUrl)
+        .isEqualTo(String.format("/users?foreignId=%s&page=%s", foreignId, nextPage));
   }
 
   @Test

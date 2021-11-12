@@ -6,6 +6,7 @@ import com.withabound.AbstractAboundTest;
 import com.withabound.models.payment_methods.AccountClass;
 import com.withabound.models.payment_methods.AccountType;
 import com.withabound.models.payment_methods.PaymentMethod;
+import com.withabound.models.payment_methods.PaymentMethodParams;
 import com.withabound.models.payment_methods.PaymentMethodRequest;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
 import com.withabound.resources.asserts.AboundResponseAssert;
@@ -15,6 +16,8 @@ import com.withabound.resources.base.AboundResponse;
 import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.List;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 public class PaymentMethodsTest extends AbstractAboundTest {
@@ -61,6 +64,19 @@ public class PaymentMethodsTest extends AbstractAboundTest {
     final List<PaymentMethod> paymentMethods = response.getData();
     assertThat(paymentMethods).hasSize(1);
     PaymentMethodAssert.assertThat(paymentMethods.get(0)).isUnverified7890PersonalCheckingAccount();
+  }
+
+  @Test
+  public void testListWithNextPageParam() throws IOException, InterruptedException {
+    final String nextPage = TestUtils.randomAlphabetic();
+    final PaymentMethodParams params = PaymentMethodParams.builder().page(nextPage).build();
+
+    getMockAboundClient().paymentMethods().list(TestUtils.TEST_USER_ID, params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
   }
 
   @Test

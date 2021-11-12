@@ -2,6 +2,7 @@ package com.withabound.resources;
 
 import com.withabound.AboundConfig;
 import com.withabound.models.users.User;
+import com.withabound.models.users.UserParams;
 import com.withabound.models.users.UserRequest;
 import com.withabound.resources.base.AboundBaseResource;
 import com.withabound.resources.base.AboundBulkResponse;
@@ -31,6 +32,10 @@ public class Users extends AboundBaseResource<UserRequest, User> {
   @Override
   public AboundBulkResponse<User> list() throws IOException {
     return super.list();
+  }
+
+  public AboundBulkResponse<User> list(final UserParams params) throws IOException {
+    return super.list(params);
   }
 
   @Override

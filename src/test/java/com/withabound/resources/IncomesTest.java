@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 public class IncomesTest extends AbstractAboundTest {
@@ -34,6 +36,39 @@ public class IncomesTest extends AbstractAboundTest {
 
     final Income income = listed.get(0);
     IncomeAssert.assertThat(income).isDesignServicesClientInvoice();
+  }
+
+  @Test
+  public void testListWithNextPageParam() throws IOException, InterruptedException {
+    final String nextPage = TestUtils.randomAlphabetic();
+    final IncomeParams params = IncomeParams.builder().page(nextPage).build();
+
+    getMockAboundClient().incomes().list(TestUtils.TEST_USER_ID, params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
+    assertThat(requestUrl.queryParameter("foreignId")).isNull();
+    assertThat(requestUrl.queryParameter("incomeType")).isNull();
+  }
+
+  @Test
+  public void testListWithManyParams() throws IOException, InterruptedException {
+    final String nextPage = TestUtils.randomAlphabetic();
+    final String foreignId = TestUtils.randomAlphabetic();
+    final IncomeType w2 = IncomeType.W2;
+    final IncomeParams params =
+        IncomeParams.builder().page(nextPage).foreignId(foreignId).incomeType(w2).build();
+
+    getMockAboundClient().incomes().list(TestUtils.TEST_USER_ID, params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
+    assertThat(requestUrl.queryParameter("foreignId")).isEqualTo(foreignId);
+    assertThat(requestUrl.queryParameter("incomeType")).isEqualTo("w2");
   }
 
   @Test

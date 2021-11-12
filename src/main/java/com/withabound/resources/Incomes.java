@@ -37,6 +37,11 @@ public class Incomes extends AboundUserScopedResource<IncomeRequest, Income> {
     return super.listForUser(userId);
   }
 
+  public AboundBulkResponse<Income> list(final String userId, final IncomeParams params)
+      throws IOException {
+    return super.listForUser(userId, params);
+  }
+
   public AboundResponse<Income> retrieve(final String userId, final String incomeId)
       throws IOException {
     return super.retrieveForUser(userId, incomeId);

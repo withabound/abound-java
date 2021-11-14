@@ -2,6 +2,7 @@ package com.withabound.models.documents;
 
 import java.util.Optional;
 
+/** See https://docs.withabound.com/reference/documents */
 public class Document {
   private String documentId;
 

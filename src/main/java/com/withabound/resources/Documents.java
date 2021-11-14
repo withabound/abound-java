@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import okhttp3.OkHttpClient;
 
+/** See https://docs.withabound.com/reference/documents */
 public class Documents extends AboundUserScopedResource<DocumentRequest, Document> {
   public Documents(final AboundConfig aboundConfig, final OkHttpClient httpClient) {
     super(aboundConfig, httpClient, Document.class);

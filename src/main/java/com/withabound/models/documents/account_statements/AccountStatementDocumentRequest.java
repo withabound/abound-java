@@ -6,6 +6,7 @@ import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
 
+/** See https://docs.withabound.com/reference/documents */
 @Builder
 @Setter
 public class AccountStatementDocumentRequest extends DocumentRequest {

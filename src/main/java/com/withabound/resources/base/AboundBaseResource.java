@@ -25,9 +25,13 @@ public abstract class AboundBaseResource<I, O> extends AbstractAboundResource<I,
   }
 
   protected AboundBulkResponse<O> list() throws IOException {
+    return list(EmptyQueryParameters.getInstance());
+  }
+
+  protected AboundBulkResponse<O> list(final AboundQueryParameters params) throws IOException {
     final String url = getResourcesUrl();
 
-    return super.list(url);
+    return super.list(url, params);
   }
 
   @Override

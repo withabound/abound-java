@@ -2,6 +2,7 @@ package com.withabound.resources;
 
 import com.withabound.AboundConfig;
 import com.withabound.models.expenses.Expense;
+import com.withabound.models.expenses.ExpenseParams;
 import com.withabound.models.expenses.ExpenseRequest;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
@@ -35,6 +36,11 @@ public class Expenses extends AboundUserScopedResource<ExpenseRequest, Expense> 
   @Override
   public AboundBulkResponse<Expense> list(final String userId) throws IOException {
     return super.listForUser(userId);
+  }
+
+  public AboundBulkResponse<Expense> list(final String userId, final ExpenseParams params)
+      throws IOException {
+    return super.listForUser(userId, params);
   }
 
   public AboundResponse<Expense> retrieve(final String userId, final String expenseId)

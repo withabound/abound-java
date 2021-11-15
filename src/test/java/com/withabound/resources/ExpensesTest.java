@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.withabound.AbstractAboundTest;
 import com.withabound.exceptions.AboundApiException;
 import com.withabound.models.expenses.Expense;
+import com.withabound.models.expenses.ExpenseParams;
 import com.withabound.models.expenses.ExpenseRequest;
 import com.withabound.models.expenses.ExpenseType;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +37,24 @@ public class ExpensesTest extends AbstractAboundTest {
     assertThat(response.getData()).isNotNull().hasSize(1);
 
     ExpenseAssert.assertThat(response.getData().get(0)).isPenAndPaperExpense();
+  }
+
+  @Test
+  public void testListWithManyParams() throws IOException, InterruptedException {
+    final String foreignId = TestUtils.randomAlphabetic();
+    final String year = "2020";
+    final String nextPage = TestUtils.randomAlphabetic();
+    final ExpenseParams params =
+        ExpenseParams.builder().foreignId(foreignId).year(year).page(nextPage).build();
+
+    getMockAboundClient().expenses().list(TestUtils.TEST_USER_ID, params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
+    assertThat(requestUrl.queryParameter("foreignId")).isEqualTo(foreignId);
+    assertThat(requestUrl.queryParameter("year")).isEqualTo("2020");
   }
 
   @Test

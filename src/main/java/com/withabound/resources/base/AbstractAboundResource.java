@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.withabound.AboundConfig;
 import com.withabound.exceptions.AboundApiException;
+import com.withabound.http.HttpUtils;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -64,13 +65,18 @@ abstract class AbstractAboundResource<I, O> {
   }
 
   protected AboundBulkResponse<O> list(final String url) throws IOException {
-    final Request request = httpGet(url);
+    return list(url, EmptyQueryParameters.getInstance());
+  }
+
+  protected AboundBulkResponse<O> list(final String url, final AboundQueryParameters params)
+      throws IOException {
+    final Request request = httpGet(url, params);
 
     return performRequestAndHandleBulkElementsResponse(request);
   }
 
   protected AboundResponse<O> retrieve(final String url) throws IOException {
-    final Request request = httpGet(url);
+    final Request request = httpGet(url, null);
 
     return performRequestAndHandleSingleElementResponse(request);
   }
@@ -124,8 +130,10 @@ abstract class AbstractAboundResource<I, O> {
     }
   }
 
-  private static Request httpGet(final String url) {
-    return new Request.Builder().get().url(url).build();
+  private static Request httpGet(final String url, final AboundQueryParameters params) {
+    final String urlWithParams = HttpUtils.appendQueryParams(url, params);
+
+    return new Request.Builder().get().url(urlWithParams).build();
   }
 
   private Request httpPost(final String url, final Map<String, ?> rawRequestBody) {

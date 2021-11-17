@@ -2,6 +2,7 @@ package com.withabound.resources;
 
 import com.withabound.AboundConfig;
 import com.withabound.models.documents.Document;
+import com.withabound.models.documents.DocumentParams;
 import com.withabound.models.documents.DocumentRequest;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
@@ -35,6 +36,11 @@ public class Documents extends AboundUserScopedResource<DocumentRequest, Documen
   @Override
   public AboundBulkResponse<Document> list(final String userId) throws IOException {
     return super.listForUser(userId);
+  }
+
+  public AboundBulkResponse<Document> list(final String userId, final DocumentParams params)
+      throws IOException {
+    return super.listForUser(userId, params);
   }
 
   public AboundResponse<Document> retrieve(final String userId, final String documentId)

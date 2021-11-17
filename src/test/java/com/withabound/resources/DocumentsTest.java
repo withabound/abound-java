@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.documents.Document;
+import com.withabound.models.documents.DocumentParams;
 import com.withabound.models.documents.DocumentType;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentBank;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentRequest;
@@ -18,6 +19,8 @@ import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -108,6 +111,22 @@ public class DocumentsTest extends AbstractAboundTest {
 
     final Document document = documents.get(0);
     DocumentAssert.assertThat(document).is7890AccountStatement();
+  }
+
+  @Test
+  public void testListWithParams() throws IOException, InterruptedException {
+    final String year = "2018";
+    final String nextPage = TestUtils.randomAlphabetic();
+
+    final DocumentParams params = DocumentParams.builder().year(year).page(nextPage).build();
+
+    getMockAboundClient().documents().list(TestUtils.TEST_USER_ID, params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    final String requestUrlStr = requestUrl.toString();
+    assertThat(requestUrlStr).endsWith(String.format("?year=2018&page=%s", nextPage));
   }
 
   @Test

@@ -6,9 +6,15 @@ import com.withabound.AbstractAboundTest;
 import com.withabound.models.documents.Document;
 import com.withabound.models.documents.DocumentParams;
 import com.withabound.models.documents.DocumentType;
+import com.withabound.models.documents.StateTaxInfo;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentBank;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentRequest;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentSummary;
+import com.withabound.models.documents.ten99_int.Form1099IntDocumentRequest;
+import com.withabound.models.documents.ten99_k.Form1099KDocumentRequest;
+import com.withabound.models.documents.ten99_k.GrossAmountsByMonth;
+import com.withabound.models.documents.ten99_k.PayerClassification;
+import com.withabound.models.documents.ten99_k.TransactionsReportedClassification;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
 import com.withabound.resources.asserts.AboundResponseAssert;
 import com.withabound.resources.asserts.DocumentAssert;
@@ -33,7 +39,7 @@ public class DocumentsTest extends AbstractAboundTest {
       "https://www.chase.com/etc/designs/chase-ux/css/img/newheaderlogo.svg";
 
   @Test
-  public void testCreate() throws IOException {
+  public void testCreateAccountStatement() throws IOException {
     final String accountNumber = TestUtils.randomNumberString(9);
     final String last4 = accountNumber.substring(accountNumber.length() - 4);
 
@@ -97,6 +103,122 @@ public class DocumentsTest extends AbstractAboundTest {
             "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2020-01-01_2020-01-31_Account_Statement_7890.pdf");
     assertThat(createdDocument.getType()).isEqualTo(DocumentType.ACCOUNT_STATEMENT);
     assertThat(createdDocument.getYear()).isEqualTo("2020");
+  }
+
+  @Test
+  public void testCreate1099Int() throws IOException {
+    final String accountNumber = TestUtils.randomNumberString(9);
+    final String routingNumber = "102001017";
+    final Double interestIncome = TestUtils.randomCurrencyAmount(1000);
+    final Double earlyWithdrawalPenalty = TestUtils.randomCurrencyAmount();
+    final Double usSavingsBondsInterest = TestUtils.randomCurrencyAmount(500);
+    final Double federalIncomeTaxWithheld = TestUtils.randomCurrencyAmount(1000);
+    final Double investmentExpenses = TestUtils.randomCurrencyAmount(800);
+    final Double foreignTaxPaid = TestUtils.randomCurrencyAmount(4000);
+    final Double taxExemptInterest = TestUtils.randomCurrencyAmount();
+    final Double specifiedPrivateActivityBondInterest = TestUtils.randomCurrencyAmount(2000);
+    final Double marketDiscount = TestUtils.randomCurrencyAmount(300);
+    final Double bondPremium = TestUtils.randomCurrencyAmount();
+    final Double bondPremiumTreasury = TestUtils.randomCurrencyAmount();
+    final Double bondPremiumTaxExemptBond = TestUtils.randomCurrencyAmount();
+
+    final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
+    final String stateId = TestUtils.randomAlphabetic();
+
+    final StateTaxInfo stateTaxInfo =
+        StateTaxInfo.builder()
+            .filingState("ca")
+            .stateId(stateId)
+            .stateTaxWithheld(stateTaxWithheld)
+            .build();
+
+    final Form1099IntDocumentRequest form1099IntDocumentRequest =
+        Form1099IntDocumentRequest.builder()
+            .payerId(PayersTest.TEST_PAYER_ID)
+            .year(2020)
+            .hasFatcaFilingRequirement(true)
+            .accountNumber(accountNumber)
+            .payersRoutingNumber(routingNumber)
+            .interestIncome(interestIncome)
+            .earlyWithdrawalPenalty(earlyWithdrawalPenalty)
+            .usSavingsBondsInterest(usSavingsBondsInterest)
+            .federalIncomeTaxWithheld(federalIncomeTaxWithheld)
+            .investmentExpenses(investmentExpenses)
+            .foreignTaxPaid(foreignTaxPaid)
+            .foreignTaxPaidCountry("France")
+            .taxExemptInterest(taxExemptInterest)
+            .specifiedPrivateActivityBondInterest(specifiedPrivateActivityBondInterest)
+            .marketDiscount(marketDiscount)
+            .bondPremium(bondPremium)
+            .bondPremiumTreasury(bondPremiumTreasury)
+            .bondPremiumTaxExemptBond(bondPremiumTaxExemptBond)
+            .stateTaxInfo(Collections.singletonList(stateTaxInfo))
+            .build();
+
+    final AboundBulkResponse<Document> response =
+        getAboundClient()
+            .documents()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(form1099IntDocumentRequest));
+
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
+    final List<Document> created = response.getData();
+    assertThat(created).isNotNull().hasSize(1);
+    final Document createdDocument = created.get(0);
+    assertThat(createdDocument).isNotNull();
+    assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
+    assertThat(createdDocument.getDocumentURL().orElse(null))
+        .startsWith(
+            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_1099-INT.pdf");
+    assertThat(createdDocument.getDocumentName()).isEqualTo("2020 Form 1099-INT");
+    assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99INT);
+    assertThat(createdDocument.getYear()).isEqualTo("2020");
+    assertThat(createdDocument.getCreatedTimestamp())
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+  }
+
+  @Test
+  public void testCreate1099K() throws IOException {
+    final String pseName = TestUtils.randomAlphabetic();
+    final String psePhoneNumber = TestUtils.randomNumberString(10);
+    final Double aggregateGrossAmount = TestUtils.randomCurrencyAmount(150_000);
+    final Integer numberOfPaymentTransactions = TestUtils.randomInt(10_000);
+
+    final Double january = TestUtils.randomCurrencyAmount();
+    final GrossAmountsByMonth grossAmountsByMonth =
+        GrossAmountsByMonth.builder().january(january).build();
+
+    final Form1099KDocumentRequest form1099KDocumentRequest =
+        Form1099KDocumentRequest.builder()
+            .payerId(PayersTest.TEST_PAYER_ID)
+            .payerClassification(PayerClassification.PAYMENT_SETTLEMENT_ENTITY)
+            .pseName(pseName)
+            .psePhoneNumber(psePhoneNumber)
+            .transactionsReportedClassification(TransactionsReportedClassification.PAYMENT_CARD)
+            .aggregateGrossAmount(aggregateGrossAmount)
+            .numberOfPaymentTransactions((double) numberOfPaymentTransactions)
+            .grossAmountsByMonth(grossAmountsByMonth)
+            .year(2020)
+            .build();
+
+    final AboundBulkResponse<Document> response =
+        getAboundClient()
+            .documents()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(form1099KDocumentRequest));
+
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
+    final List<Document> created = response.getData();
+    assertThat(created).isNotNull().hasSize(1);
+    final Document createdDocument = created.get(0);
+    assertThat(createdDocument).isNotNull();
+    assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
+    assertThat(createdDocument.getDocumentURL().orElse(null))
+        .startsWith(
+            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_1099-K.pdf");
+    assertThat(createdDocument.getDocumentName()).isEqualTo("2020 Form 1099-K");
+    assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99K);
+    assertThat(createdDocument.getYear()).isEqualTo("2020");
+    assertThat(createdDocument.getCreatedTimestamp())
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
   }
 
   @Test

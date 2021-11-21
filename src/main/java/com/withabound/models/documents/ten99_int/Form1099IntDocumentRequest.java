@@ -27,8 +27,20 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
    */
   private String accountNumber;
 
+  /**
+   * A routing and transit number (RTN) is a unique nine-digit number used to identify a bank for
+   * purposes of directing financial flows. This is essentially bank's bank account – their account
+   * with the Federal Reserve.
+   */
   private String payersRoutingNumber;
 
+  /**
+   * The taxable interest paid to you during the calendar year by the payer. This does not include
+   * interest for {@link Form1099IntDocumentRequest#usSavingsBondsInterest}. May also show the total
+   * amount of the credits from clean renewable energy bonds, new clean renewable energy bonds,
+   * qualified energy conservation bonds, qualified zone academy bonds, qualified school
+   * construction bonds, and build America bonds that must be included in your interest income.
+   */
   private Double interestIncome;
 
   /**

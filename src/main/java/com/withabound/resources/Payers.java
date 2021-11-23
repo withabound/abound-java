@@ -19,16 +19,16 @@ public class Payers extends AboundBaseResource<PayerRequest, Payer> {
     super(aboundConfig, httpClient, Payer.class);
   }
 
+  @Override
+  protected String getPath() {
+    return "/payers";
+  }
+
   public AboundBulkResponse<Payer> create(final List<PayerRequest> toCreate) throws IOException {
     final Map<String, List<PayerRequest>> requestBody =
         Collections.singletonMap("payers", toCreate);
 
     return super.bulkCreate(requestBody);
-  }
-
-  @Override
-  protected String getPath() {
-    return "/payers";
   }
 
   @Override

@@ -23,6 +23,8 @@ public class DocumentAssert extends AbstractAssert<DocumentAssert, Document> {
     Assertions.assertThat(actual.getDocumentName())
         .isEqualTo("2020-01-01 - 2020-01-31 Account Statement (7890)");
     Assertions.assertThat(actual.getYear()).isEqualTo("2020");
+    Assertions.assertThat(actual.getStatus()).isEmpty();
+    Assertions.assertThat(actual.getMessage()).isEmpty();
     Assertions.assertThat(actual.getCreatedTimestamp())
         .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
 

@@ -14,6 +14,10 @@ public class Document {
 
   private String year;
 
+  private String status;
+
+  private String message;
+
   private Long createdTimestamp;
 
   public Optional<String> getDocumentId() {
@@ -34,6 +38,14 @@ public class Document {
 
   public String getYear() {
     return year;
+  }
+
+  public Optional<String> getStatus() {
+    return Optional.ofNullable(status);
+  }
+
+  public Optional<String> getMessage() {
+    return Optional.ofNullable(message);
   }
 
   public Long getCreatedTimestamp() {

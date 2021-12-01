@@ -1,5 +1,6 @@
 package com.withabound.models.payers;
 
+/** See https://docs.withabound.com/reference/payers */
 public class Payer extends PayerRequest {
   private String payerId;
 

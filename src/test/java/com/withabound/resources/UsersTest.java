@@ -15,7 +15,6 @@ import com.withabound.resources.base.AboundResponse;
 import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -42,7 +41,7 @@ public class UsersTest extends AbstractAboundTest {
         .isInstanceOf(AboundApiException.class)
         .hasMessage("Missing user object in request (Code 1324d9e6)")
         .hasFieldOrPropertyWithValue("statusCode", 400)
-        .hasFieldOrPropertyWithValue("request", Optional.empty());
+        .hasFieldOrProperty("request");
   }
 
   @Test

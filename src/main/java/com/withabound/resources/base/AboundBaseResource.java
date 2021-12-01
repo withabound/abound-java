@@ -2,6 +2,7 @@ package com.withabound.resources.base;
 
 import com.withabound.AboundConfig;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import okhttp3.OkHttpClient;
 
@@ -22,6 +23,13 @@ public abstract class AboundBaseResource<I, O> extends AbstractAboundResource<I,
     final String url = getResourcesUrl();
 
     return super.create(url, requestPayload);
+  }
+
+  protected AboundBulkResponse<O> bulkCreate(final Map<String, List<I>> requestPayload)
+      throws IOException {
+    final String url = getResourcesUrl();
+
+    return super.bulkCreate(url, requestPayload);
   }
 
   protected AboundBulkResponse<O> list() throws IOException {

@@ -4,6 +4,7 @@ import com.withabound.resources.Documents;
 import com.withabound.resources.Expenses;
 import com.withabound.resources.Incomes;
 import com.withabound.resources.Mileages;
+import com.withabound.resources.Payers;
 import com.withabound.resources.PaymentMethods;
 import com.withabound.resources.TaxCategories;
 import com.withabound.resources.TaxPayments;
@@ -26,6 +27,7 @@ public final class Abound {
   private final Taxes taxes;
   private final TaxCategories taxCategories;
   private final Documents documents;
+  private final Payers payers;
 
   /** Creates an {@link Abound} client with the default {@link OkHttpClient} settings */
   public Abound(final AboundConfig aboundConfig) {
@@ -52,6 +54,7 @@ public final class Abound {
     this.taxes = new Taxes(aboundConfig, httpClient);
     this.taxCategories = new TaxCategories(aboundConfig, httpClient);
     this.documents = new Documents(aboundConfig, httpClient);
+    this.payers = new Payers(aboundConfig, httpClient);
   }
 
   /**

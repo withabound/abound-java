@@ -112,12 +112,12 @@ public class Form1099KDocumentRequest extends DocumentRequest {
     return Optional.ofNullable(accountNumber);
   }
 
-  public Optional<Double> getAggregateGrossAmount() {
-    return Optional.ofNullable(aggregateGrossAmount);
+  public Double getAggregateGrossAmount() {
+    return aggregateGrossAmount;
   }
 
-  public Optional<Double> getAggregateGrossAmountCardNotPresent() {
-    return Optional.ofNullable(aggregateGrossAmountCardNotPresent);
+  public Double getAggregateGrossAmountCardNotPresent() {
+    return aggregateGrossAmountCardNotPresent;
   }
 
   public Optional<String> getMerchantCategoryCode() {
@@ -128,8 +128,8 @@ public class Form1099KDocumentRequest extends DocumentRequest {
     return numberOfPaymentTransactions;
   }
 
-  public Optional<Double> getFederalIncomeTaxWithheld() {
-    return Optional.ofNullable(federalIncomeTaxWithheld);
+  public Double getFederalIncomeTaxWithheld() {
+    return federalIncomeTaxWithheld;
   }
 
   public GrossAmountsByMonth getGrossAmountsByMonth() {

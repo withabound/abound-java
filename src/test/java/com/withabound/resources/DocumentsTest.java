@@ -181,7 +181,7 @@ public class DocumentsTest extends AbstractAboundTest {
     final String pseName = TestUtils.randomAlphabetic();
     final String psePhoneNumber = TestUtils.randomNumberString(10);
     final Double aggregateGrossAmount = TestUtils.randomCurrencyAmount(150_000);
-    final Integer numberOfPaymentTransactions = TestUtils.randomInt(10_000);
+    final int numberOfPaymentTransactions = TestUtils.randomInt(10_000);
 
     final Double january = TestUtils.randomCurrencyAmount();
     final GrossAmountsByMonth grossAmountsByMonth =
@@ -195,7 +195,7 @@ public class DocumentsTest extends AbstractAboundTest {
             .psePhoneNumber(psePhoneNumber)
             .transactionsReportedClassification(TransactionsReportedClassification.PAYMENT_CARD)
             .aggregateGrossAmount(aggregateGrossAmount)
-            .numberOfPaymentTransactions((double) numberOfPaymentTransactions)
+            .numberOfPaymentTransactions(numberOfPaymentTransactions)
             .grossAmountsByMonth(grossAmountsByMonth)
             .year(2020)
             .build();

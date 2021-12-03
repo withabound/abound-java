@@ -13,7 +13,7 @@ public class Ten99INTAndTen99KStateTaxInfo {
   private String stateId;
 
   /** The state tax withheld. */
-  private Double stateTaxWithheld;
+  private double stateTaxWithheld;
 
   public String getFilingState() {
     return filingState;
@@ -23,7 +23,7 @@ public class Ten99INTAndTen99KStateTaxInfo {
     return stateId;
   }
 
-  public Double getStateTaxWithheld() {
+  public double getStateTaxWithheld() {
     return stateTaxWithheld;
   }
 }

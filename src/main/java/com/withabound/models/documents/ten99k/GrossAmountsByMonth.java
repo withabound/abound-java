@@ -1,7 +1,5 @@
-package com.withabound.models.documents.ten99_k;
+package com.withabound.models.documents.ten99k;
 
-import com.withabound.models.documents.StateTaxInfo;
-import java.util.List;
 import lombok.Builder;
 import lombok.Setter;
 
@@ -32,9 +30,6 @@ public class GrossAmountsByMonth {
   private Double november;
 
   private Double december;
-
-  /** Up to two (2) state tax information objects */
-  List<StateTaxInfo> stateTaxInfo;
 
   public Double getJanuary() {
     return january;

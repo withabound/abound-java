@@ -1,15 +1,16 @@
-package com.withabound.models.documents.ten99_int;
+package com.withabound.models.documents.ten99int;
 
 import com.withabound.models.documents.DocumentRequest;
 import com.withabound.models.documents.DocumentType;
-import com.withabound.models.documents.StateTaxInfo;
+import com.withabound.models.documents.Ten99INTAndTen99KStateTaxInfo;
 import java.util.List;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
 
 @Builder
 @Setter
-public class Form1099IntDocumentRequest extends DocumentRequest {
+public class Form1099INTDocumentRequest extends DocumentRequest {
   /** The payer filing or issuing this form. */
   private String payerId;
 
@@ -23,7 +24,7 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
    * The IRS “encourages” a payer to designate an account number for all Forms 1099-INT filed. This
    * field is required if payer has multiple accounts for a recipient for whom it is filing more
    * than one Form 1099-INT. This field is also required if {@link
-   * Form1099IntDocumentRequest#hasFatcaFilingRequirement} is <code>true</code>>.
+   * Form1099INTDocumentRequest#hasFatcaFilingRequirement} is <code>true</code>>.
    */
   private String accountNumber;
 
@@ -36,7 +37,7 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
 
   /**
    * The taxable interest paid to you during the calendar year by the payer. This does not include
-   * interest for {@link Form1099IntDocumentRequest#usSavingsBondsInterest}. May also show the total
+   * interest for {@link Form1099INTDocumentRequest#usSavingsBondsInterest}. May also show the total
    * amount of the credits from clean renewable energy bonds, new clean renewable energy bonds,
    * qualified energy conservation bonds, qualified zone academy bonds, qualified school
    * construction bonds, and build America bonds that must be included in your interest income.
@@ -52,7 +53,7 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
   /**
    * Shows interest on U.S. Savings Bonds, Treasury bills, Treasury bonds, and Treasury notes. This
    * may or may not all be taxable. This interest is exempt from state and local income taxes. This
-   * interest is not included in {@link Form1099IntDocumentRequest#interestIncome}.
+   * interest is not included in {@link Form1099INTDocumentRequest#interestIncome}.
    */
   private Double usSavingsBondsInterest;
 
@@ -64,7 +65,7 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
 
   /**
    * Any amount is your share of investment expenses of a singleclass REMIC. This amount is included
-   * in {@link Form1099IntDocumentRequest#interestIncome}. This amount is not deductible.
+   * in {@link Form1099INTDocumentRequest#interestIncome}. This amount is not deductible.
    */
   private Double investmentExpenses;
 
@@ -76,13 +77,13 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
 
   /**
    * The tax-exempt interest paid to you during the calendar year by the payer. This amount may be
-   * subject to backup withholding. See {@link Form1099IntDocumentRequest#federalIncomeTaxWithheld}.
+   * subject to backup withholding. See {@link Form1099INTDocumentRequest#federalIncomeTaxWithheld}.
    */
   private Double taxExemptInterest;
 
   /**
    * The tax-exempt interest subject to the alternative minimum tax. This amount is included in
-   * {@link Form1099IntDocumentRequest#taxExemptInterest}.
+   * {@link Form1099INTDocumentRequest#taxExemptInterest}.
    */
   private Double specifiedPrivateActivityBondInterest;
 
@@ -118,7 +119,7 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
   private Double bondPremiumTaxExemptBond;
 
   /** Up to two (2) state tax information objects. */
-  private List<StateTaxInfo> stateTaxInfo;
+  private List<Ten99INTAndTen99KStateTaxInfo> stateTaxInfo;
 
   @Override
   public DocumentType getType() {
@@ -133,16 +134,16 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
     return year;
   }
 
-  public Boolean getHasFatcaFilingRequirement() {
-    return hasFatcaFilingRequirement;
+  public Optional<Boolean> getHasFatcaFilingRequirement() {
+    return Optional.ofNullable(hasFatcaFilingRequirement);
   }
 
-  public String getAccountNumber() {
-    return accountNumber;
+  public Optional<String> getAccountNumber() {
+    return Optional.ofNullable(accountNumber);
   }
 
-  public String getPayersRoutingNumber() {
-    return payersRoutingNumber;
+  public Optional<String> getPayersRoutingNumber() {
+    return Optional.ofNullable(payersRoutingNumber);
   }
 
   public Double getInterestIncome() {
@@ -169,8 +170,8 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
     return foreignTaxPaid;
   }
 
-  public String getForeignTaxPaidCountry() {
-    return foreignTaxPaidCountry;
+  public Optional<String> getForeignTaxPaidCountry() {
+    return Optional.ofNullable(foreignTaxPaidCountry);
   }
 
   public Double getTaxExemptInterest() {
@@ -197,7 +198,7 @@ public class Form1099IntDocumentRequest extends DocumentRequest {
     return bondPremiumTaxExemptBond;
   }
 
-  public List<StateTaxInfo> getStateTaxInfo() {
+  public List<Ten99INTAndTen99KStateTaxInfo> getStateTaxInfo() {
     return stateTaxInfo;
   }
 }

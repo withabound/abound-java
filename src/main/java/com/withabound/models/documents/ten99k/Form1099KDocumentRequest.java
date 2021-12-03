@@ -1,7 +1,10 @@
-package com.withabound.models.documents.ten99_k;
+package com.withabound.models.documents.ten99k;
 
 import com.withabound.models.documents.DocumentRequest;
 import com.withabound.models.documents.DocumentType;
+import com.withabound.models.documents.Ten99INTAndTen99KStateTaxInfo;
+import java.util.List;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
 
@@ -73,6 +76,9 @@ public class Form1099KDocumentRequest extends DocumentRequest {
 
   private GrossAmountsByMonth grossAmountsByMonth;
 
+  /** Up to two (2) state tax information objects. */
+  private List<Ten99INTAndTen99KStateTaxInfo> stateTaxInfo;
+
   @Override
   public DocumentType getType() {
     return DocumentType.TEN99K;
@@ -94,39 +100,43 @@ public class Form1099KDocumentRequest extends DocumentRequest {
     return transactionsReportedClassification;
   }
 
-  public String getPseName() {
-    return pseName;
+  public Optional<String> getPseName() {
+    return Optional.ofNullable(pseName);
   }
 
-  public String getPsePhoneNumber() {
-    return psePhoneNumber;
+  public Optional<String> getPsePhoneNumber() {
+    return Optional.ofNullable(psePhoneNumber);
   }
 
-  public String getAccountNumber() {
-    return accountNumber;
+  public Optional<String> getAccountNumber() {
+    return Optional.ofNullable(accountNumber);
   }
 
-  public Double getAggregateGrossAmount() {
-    return aggregateGrossAmount;
+  public Optional<Double> getAggregateGrossAmount() {
+    return Optional.ofNullable(aggregateGrossAmount);
   }
 
-  public Double getAggregateGrossAmountCardNotPresent() {
-    return aggregateGrossAmountCardNotPresent;
+  public Optional<Double> getAggregateGrossAmountCardNotPresent() {
+    return Optional.ofNullable(aggregateGrossAmountCardNotPresent);
   }
 
-  public String getMerchantCategoryCode() {
-    return merchantCategoryCode;
+  public Optional<String> getMerchantCategoryCode() {
+    return Optional.ofNullable(merchantCategoryCode);
   }
 
   public Double getNumberOfPaymentTransactions() {
     return numberOfPaymentTransactions;
   }
 
-  public Double getFederalIncomeTaxWithheld() {
-    return federalIncomeTaxWithheld;
+  public Optional<Double> getFederalIncomeTaxWithheld() {
+    return Optional.ofNullable(federalIncomeTaxWithheld);
   }
 
   public GrossAmountsByMonth getGrossAmountsByMonth() {
     return grossAmountsByMonth;
+  }
+
+  public List<Ten99INTAndTen99KStateTaxInfo> getStateTaxInfo() {
+    return stateTaxInfo;
   }
 }

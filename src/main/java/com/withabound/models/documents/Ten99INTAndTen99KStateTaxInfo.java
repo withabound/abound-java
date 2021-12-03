@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Builder
 @Setter
-public class StateTaxInfo {
-  /** Lowercase, two-letter code */
+public class Ten99INTAndTen99KStateTaxInfo {
+  /** The filing state code, lowercase abbreviation (e.g. "ca" for California). */
   private String filingState;
 
   /** The payer's state identification number. */

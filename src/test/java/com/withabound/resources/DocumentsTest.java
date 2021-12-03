@@ -6,15 +6,15 @@ import com.withabound.AbstractAboundTest;
 import com.withabound.models.documents.Document;
 import com.withabound.models.documents.DocumentParams;
 import com.withabound.models.documents.DocumentType;
-import com.withabound.models.documents.StateTaxInfo;
+import com.withabound.models.documents.Ten99INTAndTen99KStateTaxInfo;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentBank;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentRequest;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentSummary;
-import com.withabound.models.documents.ten99_int.Form1099IntDocumentRequest;
-import com.withabound.models.documents.ten99_k.Form1099KDocumentRequest;
-import com.withabound.models.documents.ten99_k.GrossAmountsByMonth;
-import com.withabound.models.documents.ten99_k.PayerClassification;
-import com.withabound.models.documents.ten99_k.TransactionsReportedClassification;
+import com.withabound.models.documents.ten99int.Form1099INTDocumentRequest;
+import com.withabound.models.documents.ten99k.Form1099KDocumentRequest;
+import com.withabound.models.documents.ten99k.GrossAmountsByMonth;
+import com.withabound.models.documents.ten99k.PayerClassification;
+import com.withabound.models.documents.ten99k.TransactionsReportedClassification;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
 import com.withabound.resources.asserts.AboundResponseAssert;
 import com.withabound.resources.asserts.DocumentAssert;
@@ -106,7 +106,7 @@ public class DocumentsTest extends AbstractAboundTest {
   }
 
   @Test
-  public void testCreate1099Int() throws IOException {
+  public void testCreate1099INT() throws IOException {
     final String accountNumber = TestUtils.randomNumberString(9);
     final String routingNumber = "102001017";
     final Double interestIncome = TestUtils.randomCurrencyAmount(1000);
@@ -125,15 +125,15 @@ public class DocumentsTest extends AbstractAboundTest {
     final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
     final String stateId = TestUtils.randomAlphabetic();
 
-    final StateTaxInfo stateTaxInfo =
-        StateTaxInfo.builder()
+    final Ten99INTAndTen99KStateTaxInfo stateTaxInfo =
+        Ten99INTAndTen99KStateTaxInfo.builder()
             .filingState("ca")
             .stateId(stateId)
             .stateTaxWithheld(stateTaxWithheld)
             .build();
 
-    final Form1099IntDocumentRequest form1099IntDocumentRequest =
-        Form1099IntDocumentRequest.builder()
+    final Form1099INTDocumentRequest form1099INTDocumentRequest =
+        Form1099INTDocumentRequest.builder()
             .payerId(PayersTest.TEST_PAYER_ID)
             .year(2020)
             .hasFatcaFilingRequirement(true)
@@ -158,7 +158,7 @@ public class DocumentsTest extends AbstractAboundTest {
     final AboundBulkResponse<Document> response =
         getAboundClient()
             .documents()
-            .create(TestUtils.TEST_USER_ID, Collections.singletonList(form1099IntDocumentRequest));
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(form1099INTDocumentRequest));
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
     final List<Document> created = response.getData();

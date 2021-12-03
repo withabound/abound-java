@@ -1,4 +1,4 @@
-package com.withabound.models.documents.ten99_k;
+package com.withabound.models.documents.ten99k;
 
 import com.google.gson.annotations.SerializedName;
 

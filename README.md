@@ -35,7 +35,7 @@ As a result, for the resources that have `notes`, there are a few interesting pi
       this.notes = notes;
     }
     ```
-    
+
     We don't necessarily want Lombok to generate this setter, because callers could still provide invalid subclasses as arguments (e.g. passing a `com.google.gson.JsonArray` would compile, but would be invalid `notes`).
 
     Instead, we can define two `notes` setters that more accurately capture the possible (valid) types:
@@ -44,12 +44,12 @@ As a result, for the resources that have `notes`, there are a few interesting pi
     public void setNotes(final String notes) {
       this.notes = new JsonPrimitive(notes);
     }
-  
+
     public void setNotes(final JsonObject notes) {
       this.notes = notes;
     }
     ```
-  
+
     Because we have defined `setNotes` methods, Lombok will not auto-generate its own.
 
 
@@ -59,10 +59,10 @@ As a result, for the resources that have `notes`, there are a few interesting pi
     @Builder
     public class Resource {
       private JsonElement notes;
-      
+
       public static ResourceBuilder {
         ...
-  
+
         public ResourceBuilder notes(final JsonElement notes) {
           this.notes = notes;
           return this;
@@ -70,22 +70,22 @@ As a result, for the resources that have `notes`, there are a few interesting pi
       }
     }
     ```
-  
+
   However, we can alter the signature of the auto-generated `.notes()` builder method by defining the static inner builder class (which must be named `<OuterClass>Builder`), an instance variable, and our own builder methods:
 
     ```java
     @Builder
     public class Resource {
       private JsonElement notes;
-      
+
       public static ResourceBuilder {
         private JsonElement notes;
-  
+
         public ResourceBuilder notes(final String notes) {
           this.notes = new JsonPrimitive(notes);
           return this;
         }
-  
+
         public ResourceBuilder notes(final JsonObject notes) {
           this.notes = notes;
           return this;
@@ -93,5 +93,5 @@ As a result, for the resources that have `notes`, there are a few interesting pi
       }
     }
     ```
-  
-  This is enough; we do not need to define the entire `Builder` class; Lombok will inject the other required fields, methods, and constructors for us (assuming we named the static inner class correctly). [Lombok's @Builder docs](https://projectlombok.org/features/Builder) goes into further detail regarding this topic.  
+
+  This is enough; we do not need to define the entire `Builder` class; Lombok will inject the other required fields, methods, and constructors for us (assuming we named the static inner class correctly). [Lombok's @Builder docs](https://projectlombok.org/features/Builder) goes into further detail regarding this topic.

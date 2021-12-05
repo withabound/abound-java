@@ -1,5 +1,7 @@
 package com.withabound.models.payment_methods;
 
+import com.google.gson.JsonElement;
+
 import java.util.Optional;
 
 /** See https://docs.withabound.com/reference/payment-methods */
@@ -16,8 +18,9 @@ public class PaymentMethod extends PaymentMethodRequest {
       final String accountNumber,
       final String routingNumber,
       final AccountType accountType,
-      final AccountClass accountClass) {
-    super(accountNumber, routingNumber, accountType, accountClass);
+      final AccountClass accountClass,
+      final JsonElement notes) {
+    super(accountNumber, routingNumber, accountType, accountClass, notes);
   }
 
   public String getPaymentMethodId() {

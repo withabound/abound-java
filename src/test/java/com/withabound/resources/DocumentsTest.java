@@ -15,6 +15,8 @@ import com.withabound.models.documents.ten99k.Form1099KDocumentRequest;
 import com.withabound.models.documents.ten99k.GrossAmountsByMonth;
 import com.withabound.models.documents.ten99k.PayerClassification;
 import com.withabound.models.documents.ten99k.TransactionsReportedClassification;
+import com.withabound.models.documents.w9.FormW9DocumentRequest;
+import com.withabound.models.documents.w9.W9TaxClassification;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
 import com.withabound.resources.asserts.AboundResponseAssert;
 import com.withabound.resources.asserts.DocumentAssert;
@@ -27,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -218,6 +221,40 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99K);
     assertThat(createdDocument.getYear()).isEqualTo("2020");
     assertThat(createdDocument.getCreatedTimestamp())
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+  }
+
+  @Test
+  public void testCreateFormW9() throws IOException {
+    final String accountNumber = TestUtils.randomNumberString(9);
+
+    final FormW9DocumentRequest toCreate =
+        FormW9DocumentRequest.builder()
+            .payerId(PayersTest.TEST_PAYER_ID)
+            .year(2020)
+            .taxClassification(W9TaxClassification.SOLE_PROPRIETOR)
+            .certificationTimestamp((int) System.currentTimeMillis())
+            .accountNumbers(Collections.singletonList(accountNumber))
+            .build();
+
+    final AboundBulkResponse<Document> response =
+        getAboundClient()
+            .documents()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
+
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
+    Assertions.assertThat(response.getData()).isNotNull().hasSize(1);
+
+    final Document created = response.getData().get(0);
+    assertThat(created).isNotNull();
+    assertThat(created.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
+    assertThat(created.getDocumentURL().orElse(null))
+        .startsWith(
+            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_W-9.pdf");
+    assertThat(created.getDocumentName()).isEqualTo("2020 Form W-9");
+    assertThat(created.getType()).isEqualTo(DocumentType.W9);
+    assertThat(created.getYear()).isEqualTo("2020");
+    assertThat(created.getCreatedTimestamp())
         .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
   }
 

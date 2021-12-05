@@ -118,16 +118,18 @@ public class ExpensesTest extends AbstractAboundTest {
     final String randNotes = TestUtils.randomAlphabetic();
 
     final ExpenseRequest expense =
-            ExpenseRequest.builder()
-                    .amount(TestUtils.randomCurrencyAmount())
-                    .description(TestUtils.randomAlphabetic())
-                    .expenseType(ExpenseType.PERSONAL)
-                    .date("2021-02-13")
-                    // test the builder
-                    .notes(randNotes)
-                    .build();
+        ExpenseRequest.builder()
+            .amount(TestUtils.randomCurrencyAmount())
+            .description(TestUtils.randomAlphabetic())
+            .expenseType(ExpenseType.PERSONAL)
+            .date("2021-02-13")
+            // test the builder
+            .notes(randNotes)
+            .build();
 
-    final Expense created = getAboundClient().expenses()
+    final Expense created =
+        getAboundClient()
+            .expenses()
             .create(TestUtils.TEST_USER_ID, Collections.singletonList(expense))
             .getData()
             .get(0);

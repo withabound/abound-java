@@ -1,7 +1,6 @@
 package com.withabound.models.payment_methods;
 
 import com.google.gson.JsonElement;
-
 import java.util.Optional;
 
 /** See https://docs.withabound.com/reference/payment-methods */

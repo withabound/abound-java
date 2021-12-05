@@ -60,7 +60,8 @@ public class PaymentMethodsTest extends AbstractAboundTest {
   public void testNotesString() throws IOException {
     final String randNotes = TestUtils.randomAlphabetic();
 
-    final PaymentMethodRequest paymentMethodRequest = PaymentMethodRequest.builder()
+    final PaymentMethodRequest paymentMethodRequest =
+        PaymentMethodRequest.builder()
             .accountNumber(TestUtils.randomNumberString(9))
             .routingNumber("102001017")
             .accountClass(AccountClass.CHECKING)
@@ -68,7 +69,9 @@ public class PaymentMethodsTest extends AbstractAboundTest {
             .notes(randNotes)
             .build();
 
-    final PaymentMethod created = getAboundClient().paymentMethods()
+    final PaymentMethod created =
+        getAboundClient()
+            .paymentMethods()
             .create(TestUtils.TEST_USER_ID, paymentMethodRequest)
             .getData();
 

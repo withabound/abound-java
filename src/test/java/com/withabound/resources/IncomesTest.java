@@ -2,6 +2,8 @@ package com.withabound.resources;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.incomes.Income;
 import com.withabound.models.incomes.IncomeParams;
@@ -16,6 +18,7 @@ import com.withabound.resources.base.EmptyJsonObject;
 import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import okhttp3.HttpUrl;
@@ -167,6 +170,65 @@ public class IncomesTest extends AbstractAboundTest {
     assertThat(createdPersonal.getDescription()).isEqualTo(personal.getDescription());
     assertThat(createdPersonal.getCategory()).isEqualTo(personal.getCategory());
     assertThat(createdPersonal.getForeignId()).isEqualTo(personal.getForeignId());
+  }
+
+  @Test
+  public void testNotesString() throws IOException {
+    final IncomeRequest income =
+        IncomeRequest.builder()
+            .incomeType(IncomeType.TEN99)
+            .amount(123.45)
+            .date("2020-01-01")
+            .category("1099 income")
+            // test the builder
+            .notes("hello world")
+            .build();
+
+    final Income created =
+        getAboundClient()
+            .incomes()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(income))
+            .getData()
+            .get(0);
+
+    assertThat(created.getNotes()).isPresent();
+    final JsonElement notes = created.getNotes().get();
+    assertThat(notes.isJsonPrimitive()).isTrue();
+    assertThat(notes.isJsonObject()).isFalse();
+    assertThat(notes.getAsString()).isEqualTo("hello world");
+  }
+
+  @Test
+  public void testNotesJsonObject() throws IOException {
+    final JsonObject notes = new JsonObject();
+    notes.addProperty("hello", "world");
+    notes.addProperty("id", 101);
+
+    final IncomeRequest income =
+        IncomeRequest.builder()
+            .incomeType(IncomeType.TEN99)
+            .amount(123.45)
+            .date("2020-01-01")
+            .category("1099 income")
+            .build();
+
+    // test the setter
+    income.setNotes(notes);
+
+    final Income created =
+        getAboundClient()
+            .incomes()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(income))
+            .getData()
+            .get(0);
+
+    assertThat(created.getNotes()).isPresent();
+    final JsonElement createdNotes = created.getNotes().get();
+    assertThat(createdNotes.isJsonPrimitive()).isFalse();
+    assertThat(createdNotes.isJsonObject()).isTrue();
+    assertThat(createdNotes.getAsJsonObject().size()).isEqualTo(2);
+    assertThat(createdNotes.getAsJsonObject().get("hello").getAsString()).isEqualTo("world");
+    assertThat(createdNotes.getAsJsonObject().get("id").getAsInt()).isEqualTo(101);
   }
 
   @Test

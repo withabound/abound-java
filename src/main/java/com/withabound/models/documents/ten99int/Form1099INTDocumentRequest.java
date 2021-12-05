@@ -134,8 +134,8 @@ public class Form1099INTDocumentRequest extends DocumentRequest {
     return year;
   }
 
-  public Optional<Boolean> getHasFatcaFilingRequirement() {
-    return Optional.ofNullable(hasFatcaFilingRequirement);
+  public Boolean getHasFatcaFilingRequirement() {
+    return hasFatcaFilingRequirement;
   }
 
   public Optional<String> getAccountNumber() {

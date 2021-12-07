@@ -1,10 +1,26 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'maven-publish'
     id "com.diffplug.spotless" version "5.16.0"
 }
 
 group 'com.withabound'
 version '1.0.0-SNAPSHOT'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'maven'
+            url = layout.buildDirectory.dir("repo")
+        }
+    }
+}
 
 repositories {
     mavenCentral()

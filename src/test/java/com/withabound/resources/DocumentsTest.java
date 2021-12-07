@@ -243,7 +243,7 @@ public class DocumentsTest extends AbstractAboundTest {
             .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
-    Assertions.assertThat(response.getData()).isNotNull().hasSize(1);
+    assertThat(response.getData()).isNotNull().hasSize(1);
 
     final Document created = response.getData().get(0);
     assertThat(created).isNotNull();

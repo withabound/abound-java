@@ -1,5 +1,8 @@
 package com.withabound.models.expenses;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,10 +32,7 @@ public class ExpenseRequest {
 
   private String foreignId;
 
-  // TODO Notes marshaling/unmarshalling could be complex. this field can be either a JSON object or
-  //    a string, so this functionality could be implemented in a separate PR to allow for greater
-  //    scrutiny on this topic specifically
-  //  private Notes notes;
+  private JsonElement notes;
 
   public Optional<Double> getAmount() {
     return Optional.ofNullable(amount);
@@ -56,5 +56,32 @@ public class ExpenseRequest {
 
   public Optional<String> getForeignId() {
     return Optional.ofNullable(foreignId);
+  }
+
+  public Optional<JsonElement> getNotes() {
+    return Optional.ofNullable(notes);
+  }
+
+  public void setNotes(final String notes) {
+    this.notes = new JsonPrimitive(notes);
+  }
+
+  public void setNotes(final JsonObject notes) {
+    this.notes = notes;
+  }
+
+  @SuppressWarnings({"unused "})
+  public static class ExpenseRequestBuilder {
+    private JsonElement notes;
+
+    public ExpenseRequestBuilder notes(final String notes) {
+      this.notes = new JsonPrimitive(notes);
+      return this;
+    }
+
+    public ExpenseRequestBuilder notes(final JsonObject notes) {
+      this.notes = notes;
+      return this;
+    }
   }
 }

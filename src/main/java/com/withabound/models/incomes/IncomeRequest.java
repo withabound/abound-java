@@ -1,5 +1,8 @@
 package com.withabound.models.incomes;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
@@ -20,8 +23,7 @@ public class IncomeRequest {
 
   private String foreignId;
 
-  // TODO handle Notes (de)serialization
-  //  private Notes notes;
+  private JsonElement notes;
 
   public IncomeType getIncomeType() {
     return incomeType;
@@ -45,5 +47,32 @@ public class IncomeRequest {
 
   public Optional<String> getForeignId() {
     return Optional.ofNullable(foreignId);
+  }
+
+  public Optional<JsonElement> getNotes() {
+    return Optional.ofNullable(notes);
+  }
+
+  public void setNotes(final String notes) {
+    this.notes = new JsonPrimitive(notes);
+  }
+
+  public void setNotes(final JsonObject notes) {
+    this.notes = notes;
+  }
+
+  @SuppressWarnings({"unused "})
+  public static class IncomeRequestBuilder {
+    private JsonElement notes;
+
+    public IncomeRequestBuilder notes(final String notes) {
+      this.notes = new JsonPrimitive(notes);
+      return this;
+    }
+
+    public IncomeRequestBuilder notes(final JsonObject notes) {
+      this.notes = notes;
+      return this;
+    }
   }
 }

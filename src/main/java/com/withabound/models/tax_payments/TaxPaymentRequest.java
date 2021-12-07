@@ -1,5 +1,9 @@
 package com.withabound.models.tax_payments;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
 
@@ -16,8 +20,7 @@ public class TaxPaymentRequest {
 
   private String paymentMethodId;
 
-  // TODO
-  //  private Notes notes;
+  private JsonElement notes;
 
   public String getYear() {
     return year;
@@ -37,5 +40,32 @@ public class TaxPaymentRequest {
 
   public String getPaymentMethodId() {
     return paymentMethodId;
+  }
+
+  public Optional<JsonElement> getNotes() {
+    return Optional.ofNullable(notes);
+  }
+
+  public void setNotes(final String notes) {
+    this.notes = new JsonPrimitive(notes);
+  }
+
+  public void setNotes(final JsonObject notes) {
+    this.notes = notes;
+  }
+
+  @SuppressWarnings({"unused "})
+  public static class TaxPaymentRequestBuilder {
+    private JsonElement notes;
+
+    public TaxPaymentRequestBuilder notes(final String notes) {
+      this.notes = new JsonPrimitive(notes);
+      return this;
+    }
+
+    public TaxPaymentRequestBuilder notes(final JsonObject notes) {
+      this.notes = notes;
+      return this;
+    }
   }
 }

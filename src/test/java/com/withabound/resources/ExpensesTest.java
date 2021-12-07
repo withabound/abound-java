@@ -22,6 +22,7 @@ import java.util.List;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ExpensesTest extends AbstractAboundTest {
@@ -109,6 +110,33 @@ public class ExpensesTest extends AbstractAboundTest {
     assertThat(second.getExpenseType().orElse(null)).isEqualTo(ExpenseType.BUSINESS);
     assertThat(second.getTaxCategory().orElse(null)).isEqualTo("Meals");
     assertThat(second.getDate().orElse(null)).isEqualTo("2020-12-12");
+  }
+
+  @Test
+  @Disabled("Expenses created with the test credentials do not return notes")
+  public void testNotesString() throws IOException {
+    final String randNotes = TestUtils.randomAlphabetic();
+
+    final ExpenseRequest expense =
+        ExpenseRequest.builder()
+            .amount(TestUtils.randomCurrencyAmount())
+            .description(TestUtils.randomAlphabetic())
+            .expenseType(ExpenseType.PERSONAL)
+            .date("2021-02-13")
+            // test the builder
+            .notes(randNotes)
+            .build();
+
+    final Expense created =
+        getAboundClient()
+            .expenses()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(expense))
+            .getData()
+            .get(0);
+
+    assertThat(created).isNotNull();
+    assertThat(created.getNotes()).isPresent();
+    assertThat(created.getNotes().get().getAsString()).isEqualTo(randNotes);
   }
 
   @Test

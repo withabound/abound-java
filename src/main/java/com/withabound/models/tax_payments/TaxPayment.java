@@ -1,5 +1,6 @@
 package com.withabound.models.tax_payments;
 
+import com.google.gson.JsonElement;
 import java.util.Optional;
 
 public class TaxPayment extends TaxPaymentRequest {
@@ -16,8 +17,9 @@ public class TaxPayment extends TaxPaymentRequest {
       final TaxPeriod period,
       final Double amount,
       final TaxPaymentEntity entity,
-      final String paymentMethodId) {
-    super(year, period, amount, entity, paymentMethodId);
+      final String paymentMethodId,
+      final JsonElement notes) {
+    super(year, period, amount, entity, paymentMethodId, notes);
   }
 
   public String getTaxPaymentId() {

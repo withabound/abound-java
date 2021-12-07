@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class PaymentMethodsTest extends AbstractAboundTest {
@@ -52,6 +53,31 @@ public class PaymentMethodsTest extends AbstractAboundTest {
     assertThat(created.getRoutingNumber()).isNull();
     assertThat(created.getAccountClass()).isEqualTo(AccountClass.CHECKING);
     assertThat(created.getAccountType()).isEqualTo(AccountType.BUSINESS);
+  }
+
+  @Test
+  @Disabled("Payment Methods created with the test credentials do not return notes")
+  public void testNotesString() throws IOException {
+    final String randNotes = TestUtils.randomAlphabetic();
+
+    final PaymentMethodRequest paymentMethodRequest =
+        PaymentMethodRequest.builder()
+            .accountNumber(TestUtils.randomNumberString(9))
+            .routingNumber("102001017")
+            .accountClass(AccountClass.CHECKING)
+            .accountType(AccountType.BUSINESS)
+            .notes(randNotes)
+            .build();
+
+    final PaymentMethod created =
+        getAboundClient()
+            .paymentMethods()
+            .create(TestUtils.TEST_USER_ID, paymentMethodRequest)
+            .getData();
+
+    assertThat(created).isNotNull();
+    assertThat(created.getNotes()).isPresent();
+    assertThat(created.getNotes().get().getAsString()).isEqualTo(randNotes);
   }
 
   @Test

@@ -26,9 +26,9 @@ or as a Gradle dependency:
 
 ```groovy
 dependencies {
-    implementation group: 'com.withabound', name: 'withabound-java', version: 'latest version'
+    implementation group: 'com.withabound', name: 'withabound-java', version: '[latest version]'
     // or shorthand,
-    implementation 'com.withabound:withabound-java:latest version]'
+    implementation 'com.withabound:withabound-java:[latest version]'
 }
 ```
 

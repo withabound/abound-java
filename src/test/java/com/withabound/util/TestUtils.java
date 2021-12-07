@@ -40,9 +40,22 @@ public class TestUtils {
     return RND.nextDouble() * max;
   }
 
+  public static int randomInt() {
+    return randomInt(100);
+  }
+
+  public static int randomInt(final int max) {
+    return (int) Math.round(randomDouble(max));
+  }
+
   /** @return double with 2 decimal precision (#.xx) */
   public static Double randomCurrencyAmount() {
-    final BigDecimal currencyAmount = BigDecimal.valueOf(randomDouble());
+    return randomCurrencyAmount(100);
+  }
+
+  /** @return double with 2 decimal precision (#.xx) */
+  public static Double randomCurrencyAmount(final int max) {
+    final BigDecimal currencyAmount = BigDecimal.valueOf(randomDouble(max));
     return currencyAmount.setScale(2, RoundingMode.HALF_UP).doubleValue();
   }
 

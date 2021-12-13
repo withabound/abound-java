@@ -372,7 +372,7 @@ Delete an `Income`:
 String userId = "userId_506...";
 String incomeId = "incomeId_8cb...";
 
-AboundResponse<EmptyJsonObject> response = abound.incomes().delete(userId, expenseId);
+AboundResponse<EmptyJsonObject> response = abound.incomes().delete(userId, incomeId);
 
 System.out.println(response.getData()); // {}
 ```

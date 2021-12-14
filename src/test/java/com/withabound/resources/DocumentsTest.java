@@ -1,5 +1,7 @@
 package com.withabound.resources;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.documents.Document;
 import com.withabound.models.documents.DocumentParams;
@@ -24,17 +26,14 @@ import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
 import com.withabound.resources.base.EmptyJsonObject;
 import com.withabound.util.TestUtils;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class DocumentsTest extends AbstractAboundTest {
   public static final String TEST_DOCUMENT_ID =

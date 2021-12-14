@@ -87,16 +87,6 @@ public class IncomesTest extends AbstractAboundTest {
             .foreignId("1099_foreign_id")
             .build();
 
-    final IncomeRequest ten99Int =
-        IncomeRequest.builder()
-            .incomeType(IncomeType.TEN99INT)
-            .amount(444.77)
-            .date("2020-02-01")
-            .category("1099-INT income")
-            .description("1099-INT description")
-            .foreignId("1099int_foreign_id")
-            .build();
-
     final IncomeRequest w2 =
         IncomeRequest.builder()
             .incomeType(IncomeType.W2)
@@ -120,12 +110,12 @@ public class IncomesTest extends AbstractAboundTest {
     final AboundBulkResponse<Income> response =
         getAboundClient()
             .incomes()
-            .create(TestUtils.TEST_USER_ID, Arrays.asList(ten99, ten99Int, w2, personal));
+            .create(TestUtils.TEST_USER_ID, Arrays.asList(ten99, w2, personal));
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
     final List<Income> created = response.getData();
-    assertThat(created).hasSize(4);
+    assertThat(created).hasSize(3);
 
     final Income createdTen99 = created.get(0);
     assertThat(createdTen99).isNotNull();
@@ -137,21 +127,11 @@ public class IncomesTest extends AbstractAboundTest {
     assertThat(createdTen99.getCategory()).isEqualTo(ten99.getCategory());
     assertThat(createdTen99.getForeignId()).isEqualTo(ten99.getForeignId());
 
-    final Income createdTen99Int = created.get(1);
-    assertThat(createdTen99Int).isNotNull();
-    assertThat(createdTen99Int.getIncomeId()).isNotEmpty();
     // the commented assertions below are due to the nature of some Incomes created with test
     // credentials returning as 1099, despite being created with a different incomeType. This issue
     // only exists with the test credentials.
 
-    // assertThat(createdTen99Int.getIncomeType()).isEqualTo(IncomeType.TEN99INT);
-    assertThat(createdTen99Int.getAmount()).isEqualTo(ten99Int.getAmount());
-    assertThat(createdTen99Int.getDate()).isEqualTo(ten99Int.getDate());
-    assertThat(createdTen99Int.getDescription()).isEqualTo(ten99Int.getDescription());
-    assertThat(createdTen99Int.getCategory()).isEqualTo(ten99Int.getCategory());
-    assertThat(createdTen99Int.getForeignId()).isEqualTo(ten99Int.getForeignId());
-
-    final Income createdW2 = created.get(2);
+    final Income createdW2 = created.get(1);
     assertThat(createdW2).isNotNull();
     assertThat(createdW2.getIncomeId()).isNotEmpty();
     // assertThat(createdW2.getIncomeType()).isEqualTo(IncomeType.W2);
@@ -161,7 +141,7 @@ public class IncomesTest extends AbstractAboundTest {
     assertThat(createdW2.getCategory()).isEqualTo(w2.getCategory());
     assertThat(createdW2.getForeignId()).isEqualTo(w2.getForeignId());
 
-    final Income createdPersonal = created.get(3);
+    final Income createdPersonal = created.get(2);
     assertThat(createdPersonal).isNotNull();
     assertThat(createdPersonal.getIncomeId()).isNotEmpty();
     assertThat(createdPersonal.getIncomeType()).isEqualTo(IncomeType.PERSONAL);

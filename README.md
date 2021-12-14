@@ -3,8 +3,35 @@
 The Abound Java SDK provides convenient access to the Abound API from applications written in Java.
 
 ### Documentation
+
+The Abound Java SDK supports all Abound API endpoints. See the [API Documentation][docs] and the [API Reference][api-reference] for complete information about the APIs.
+
 ### Requirements
+
+You can start to integrate the Abound Java SDK into your solution as soon as you [create an account with Abound][developer-dashboard-signup] and [obtain your API keys][developer-dashboard-keys].
+
 ### Installation
+
+Install the SDK as a Maven dependency:
+
+```xml
+<dependency>
+    <groupId>com.withabound</groupId>
+    <artifactId>withabound-java</artifactId>
+    <version>[latest version]</version>
+</dependency>
+```
+
+or as a Gradle dependency:
+
+```groovy
+dependencies {
+    implementation group: 'com.withabound', name: 'withabound-java', version: '[latest version]'
+    // or shorthand,
+    implementation 'com.withabound:withabound-java:[latest version]'
+}
+```
+
 ### Usage
 
 ### Development
@@ -13,14 +40,20 @@ It is recommended to configure your IDE with the `google-java-format` plugin: ht
 
 Run all tests:
 
-```sh
+```console
 $ ./gradlew test
 ```
 
 Run `spotless` and apply auto-fixes:
 
-```sh
+```console
 $ ./gradlew spotlessApply
+```
+
+Publish the SDK to the local Maven repository (`~/.m2/repository`):
+
+```console
+$ ./gradlew publishToMavenLocal
 ```
 
 #### A note about Notes
@@ -95,3 +128,10 @@ As a result, for the resources that have `notes`, there are a few interesting pi
     ```
 
   This is enough; we do not need to define the entire `Builder` class; Lombok will inject the other required fields, methods, and constructors for us (assuming we named the static inner class correctly). [Lombok's @Builder docs](https://projectlombok.org/features/Builder) goes into further detail regarding this topic.
+
+
+[docs]: https://docs.withabound.com
+[api-reference]: https://docs.withabound.com/reference
+[developer-dashboard]: https://dashboard.withabound.com
+[developer-dashboard-keys]: https://dashboard.withabound.com/keys
+[developer-dashboard-signup]: https://dashboard.withabound.com/signup

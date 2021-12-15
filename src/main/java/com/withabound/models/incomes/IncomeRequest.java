@@ -3,6 +3,7 @@ package com.withabound.models.incomes;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.withabound.models.documents.DocumentType;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
@@ -22,6 +23,8 @@ public class IncomeRequest {
   private String category;
 
   private String foreignId;
+
+  private DocumentType documentType;
 
   private JsonElement notes;
 
@@ -47,6 +50,10 @@ public class IncomeRequest {
 
   public Optional<String> getForeignId() {
     return Optional.ofNullable(foreignId);
+  }
+
+  public Optional<DocumentType> getDocumentType() {
+    return Optional.ofNullable(documentType);
   }
 
   public Optional<JsonElement> getNotes() {

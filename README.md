@@ -313,6 +313,13 @@ IncomeRequest w2IncomeRequest = IncomeRequest.builder()
   .amount(55000.00)
   .date("2020-12-30")
   .build();
+IncomeRequest ten99intIncomeRequest = IncomeRequest.builder()
+  .incomeType(IncomeType.TEN99)
+  .documentType(DocumentType.TEN99INT)
+  .amount(10.85)
+  .date("2020-12-15")
+  .description("Savings Account interest accrued")
+  .build();
 
 AboundBulkResponse<Income> response = 
   abound.incomes().create(userId, Collections.singletonList(w2IncomeRequest));

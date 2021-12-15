@@ -152,7 +152,7 @@ public class IncomesTest extends AbstractAboundTest {
     assertThat(createdTen99Int.getDescription()).isEqualTo(ten99Int.getDescription());
     assertThat(createdTen99Int.getCategory()).isEqualTo(ten99Int.getCategory());
     assertThat(createdTen99Int.getForeignId()).isEqualTo(ten99Int.getForeignId());
-    //    assertThat(createdTen99Int.getDocumentType()).isEmpty();
+    // assertThat(createdTen99Int.getDocumentType()).isEmpty();
 
     final Income createdW2 = created.get(2);
     assertThat(createdW2).isNotNull();

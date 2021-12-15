@@ -88,16 +88,6 @@ public class IncomesTest extends AbstractAboundTest {
             .foreignId("1099_foreign_id")
             .build();
 
-    final IncomeRequest w2 =
-        IncomeRequest.builder()
-            .incomeType(IncomeType.W2)
-            .amount(32000.99)
-            .date("2020-03-01")
-            .category("W2 income")
-            .description("W2 description")
-            .foreignId("w2_foreign_id")
-            .build();
-
     final IncomeRequest ten99Int =
         IncomeRequest.builder()
             .incomeType(IncomeType.TEN99)
@@ -107,6 +97,16 @@ public class IncomesTest extends AbstractAboundTest {
             .description("1099-INT description")
             .foreignId("1099int_foreign_id")
             .documentType(DocumentType.TEN99INT)
+            .build();
+
+    final IncomeRequest w2 =
+        IncomeRequest.builder()
+            .incomeType(IncomeType.W2)
+            .amount(32000.99)
+            .date("2020-03-01")
+            .category("W2 income")
+            .description("W2 description")
+            .foreignId("w2_foreign_id")
             .build();
 
     final IncomeRequest personal =
@@ -124,7 +124,7 @@ public class IncomesTest extends AbstractAboundTest {
             .incomes()
             .create(TestUtils.TEST_USER_ID, Arrays.asList(ten99, ten99Int, w2, personal));
 
-    //    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
     final List<Income> created = response.getData();
     assertThat(created).hasSize(4);

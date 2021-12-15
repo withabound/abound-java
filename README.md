@@ -321,8 +321,10 @@ IncomeRequest ten99intIncomeRequest = IncomeRequest.builder()
   .description("Savings Account interest accrued")
   .build();
 
-AboundBulkResponse<Income> response = 
-  abound.incomes().create(userId, Collections.singletonList(w2IncomeRequest));
+AboundBulkResponse<Income> response = abound.incomes().create(userId, Arrays.asList(
+  w2IncomeRequest,
+  ten99intIncomeRequest
+));
 
 System.out.println(response.getData()); // list of created Incomes
 ```

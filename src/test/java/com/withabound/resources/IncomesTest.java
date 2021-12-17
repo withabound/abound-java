@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.withabound.AbstractAboundTest;
-import com.withabound.models.documents.DocumentType;
 import com.withabound.models.incomes.Income;
+import com.withabound.models.incomes.IncomeDocumentType;
 import com.withabound.models.incomes.IncomeParams;
 import com.withabound.models.incomes.IncomeRequest;
 import com.withabound.models.incomes.IncomeType;
@@ -96,7 +96,7 @@ public class IncomesTest extends AbstractAboundTest {
             .category("1099-INT income")
             .description("1099-INT description")
             .foreignId("1099int_foreign_id")
-            .documentType(DocumentType.TEN99INT)
+            .documentType(IncomeDocumentType.TEN99INT)
             .build();
 
     final IncomeRequest w2 =

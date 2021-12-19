@@ -6,9 +6,6 @@ public enum IncomeType {
   @SerializedName("1099")
   TEN99("1099"),
 
-  @SerializedName("1099-INT")
-  TEN99INT("1099-INT"),
-
   @SerializedName("w2")
   W2("w2"),
 

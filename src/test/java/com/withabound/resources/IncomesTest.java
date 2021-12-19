@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.incomes.Income;
+import com.withabound.models.incomes.IncomeDocumentType;
 import com.withabound.models.incomes.IncomeParams;
 import com.withabound.models.incomes.IncomeRequest;
 import com.withabound.models.incomes.IncomeType;
@@ -89,12 +90,13 @@ public class IncomesTest extends AbstractAboundTest {
 
     final IncomeRequest ten99Int =
         IncomeRequest.builder()
-            .incomeType(IncomeType.TEN99INT)
+            .incomeType(IncomeType.TEN99)
             .amount(444.77)
             .date("2020-02-01")
             .category("1099-INT income")
             .description("1099-INT description")
             .foreignId("1099int_foreign_id")
+            .documentType(IncomeDocumentType.TEN99INT)
             .build();
 
     final IncomeRequest w2 =
@@ -141,7 +143,7 @@ public class IncomesTest extends AbstractAboundTest {
     assertThat(createdTen99Int).isNotNull();
     assertThat(createdTen99Int.getIncomeId()).isNotEmpty();
     // the commented assertions below are due to the nature of some Incomes created with test
-    // credentials returning as 1099, despite being created with a different incomeType. This issue
+    // credentials having some incorrect properties assigned in response bodies. This issue
     // only exists with the test credentials.
 
     // assertThat(createdTen99Int.getIncomeType()).isEqualTo(IncomeType.TEN99INT);
@@ -150,6 +152,7 @@ public class IncomesTest extends AbstractAboundTest {
     assertThat(createdTen99Int.getDescription()).isEqualTo(ten99Int.getDescription());
     assertThat(createdTen99Int.getCategory()).isEqualTo(ten99Int.getCategory());
     assertThat(createdTen99Int.getForeignId()).isEqualTo(ten99Int.getForeignId());
+    // assertThat(createdTen99Int.getDocumentType()).isEmpty();
 
     final Income createdW2 = created.get(2);
     assertThat(createdW2).isNotNull();
@@ -160,6 +163,7 @@ public class IncomesTest extends AbstractAboundTest {
     assertThat(createdW2.getDescription()).isEqualTo(w2.getDescription());
     assertThat(createdW2.getCategory()).isEqualTo(w2.getCategory());
     assertThat(createdW2.getForeignId()).isEqualTo(w2.getForeignId());
+    assertThat(createdW2.getDocumentType()).isEmpty();
 
     final Income createdPersonal = created.get(3);
     assertThat(createdPersonal).isNotNull();
@@ -170,6 +174,7 @@ public class IncomesTest extends AbstractAboundTest {
     assertThat(createdPersonal.getDescription()).isEqualTo(personal.getDescription());
     assertThat(createdPersonal.getCategory()).isEqualTo(personal.getCategory());
     assertThat(createdPersonal.getForeignId()).isEqualTo(personal.getForeignId());
+    assertThat(createdPersonal.getDocumentType()).isEmpty();
   }
 
   @Test

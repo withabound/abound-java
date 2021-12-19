@@ -15,7 +15,8 @@ public class Income extends IncomeRequest {
       final String description,
       final String category,
       final String foreignId,
+      final IncomeDocumentType documentType,
       final JsonElement notes) {
-    super(incomeType, amount, date, description, category, foreignId, notes);
+    super(incomeType, amount, date, description, category, foreignId, documentType, notes);
   }
 }

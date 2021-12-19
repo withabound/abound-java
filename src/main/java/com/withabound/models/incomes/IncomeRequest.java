@@ -23,6 +23,8 @@ public class IncomeRequest {
 
   private String foreignId;
 
+  private IncomeDocumentType documentType;
+
   private JsonElement notes;
 
   public IncomeType getIncomeType() {
@@ -47,6 +49,10 @@ public class IncomeRequest {
 
   public Optional<String> getForeignId() {
     return Optional.ofNullable(foreignId);
+  }
+
+  public Optional<IncomeDocumentType> getDocumentType() {
+    return Optional.ofNullable(documentType);
   }
 
   public Optional<JsonElement> getNotes() {

@@ -19,8 +19,10 @@ jobs:
 
       - uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: '8'
+          # https://github.blog/changelog/2021-08-30-github-actions-setup-java-now-supports-dependency-caching/
+          cache: 'gradle'
 
       # https://github.com/gradle/wrapper-validation-action
       - name: Validate Gradle wrapper

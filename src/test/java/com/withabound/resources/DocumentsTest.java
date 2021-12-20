@@ -6,8 +6,8 @@ import com.withabound.AbstractAboundTest;
 import com.withabound.models.documents.Document;
 import com.withabound.models.documents.DocumentParams;
 import com.withabound.models.documents.DocumentType;
-import com.withabound.models.documents.Ten99INTAndTen99KStateTaxInfo;
-import com.withabound.models.documents.Ten99MISCAndTen99NECStateTaxInfo;
+import com.withabound.models.documents.StateTaxInfo;
+import com.withabound.models.documents.StateTaxInfoWithIncome;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentBank;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentRequest;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentSummary;
@@ -127,12 +127,12 @@ public class DocumentsTest extends AbstractAboundTest {
     final Double bondPremiumTaxExemptBond = TestUtils.randomCurrencyAmount();
 
     final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
-    final String stateId = TestUtils.randomAlphabetic();
+    final String payerStateId = TestUtils.randomAlphabetic();
 
-    final Ten99INTAndTen99KStateTaxInfo stateTaxInfo =
-        Ten99INTAndTen99KStateTaxInfo.builder()
+    final StateTaxInfo stateTaxInfo =
+        StateTaxInfo.builder()
             .filingState("ca")
-            .stateId(stateId)
+            .payerStateId(payerStateId)
             .stateTaxWithheld(stateTaxWithheld)
             .build();
 
@@ -265,13 +265,13 @@ public class DocumentsTest extends AbstractAboundTest {
     final double nonemployeeCompensation = TestUtils.randomDouble(4000);
 
     final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
-    final String payersStateNumber = TestUtils.randomAlphabetic();
+    final String payerStateId = TestUtils.randomAlphabetic();
     final double stateIncome = TestUtils.randomDouble(20_000);
 
-    final Ten99MISCAndTen99NECStateTaxInfo stateTaxInfo =
-        Ten99MISCAndTen99NECStateTaxInfo.builder()
+    final StateTaxInfoWithIncome stateTaxInfo =
+        StateTaxInfoWithIncome.builder()
             .filingState("ca")
-            .payersStateNumber(payersStateNumber)
+            .payerStateId(payerStateId)
             .stateTaxWithheld(stateTaxWithheld)
             .stateIncome(stateIncome)
             .build();

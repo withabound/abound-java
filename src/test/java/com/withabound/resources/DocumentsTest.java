@@ -7,6 +7,7 @@ import com.withabound.models.documents.Document;
 import com.withabound.models.documents.DocumentParams;
 import com.withabound.models.documents.DocumentType;
 import com.withabound.models.documents.Ten99INTAndTen99KStateTaxInfo;
+import com.withabound.models.documents.Ten99MISCAndTen99NECStateTaxInfo;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentBank;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentRequest;
 import com.withabound.models.documents.account_statements.AccountStatementDocumentSummary;
@@ -15,6 +16,7 @@ import com.withabound.models.documents.ten99k.Form1099KDocumentRequest;
 import com.withabound.models.documents.ten99k.GrossAmountsByMonth;
 import com.withabound.models.documents.ten99k.PayerClassification;
 import com.withabound.models.documents.ten99k.TransactionsReportedClassification;
+import com.withabound.models.documents.ten99nec.Form1099NECDocumentRequest;
 import com.withabound.models.documents.w9.FormW9DocumentRequest;
 import com.withabound.models.documents.w9.W9TaxClassification;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
@@ -254,6 +256,53 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(created.getType()).isEqualTo(DocumentType.W9);
     assertThat(created.getYear()).isEqualTo("2020");
     assertThat(created.getCreatedTimestamp())
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+  }
+
+  @Test
+  public void testCreate1099NEC() throws IOException {
+    final String accountNumber = TestUtils.randomNumberString(9);
+    final double nonemployeeCompensation = TestUtils.randomDouble(4000);
+
+    final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
+    final String payersStateNumber = TestUtils.randomAlphabetic();
+    final double stateIncome = TestUtils.randomDouble(20_000);
+
+    final Ten99MISCAndTen99NECStateTaxInfo stateTaxInfo =
+        Ten99MISCAndTen99NECStateTaxInfo.builder()
+            .filingState("ca")
+            .payersStateNumber(payersStateNumber)
+            .stateTaxWithheld(stateTaxWithheld)
+            .stateIncome(stateIncome)
+            .build();
+
+    final Form1099NECDocumentRequest toCreate =
+        Form1099NECDocumentRequest.builder()
+            .payerId(PayersTest.TEST_PAYER_ID)
+            .accountNumber(accountNumber)
+            .nonemployeeCompensation(nonemployeeCompensation)
+            .year(2020)
+            .stateTaxInfo(Collections.singletonList(stateTaxInfo))
+            .build();
+
+    final AboundBulkResponse<Document> response =
+        getAboundClient()
+            .documents()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
+
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
+    final List<Document> created = response.getData();
+    assertThat(created).isNotNull().hasSize(1);
+    final Document createdDocument = created.get(0);
+    assertThat(createdDocument).isNotNull();
+    assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
+    assertThat(createdDocument.getDocumentURL().orElse(null))
+        .startsWith(
+            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_1099-NEC.pdf");
+    assertThat(createdDocument.getDocumentName()).isEqualTo("2020 Form 1099-NEC");
+    assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99NEC);
+    assertThat(createdDocument.getYear()).isEqualTo("2020");
+    assertThat(createdDocument.getCreatedTimestamp())
         .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
   }
 

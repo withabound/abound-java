@@ -435,19 +435,31 @@ It is recommended to configure your IDE with the `google-java-format` plugin: ht
 Run all tests:
 
 ```console
-$ ./gradlew test
+./gradlew test
 ```
 
 Run `spotless` and apply auto-fixes:
 
 ```console
-$ ./gradlew spotlessApply
+./gradlew spotlessApply
 ```
 
 Publish the SDK to the local Maven repository (`~/.m2/repository`):
 
 ```console
-$ ./gradlew publishToMavenLocal
+./gradlew publishToMavenLocal
+```
+
+#### VS Code development
+
+The recommended extensions and settings for Java development with VS Code have been configured in this repository (see [.vscode][vscode-configuration]). Please ensure that Java 8 is installed on your system with `JAVA_HOME` and `GRADLE_USER_HOME` environment variables exported.
+
+Install Java 8 on Mac:
+
+```console
+brew install temurin8
+echo "export JAVA_HOME=$(/usr/libexec/java_home -v1.8)" >> ~/.zprofile
+echo "export GRADLE_USER_HOME=\"$HOME/.gradle\"" >> ~/.zprofile
 ```
 
 #### A note about Notes
@@ -528,3 +540,4 @@ As a result, for the resources that have `notes`, there are a few interesting pi
 [developer-dashboard]: https://dashboard.withabound.com
 [developer-dashboard-keys]: https://dashboard.withabound.com/keys
 [developer-dashboard-signup]: https://dashboard.withabound.com/signup
+[vscode-configuration]: https://github.com/withabound/abound-java/tree/develop/src

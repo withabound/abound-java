@@ -452,7 +452,7 @@ Publish the SDK to the local Maven repository (`~/.m2/repository`):
 
 #### VS Code development
 
-The recommended extensions and settings for Java development with VS Code have been configured in this repository (see [.vscode][vscode-configuration]). Please ensure that Java 8 is installed on your system with `JAVA_HOME` and `GRADLE_USER_HOME` environment variables setup.
+The recommended extensions and settings for Java development with VS Code have been configured in this repository (see [.vscode][vscode-configuration]). Please ensure that Java 8 is installed on your system with `JAVA_HOME` and `GRADLE_USER_HOME` environment variables exported.
 
 Install Java 8 on Mac:
 

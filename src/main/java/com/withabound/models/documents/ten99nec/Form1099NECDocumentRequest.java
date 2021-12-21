@@ -2,7 +2,7 @@ package com.withabound.models.documents.ten99nec;
 
 import com.withabound.models.documents.DocumentRequest;
 import com.withabound.models.documents.DocumentType;
-import com.withabound.models.documents.Ten99MISCAndTen99NECStateTaxInfo;
+import com.withabound.models.documents.StateTaxInfoWithIncome;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +24,7 @@ public class Form1099NECDocumentRequest extends DocumentRequest {
 
   private Double federalIncomeTaxWithheld;
 
-  private List<Ten99MISCAndTen99NECStateTaxInfo> stateTaxInfo;
+  private List<StateTaxInfoWithIncome> stateTaxInfo;
 
   @Override
   public DocumentType getType() {
@@ -55,7 +55,7 @@ public class Form1099NECDocumentRequest extends DocumentRequest {
     return federalIncomeTaxWithheld;
   }
 
-  public List<Ten99MISCAndTen99NECStateTaxInfo> getStateTaxInfo() {
+  public List<StateTaxInfoWithIncome> getStateTaxInfo() {
     return stateTaxInfo == null ? Collections.emptyList() : stateTaxInfo;
   }
 }

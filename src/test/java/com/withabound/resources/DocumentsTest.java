@@ -16,6 +16,7 @@ import com.withabound.models.documents.ten99k.Form1099KDocumentRequest;
 import com.withabound.models.documents.ten99k.GrossAmountsByMonth;
 import com.withabound.models.documents.ten99k.PayerClassification;
 import com.withabound.models.documents.ten99k.TransactionsReportedClassification;
+import com.withabound.models.documents.ten99misc.Form1099MISCDocumentRequest;
 import com.withabound.models.documents.ten99nec.Form1099NECDocumentRequest;
 import com.withabound.models.documents.w9.FormW9DocumentRequest;
 import com.withabound.models.documents.w9.W9TaxClassification;
@@ -256,6 +257,107 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(created.getType()).isEqualTo(DocumentType.W9);
     assertThat(created.getYear()).isEqualTo("2020");
     assertThat(created.getCreatedTimestamp())
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+  }
+
+  @Test
+  public void testCreate1099MISCWithoutOptionalFields() throws IOException {
+    final Form1099MISCDocumentRequest toCreate =
+        Form1099MISCDocumentRequest.builder()
+            .payerId(PayersTest.TEST_PAYER_ID)
+            .rents(12121.75)
+            .year(2021)
+            .build();
+
+    final AboundBulkResponse<Document> response =
+        getAboundClient()
+            .documents()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
+
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
+    final List<Document> created = response.getData();
+    assertThat(created).isNotNull().hasSize(1);
+    final Document createdDocument = created.get(0);
+    assertThat(createdDocument).isNotNull();
+    assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
+    assertThat(createdDocument.getDocumentURL().orElse(null))
+        .startsWith(
+            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_1099-MISC.pdf");
+    assertThat(createdDocument.getDocumentName()).isEqualTo("2021 Form 1099-MISC");
+    assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99MISC);
+    assertThat(createdDocument.getYear()).isEqualTo("2021");
+    assertThat(createdDocument.getCreatedTimestamp())
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+  }
+
+  @Test
+  public void testCreate1099MISCWithOptionalFields() throws IOException {
+    final double rents = TestUtils.randomDouble(8000);
+    final double royalties = TestUtils.randomDouble(1000);
+    final double otherIncome = TestUtils.randomDouble(8000);
+    final double federalIncomeTaxWithheld = TestUtils.randomDouble();
+    final double fishingBoatProceeds = TestUtils.randomDouble();
+    final double medicalPayments = TestUtils.randomDouble(1500);
+    final double substitutePayments = TestUtils.randomDouble(2000);
+    final double cropInsuranceProceeds = TestUtils.randomDouble(6000);
+    final double grossProceedsAttorney = TestUtils.randomDouble(4000);
+    final double fishPurchasedForResale = TestUtils.randomDouble(800);
+    final double section409ADeferrals = TestUtils.randomDouble(7000);
+    final double excessGoldenParachutePayments = TestUtils.randomDouble(14000);
+    final double nqdc = TestUtils.randomDouble(10000);
+
+    final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
+    final String payerStateId = TestUtils.randomAlphabetic();
+    final double stateIncome = TestUtils.randomDouble(20_000);
+
+    final StateTaxInfoWithIncome stateTaxInfo =
+        StateTaxInfoWithIncome.builder()
+            .filingState("ca")
+            .payerStateId(payerStateId)
+            .stateTaxWithheld(stateTaxWithheld)
+            .stateIncome(stateIncome)
+            .build();
+
+    final Form1099MISCDocumentRequest toCreate =
+        Form1099MISCDocumentRequest.builder()
+            .payerId(PayersTest.TEST_PAYER_ID)
+            .year(2021)
+            .hasFatcaFilingRequirement(false)
+            .rents(rents)
+            .royalties(royalties)
+            .otherIncome(otherIncome)
+            .federalIncomeTaxWithheld(federalIncomeTaxWithheld)
+            .fishingBoatProceeds(fishingBoatProceeds)
+            .medicalPayments(medicalPayments)
+            .hasDirectSalesOver5000(false)
+            .substitutePayments(substitutePayments)
+            .cropInsuranceProceeds(cropInsuranceProceeds)
+            .grossProceedsAttorney(grossProceedsAttorney)
+            .fishPurchasedForResale(fishPurchasedForResale)
+            .section409ADeferrals(section409ADeferrals)
+            .excessGoldenParachutePayments(excessGoldenParachutePayments)
+            .nqdc(nqdc)
+            .stateTaxInfo(Collections.singletonList(stateTaxInfo))
+            .build();
+
+    final AboundBulkResponse<Document> response =
+        getAboundClient()
+            .documents()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
+
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
+    final List<Document> created = response.getData();
+    assertThat(created).isNotNull().hasSize(1);
+    final Document createdDocument = created.get(0);
+    assertThat(createdDocument).isNotNull();
+    assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
+    assertThat(createdDocument.getDocumentURL().orElse(null))
+        .startsWith(
+            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_1099-MISC.pdf");
+    assertThat(createdDocument.getDocumentName()).isEqualTo("2021 Form 1099-MISC");
+    assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99MISC);
+    assertThat(createdDocument.getYear()).isEqualTo("2021");
+    assertThat(createdDocument.getCreatedTimestamp())
         .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
   }
 

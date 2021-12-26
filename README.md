@@ -462,6 +462,33 @@ echo "export JAVA_HOME=$(/usr/libexec/java_home -v1.8)" >> ~/.zprofile
 echo "export GRADLE_USER_HOME=\"$HOME/.gradle\"" >> ~/.zprofile
 ```
 
+#### Project Layout
+
+```console
+.
+├── .github
+│  └── workflows — CI/release configuration
+└── src
+    ├── main
+    │  └── java
+    │      └── com
+    │          └── withabound
+    │              ├── exceptions — HTTP 4xx/5xx responses map to these Java exceptions
+    │              ├── http — OkHttp request helpers
+    │              ├── models — Java objects that represent request/response bodies
+    │              └── resources — Defines the public APIs, e.g. abound.users(), and available verbs, e.g. abound.users().list()
+    │                   └── base — Abstract classes that make it easier to define new resources
+    └── test
+        └── java
+            └── com
+                └── withabound
+                    ├── resources — JUnit tests
+                    │  └── asserts — AssertJ AbstractAssert definitions
+                    └── util — Test utils
+```
+
+Abbreviated from `git ls-tree -r --name-only HEAD | tree -d --fromfile` (just the important parts).
+
 #### A note about Notes
 
 A number of different Abound domain resources have an optional `notes` attribute. If provided, this can either be a String, or a JSON object. As a result, `notes` are more difficult to work with in languages such as Java that lack first-class support for JSON. We have chosen to represent these fields using `com.google.gson.JsonElement` — an abstract class that is subclassed by both `com.google.gson.JsonObject` and `com.google.gson.JsonPrimitive`. This is a convenient way of representing this union type, and has various advantages over using just a regular `java.lang.Object`.

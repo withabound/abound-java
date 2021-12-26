@@ -15,6 +15,7 @@ public class AboundBulkResponseAssert<T>
     Assertions.assertThat(actual).isNotNull();
     Assertions.assertThat(actual.getRequest()).isNotNull();
     Assertions.assertThat(actual.getRequest().getTimestamp())
+        .withFailMessage(AboundResponseAssert.CREATED_TIMESTAMP_ASSERTION_ERROR_MESSAGE)
         .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
     Assertions.assertThat(actual.getRequest().getRequestId()).isNotEmpty();
 

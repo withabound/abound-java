@@ -1,0 +1,48 @@
+on:
+  release:
+    types:
+      - published
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+jobs:
+  publish_release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: act10ns/slack@v1
+        with:
+          status: starting
+          channel: "#deployments"
+        if: always()
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Validate release candidate is not a SNAPSHOT
+        run: |
+          if ! ./gradlew printVersion -q --no-daemon | grep -q SNAPSHOT
+            then
+              echo "Cannot publish this release candidate; build.gradle should not specify a SNAPSHOT version"
+              exit 1
+          fi
+
+      - name: Validate Github release version and build.gradle version match
+        env:
+          RELEASE_TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          if ! grep -q "version '${RELEASE_TAG_NAME:1}'" build.gradle
+            then
+              echo "Release tag (${RELEASE_TAG_NAME:1}) does not match the build.gradle version"
+              exit 1
+            else
+              echo "Release tag matches the build.gradle version"
+          fi
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+
+      - name: Publish com.withabound.withabound-java

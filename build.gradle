@@ -7,6 +7,10 @@ plugins {
 group 'com.withabound'
 version '1.0.0-SNAPSHOT'
 
+task printVersion {
+    println project.version
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -14,10 +18,16 @@ publishing {
         }
     }
 
+    // See https://docs.github.com/en/actions/publishing-packages/publishing-java-packages-with-gradle
+    // and https://docs.gradle.org/current/userguide/publishing_setup.html
     repositories {
         maven {
-            name = 'maven'
-            url = layout.buildDirectory.dir("repo")
+            name = "OSSRH"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
         }
     }
 }

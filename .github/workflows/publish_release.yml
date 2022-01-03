@@ -3,9 +3,6 @@ on:
     types:
       - published
 
-env:
-  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
 jobs:
   publish_release:
     runs-on: ubuntu-latest

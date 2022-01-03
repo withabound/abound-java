@@ -3,6 +3,11 @@ on:
     types:
       - published
 
+env:
+  ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
+  ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
+  ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
+
 jobs:
   publish_release:
     runs-on: ubuntu-latest
@@ -35,10 +40,6 @@ jobs:
 
       - name: Publish com.withabound.withabound-java
         run: ./gradlew publish --no-daemon --no-parallel
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
 
       - name: Close and release com.withabound.withabound-java
         run: |
@@ -51,10 +52,6 @@ jobs:
             echo "🛑🛑🛑"
             exit 1
           fi
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
 
       # Upon completion of the release step, OSSRH will sync components to Maven Central typically within
       # 30 minutes, though updates to search may take up to four hours.

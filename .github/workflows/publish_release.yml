@@ -62,3 +62,10 @@ jobs:
       # Upon completion of the release step, OSSRH will sync components to Maven Central typically within
       # 30 minutes, though updates to search may take up to four hours.
       # Ref https://central.sonatype.org/publish/publish-guide/#releasing-to-central
+
+      - uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: "#deployments"
+        if: always()

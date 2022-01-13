@@ -21,6 +21,6 @@ class AboundTest extends AbstractAboundTest {
     // assert the first character after JavaSDK/ is numerical; it's imperfect but fairly reasonable,
     // won't require manual updating upon new versions being released, would pass on both -SNAPSHOT
     // and non-SNAPSHOT versions, etc. as long as the SDK adheres to semantic versioning
-    assertThat(Character.isDigit(userAgentValue.charAt("JavaSDK/".length() + 1))).isTrue();
+    assertThat(Character.isDigit(userAgentValue.charAt("JavaSDK/".length()))).isTrue();
   }
 }

@@ -227,7 +227,37 @@ public class DocumentsTest extends AbstractAboundTest {
   }
 
   @Test
-  public void testCreateFormW9() throws IOException {
+  public void testCreateFormW9WithoutOptionalFields() throws IOException {
+    final FormW9DocumentRequest toCreate =
+        FormW9DocumentRequest.builder()
+            .year(2020)
+            .taxClassification(W9TaxClassification.SOLE_PROPRIETOR)
+            .certificationTimestamp((int) System.currentTimeMillis())
+            .build();
+
+    final AboundBulkResponse<Document> response =
+        getAboundClient()
+            .documents()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
+
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
+    assertThat(response.getData()).isNotNull().hasSize(1);
+
+    final Document created = response.getData().get(0);
+    assertThat(created).isNotNull();
+    assertThat(created.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
+    assertThat(created.getDocumentURL().orElse(null))
+        .startsWith(
+            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_W-9.pdf");
+    assertThat(created.getDocumentName()).isEqualTo("2020 Form W-9");
+    assertThat(created.getType()).isEqualTo(DocumentType.W9);
+    assertThat(created.getYear()).isEqualTo("2020");
+    assertThat(created.getCreatedTimestamp())
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+  }
+
+  @Test
+  public void testCreateFormW9WithOptionalFields() throws IOException {
     final String accountNumber = TestUtils.randomNumberString(9);
 
     final FormW9DocumentRequest toCreate =

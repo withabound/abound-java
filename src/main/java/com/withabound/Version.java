@@ -13,6 +13,7 @@ final class Version {
     if (SDK_VERSION == null) {
       SDK_VERSION = loadFromFile();
     }
+
     return SDK_VERSION;
   }
 

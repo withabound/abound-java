@@ -75,7 +75,7 @@ public class PayersTest extends AbstractAboundTest {
     final List<Payer> payers = response.getData();
     assertThat(payers).isNotNull().hasSize(1);
     final Payer payer = payers.get(0);
-    PayerAssert.assertThat(payer).isAcmeInc();
+    PayerAssert.assertThat(payer).isHooli();
   }
 
   @Test
@@ -84,7 +84,7 @@ public class PayersTest extends AbstractAboundTest {
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
     final Payer payer = response.getData();
-    PayerAssert.assertThat(payer).isAcmeInc();
+    PayerAssert.assertThat(payer).isHooli();
   }
 
   @Test
@@ -99,8 +99,8 @@ public class PayersTest extends AbstractAboundTest {
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
     final Payer updated = response.getData();
-    assertThat(updated.getName()).isEqualTo("Acme Inc");
-    assertThat(updated.getAddress()).isEqualTo("123 Main St.");
+    assertThat(updated.getName()).isEqualTo("Hooli");
+    assertThat(updated.getAddress()).isEqualTo("1401 N Shoreline Blvd");
     assertThat(updated.getCountry()).isEqualTo("CA");
     assertThat(updated.getPhoneNumber()).isEqualTo(newPhoneNumber);
   }

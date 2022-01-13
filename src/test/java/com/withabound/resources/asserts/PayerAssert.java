@@ -11,17 +11,17 @@ public class PayerAssert extends AbstractAssert<PayerAssert, Payer> {
     return new PayerAssert(actual);
   }
 
-  public PayerAssert isAcmeInc() {
+  public PayerAssert isHooli() {
     Assertions.assertThat(actual).isNotNull();
     Assertions.assertThat(actual.getPayerId()).isEqualTo(PayersTest.TEST_PAYER_ID);
-    Assertions.assertThat(actual.getName()).isEqualTo("Acme Inc");
-    Assertions.assertThat(actual.getAddress()).isEqualTo("123 Main St.");
-    Assertions.assertThat(actual.getAddress2()).isEqualTo(Optional.of("Suite 124"));
-    Assertions.assertThat(actual.getCity()).isEqualTo("Smallville");
+    Assertions.assertThat(actual.getName()).isEqualTo("Hooli");
+    Assertions.assertThat(actual.getAddress()).isEqualTo("1401 N Shoreline Blvd");
+    Assertions.assertThat(actual.getAddress2()).isEqualTo(Optional.of("Suite 1"));
+    Assertions.assertThat(actual.getCity()).isEqualTo("Mountain View");
     Assertions.assertThat(actual.getState()).isEqualTo("CA");
     Assertions.assertThat(actual.getCountry()).isEqualTo("US");
-    Assertions.assertThat(actual.getZipcode()).isEqualTo("10001");
-    Assertions.assertThat(actual.getPhoneNumber()).isEqualTo("5555555555");
+    Assertions.assertThat(actual.getZipcode()).isEqualTo("94043");
+    Assertions.assertThat(actual.getPhoneNumber()).isEqualTo("6501014096");
     Assertions.assertThat(actual.getForeignId()).isEqualTo(Optional.of("your_foreign_id"));
 
     return this;

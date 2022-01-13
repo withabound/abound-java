@@ -54,7 +54,7 @@ public class UsersTest extends AbstractAboundTest {
 
     assertThat(users).hasSize(1);
 
-    UserAssert.assertThat(users.get(0)).isSamWilson();
+    UserAssert.assertThat(users.get(0)).isAdaLovelace();
   }
 
   @Test
@@ -102,7 +102,7 @@ public class UsersTest extends AbstractAboundTest {
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
-    UserAssert.assertThat(response.getData()).isSamWilson();
+    UserAssert.assertThat(response.getData()).isAdaLovelace();
   }
 
   @Test
@@ -110,7 +110,7 @@ public class UsersTest extends AbstractAboundTest {
     final AboundResponse<User> original =
         getAboundClient().users().retrieve(TestUtils.TEST_USER_ID);
     AboundResponseAssert.assertThat(original).hasResponseMetadata();
-    UserAssert.assertThat(original.getData()).isSamWilson();
+    UserAssert.assertThat(original.getData()).isAdaLovelace();
 
     final String newEmail = TestUtils.randomEmail();
     final User originalUser = original.getData();

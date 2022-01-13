@@ -4,6 +4,7 @@ import com.withabound.models.documents.DocumentRequest;
 import com.withabound.models.documents.DocumentType;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
 
@@ -30,8 +31,8 @@ public class FormW9DocumentRequest extends DocumentRequest {
     return DocumentType.W9;
   }
 
-  public String getPayerId() {
-    return payerId;
+  public Optional<String> getPayerId() {
+    return Optional.ofNullable(payerId);
   }
 
   public int getYear() {

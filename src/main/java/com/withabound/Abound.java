@@ -72,12 +72,14 @@ public final class Abound {
           final Request original = chain.request();
           final String bearerToken =
               String.format("Bearer %s.%s", aboundConfig.getAppId(), aboundConfig.getAppSecret());
+          final String userAgent = String.format("JavaSDK/%s", Version.getSDKVersion());
 
           final Request request =
               original
                   .newBuilder()
                   .header("Authorization", bearerToken)
                   .header("Content-Type", "application/json")
+                  .header("User-Agent", userAgent)
                   .build();
 
           return chain.proceed(request);

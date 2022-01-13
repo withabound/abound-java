@@ -5,7 +5,11 @@ plugins {
 }
 
 group 'com.withabound'
-version '1.0.0-SNAPSHOT'
+version = getResources().getText().fromFile('src/main/resources/VERSION').asString().trim()
+
+task printVersion {
+    println version
+}
 
 publishing {
     publications {

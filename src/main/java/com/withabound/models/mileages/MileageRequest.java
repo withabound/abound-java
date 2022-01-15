@@ -7,13 +7,13 @@ import lombok.Setter;
 @Builder
 @Setter
 public class MileageRequest {
-  private Double distance;
+  private double distance;
 
   private String date; // YYYY-MM-DD
 
   private String description;
 
-  public Double getDistance() {
+  public double getDistance() {
     return distance;
   }
 

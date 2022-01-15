@@ -72,6 +72,35 @@ public class MileagesTest extends AbstractAboundTest {
   }
 
   @Test
+  public void testCreateWhenMissingDistanceThrowsAboundApiException() throws IOException {
+    final MileageRequest toCreate = MileageRequest.builder().date("2020-06-17").build();
+
+    // this is what **should** happen -- the dev forgot to supply the mileage's distance, so an
+    // exception should be thrown and handled
+
+    //    Assertions.assertThatThrownBy(
+    //            () ->
+    //                getAboundClient()
+    //                    .mileages()
+    //                    .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate)))
+    //        .isInstanceOf(AboundApiException.class)
+    //        .hasMessage("Missing required parameter: distance (Code dc4f4526)")
+    //        .hasFieldOrPropertyWithValue("statusCode", 400)
+    //        .hasFieldOrProperty("request");
+
+    AboundBulkResponse<Mileage> response =
+        getAboundClient()
+            .mileages()
+            .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
+
+    // But when using Lombok's Builder to construct instances, `.build()` sets primitive fields to
+    // their default values if they are not explicitly set. A primitive `double` has a default value
+    // of `0` (https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)
+    // so this is the behavior that we actually observe
+    Assertions.assertThat(response.getData().get(0).getDistance()).isZero();
+  }
+
+  @Test
   public void testRetrieve() throws IOException {
     final AboundResponse<Mileage> response =
         getAboundClient().mileages().retrieve(TestUtils.TEST_USER_ID, TEST_MILEAGE_ID);

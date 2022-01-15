@@ -93,10 +93,10 @@ public class MileagesTest extends AbstractAboundTest {
             .mileages()
             .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
 
-    // But when using Lombok's Builder to construct instances, `.build()` sets primitive fields to
-    // their default values if they are not explicitly set. A primitive `double` has a default value
+    // But here we see that failing to explicitly set primitive fields makes them fallback to
+    // their default values, because Java. A primitive `double` has a default value
     // of `0` (https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)
-    // so this is the behavior that we actually observe
+    // so we ended up successfully creating a `Mileage` with a `distance` of `0`.
     Assertions.assertThat(response.getData().get(0).getDistance()).isZero();
   }
 

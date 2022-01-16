@@ -40,5 +40,5 @@ public enum TaxPaymentEntity {
   VA,
   VT,
   WI,
-  WV
+  WV,
 }

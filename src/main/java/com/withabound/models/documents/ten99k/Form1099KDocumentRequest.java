@@ -16,7 +16,7 @@ public class Form1099KDocumentRequest extends DocumentRequest {
   private String payerId;
 
   /** The tax year associated with this form. */
-  private int year;
+  private Integer year;
 
   /** The type of payer. */
   private PayerClassification payerClassification;
@@ -67,7 +67,7 @@ public class Form1099KDocumentRequest extends DocumentRequest {
    * The number of payment transactions (not including refund transactions) processed through the
    * payment card/third party network.
    */
-  private int numberOfPaymentTransactions;
+  private Integer numberOfPaymentTransactions;
 
   /**
    * The federal income tax withheld. Generally, a payer must backup withhold if you did not furnish
@@ -89,7 +89,7 @@ public class Form1099KDocumentRequest extends DocumentRequest {
     return payerId;
   }
 
-  public int getYear() {
+  public Integer getYear() {
     return year;
   }
 
@@ -125,7 +125,7 @@ public class Form1099KDocumentRequest extends DocumentRequest {
     return Optional.ofNullable(merchantCategoryCode);
   }
 
-  public int getNumberOfPaymentTransactions() {
+  public Integer getNumberOfPaymentTransactions() {
     return numberOfPaymentTransactions;
   }
 

@@ -16,7 +16,7 @@ public class Form1099INTDocumentRequest extends DocumentRequest {
   private String payerId;
 
   /** The tax year associated with this form. */
-  private int year;
+  private Integer year;
 
   /** Satisfying a requirement to report with respect to a U.S. account for chapter 4 purposes. */
   private Boolean hasFatcaFilingRequirement;
@@ -131,7 +131,7 @@ public class Form1099INTDocumentRequest extends DocumentRequest {
     return payerId;
   }
 
-  public int getYear() {
+  public Integer getYear() {
     return year;
   }
 

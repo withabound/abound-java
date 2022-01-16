@@ -16,7 +16,7 @@ public class ExpenseAssert extends AbstractAssert<ExpenseAssert, Expense> {
 
     Assertions.assertThat(actual.getExpenseId()).isEqualTo(ExpensesTest.TEST_EXPENSE_ID);
     Assertions.assertThat(actual.getTaxCategory().orElse(null)).isEqualTo("Meals");
-    Assertions.assertThat(actual.getAmount().orElse(null)).isEqualTo(123.54);
+    Assertions.assertThat(actual.getAmount()).isEqualTo(123.54);
     Assertions.assertThat(actual.getDescription().orElse(null)).isEqualTo("Pen and paper");
     Assertions.assertThat(actual.getDeductionAmount()).isEqualTo(61.77);
     Assertions.assertThat(actual.getDate().orElse(null)).isEqualTo("2020-05-12");

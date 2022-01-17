@@ -489,6 +489,20 @@ echo "export GRADLE_USER_HOME=\"$HOME/.gradle\"" >> ~/.zprofile
 
 Abbreviated from `git ls-tree -r --name-only HEAD | tree -d --fromfile` (just the important parts).
 
+#### Instance variable and method return types
+
+In order to provide a consistent, predictable experience for consumers of the SDK, these
+established patterns should be followed:
+
+- Avoid using primitives as instance variables and return types for `public` methods on
+resources, since they delegate and (de)serialize to
+[default values](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html) if
+they are `null`.
+- `Optional<T>` can be leveraged to provide callers with hints about potential nullability.
+- `Optional` variants for boxed primitives (e.g. `OptionalLong`, `OptionalInt`, `OptionalDouble`,
+etc.) have been avoided since their propensity for throwing `NoSuchElementException` makes them
+more difficult to use in Optional chains.
+
 #### A note about Notes
 
 A number of different Abound domain resources have an optional `notes` attribute. If provided, this can either be a String, or a JSON object. As a result, `notes` are more difficult to work with in languages such as Java that lack first-class support for JSON. We have chosen to represent these fields using `com.google.gson.JsonElement` — an abstract class that is subclassed by both `com.google.gson.JsonObject` and `com.google.gson.JsonPrimitive`. This is a convenient way of representing this union type, and has various advantages over using just a regular `java.lang.Object`.

@@ -16,7 +16,7 @@ public class Form1099MISCDocumentRequest extends DocumentRequest {
   private String payerId;
 
   /** The tax year associated with this form. */
-  private int year;
+  private Integer year;
 
   /**
    * Required if you have multiple accounts for a recipient for whom you are filing more than one
@@ -117,7 +117,7 @@ public class Form1099MISCDocumentRequest extends DocumentRequest {
     return payerId;
   }
 
-  public int getYear() {
+  public Integer getYear() {
     return year;
   }
 

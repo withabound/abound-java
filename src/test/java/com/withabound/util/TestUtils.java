@@ -48,12 +48,12 @@ public class TestUtils {
     return (int) Math.round(randomDouble(max));
   }
 
-  /** @return double with 2 decimal precision (#.xx) */
+  /** @return Double with 2 decimal precision (#.xx) */
   public static Double randomCurrencyAmount() {
     return randomCurrencyAmount(100);
   }
 
-  /** @return double with 2 decimal precision (#.xx) */
+  /** @return Double with 2 decimal precision (#.xx) */
   public static Double randomCurrencyAmount(final int max) {
     final BigDecimal currencyAmount = BigDecimal.valueOf(randomDouble(max));
     return currencyAmount.setScale(2, RoundingMode.HALF_UP).doubleValue();

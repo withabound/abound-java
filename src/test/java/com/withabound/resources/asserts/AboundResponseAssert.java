@@ -24,7 +24,7 @@ public class AboundResponseAssert<T>
     Assertions.assertThat(actual.getRequest()).isNotNull();
     Assertions.assertThat(actual.getRequest().getTimestamp())
         .withFailMessage(CREATED_TIMESTAMP_ASSERTION_ERROR_MESSAGE)
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
     Assertions.assertThat(actual.getRequest().getRequestId()).isNotEmpty();
 
     return this;

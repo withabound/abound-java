@@ -14,11 +14,11 @@ import lombok.Setter;
 public class Form1099NECDocumentRequest extends DocumentRequest {
   private String payerId;
 
-  private int year;
+  private Integer year;
 
   private String accountNumber;
 
-  private double nonemployeeCompensation;
+  private Double nonemployeeCompensation;
 
   private Boolean hasDirectSalesOver5000;
 
@@ -35,7 +35,7 @@ public class Form1099NECDocumentRequest extends DocumentRequest {
     return payerId;
   }
 
-  public int getYear() {
+  public Integer getYear() {
     return year;
   }
 
@@ -43,7 +43,7 @@ public class Form1099NECDocumentRequest extends DocumentRequest {
     return Optional.ofNullable(accountNumber);
   }
 
-  public double getNonemployeeCompensation() {
+  public Double getNonemployeeCompensation() {
     return nonemployeeCompensation;
   }
 

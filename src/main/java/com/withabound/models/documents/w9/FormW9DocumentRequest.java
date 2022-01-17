@@ -15,7 +15,7 @@ public class FormW9DocumentRequest extends DocumentRequest {
   private String payerId;
 
   /** The tax year associated with this form. */
-  private int year;
+  private Integer year;
 
   /** The U.S. federal tax classification of the person. */
   private W9TaxClassification taxClassification;
@@ -24,7 +24,7 @@ public class FormW9DocumentRequest extends DocumentRequest {
   private List<String> accountNumbers;
 
   /** The timestamp of the certification of this W-9. */
-  private int certificationTimestamp;
+  private Integer certificationTimestamp;
 
   @Override
   public DocumentType getType() {
@@ -35,7 +35,7 @@ public class FormW9DocumentRequest extends DocumentRequest {
     return Optional.ofNullable(payerId);
   }
 
-  public int getYear() {
+  public Integer getYear() {
     return year;
   }
 
@@ -47,7 +47,7 @@ public class FormW9DocumentRequest extends DocumentRequest {
     return accountNumbers == null ? Collections.emptyList() : accountNumbers;
   }
 
-  public int getCertificationTimestamp() {
+  public Integer getCertificationTimestamp() {
     return certificationTimestamp;
   }
 }

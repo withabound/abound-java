@@ -34,8 +34,8 @@ public class ExpenseRequest {
 
   private JsonElement notes;
 
-  public Optional<Double> getAmount() {
-    return Optional.ofNullable(amount);
+  public Double getAmount() {
+    return amount;
   }
 
   public Optional<String> getDescription() {

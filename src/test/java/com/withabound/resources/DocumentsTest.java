@@ -3,8 +3,10 @@ package com.withabound.resources;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.withabound.AbstractAboundTest;
+import com.withabound.exceptions.AboundApiException;
 import com.withabound.models.documents.Document;
 import com.withabound.models.documents.DocumentParams;
+import com.withabound.models.documents.DocumentRequest;
 import com.withabound.models.documents.DocumentType;
 import com.withabound.models.documents.StateTaxInfo;
 import com.withabound.models.documents.StateTaxInfoWithIncome;
@@ -32,6 +34,7 @@ import java.util.Collections;
 import java.util.List;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -99,7 +102,7 @@ public class DocumentsTest extends AbstractAboundTest {
     final Document createdDocument = createdDocuments.get(0);
     assertThat(createdDocument).isNotNull();
     assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
     assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
     assertThat(createdDocument.getDocumentName())
         .isEqualTo(String.format("2020-03-01 - 2020-05-31 Account Statement (%s)", last4));
@@ -178,7 +181,7 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99INT);
     assertThat(createdDocument.getYear()).isEqualTo("2020");
     assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
   }
 
   @Test
@@ -186,7 +189,7 @@ public class DocumentsTest extends AbstractAboundTest {
     final String pseName = TestUtils.randomAlphabetic();
     final String psePhoneNumber = TestUtils.randomNumberString(10);
     final Double aggregateGrossAmount = TestUtils.randomCurrencyAmount(150_000);
-    final int numberOfPaymentTransactions = TestUtils.randomInt(10_000);
+    final Integer numberOfPaymentTransactions = TestUtils.randomInt(10_000);
 
     final Double january = TestUtils.randomCurrencyAmount();
     final GrossAmountsByMonth grossAmountsByMonth =
@@ -223,7 +226,36 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99K);
     assertThat(createdDocument.getYear()).isEqualTo("2020");
     assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
+  }
+
+  @Test
+  public void testCreate1099KThrowsWhenMissingNumberOfPaymentTransactions() {
+    final Double january = TestUtils.randomCurrencyAmount();
+    final GrossAmountsByMonth grossAmountsByMonth =
+        GrossAmountsByMonth.builder().january(january).build();
+
+    final Form1099KDocumentRequest form1099KDocumentRequest =
+        Form1099KDocumentRequest.builder()
+            .payerId(PayersTest.TEST_PAYER_ID)
+            .payerClassification(PayerClassification.PAYMENT_SETTLEMENT_ENTITY)
+            .pseName(TestUtils.randomAlphabetic())
+            .psePhoneNumber(TestUtils.randomNumberString(10))
+            .transactionsReportedClassification(TransactionsReportedClassification.PAYMENT_CARD)
+            .aggregateGrossAmount(TestUtils.randomCurrencyAmount(150_000))
+            .grossAmountsByMonth(grossAmountsByMonth)
+            .year(2020)
+            .build();
+
+    final List<DocumentRequest> toCreate = Collections.singletonList(form1099KDocumentRequest);
+
+    Assertions.assertThatThrownBy(
+            () -> getAboundClient().documents().create(TestUtils.TEST_USER_ID, toCreate))
+        .isInstanceOf(AboundApiException.class)
+        .hasMessage(
+            "Expected numberOfPaymentTransactions to be of type number, but received undefined")
+        .hasFieldOrPropertyWithValue("statusCode", 400)
+        .hasFieldOrProperty("request");
   }
 
   @Test
@@ -253,7 +285,7 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(created.getType()).isEqualTo(DocumentType.W9);
     assertThat(created.getYear()).isEqualTo("2020");
     assertThat(created.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
   }
 
   @Test
@@ -287,7 +319,7 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(created.getType()).isEqualTo(DocumentType.W9);
     assertThat(created.getYear()).isEqualTo("2020");
     assertThat(created.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
   }
 
   @Test
@@ -317,28 +349,28 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99MISC);
     assertThat(createdDocument.getYear()).isEqualTo("2021");
     assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
   }
 
   @Test
   public void testCreate1099MISCWithOptionalFields() throws IOException {
-    final double rents = TestUtils.randomDouble(8000);
-    final double royalties = TestUtils.randomDouble(1000);
-    final double otherIncome = TestUtils.randomDouble(8000);
-    final double federalIncomeTaxWithheld = TestUtils.randomDouble();
-    final double fishingBoatProceeds = TestUtils.randomDouble();
-    final double medicalPayments = TestUtils.randomDouble(1500);
-    final double substitutePayments = TestUtils.randomDouble(2000);
-    final double cropInsuranceProceeds = TestUtils.randomDouble(6000);
-    final double grossProceedsAttorney = TestUtils.randomDouble(4000);
-    final double fishPurchasedForResale = TestUtils.randomDouble(800);
-    final double section409ADeferrals = TestUtils.randomDouble(7000);
-    final double excessGoldenParachutePayments = TestUtils.randomDouble(14000);
-    final double nqdc = TestUtils.randomDouble(10000);
+    final Double rents = TestUtils.randomDouble(8000);
+    final Double royalties = TestUtils.randomDouble(1000);
+    final Double otherIncome = TestUtils.randomDouble(8000);
+    final Double federalIncomeTaxWithheld = TestUtils.randomDouble();
+    final Double fishingBoatProceeds = TestUtils.randomDouble();
+    final Double medicalPayments = TestUtils.randomDouble(1500);
+    final Double substitutePayments = TestUtils.randomDouble(2000);
+    final Double cropInsuranceProceeds = TestUtils.randomDouble(6000);
+    final Double grossProceedsAttorney = TestUtils.randomDouble(4000);
+    final Double fishPurchasedForResale = TestUtils.randomDouble(800);
+    final Double section409ADeferrals = TestUtils.randomDouble(7000);
+    final Double excessGoldenParachutePayments = TestUtils.randomDouble(14000);
+    final Double nqdc = TestUtils.randomDouble(10000);
 
     final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
     final String payerStateId = TestUtils.randomAlphabetic();
-    final double stateIncome = TestUtils.randomDouble(20_000);
+    final Double stateIncome = TestUtils.randomDouble(20_000);
 
     final StateTaxInfoWithIncome stateTaxInfo =
         StateTaxInfoWithIncome.builder()
@@ -388,17 +420,17 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99MISC);
     assertThat(createdDocument.getYear()).isEqualTo("2021");
     assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
   }
 
   @Test
   public void testCreate1099NEC() throws IOException {
     final String accountNumber = TestUtils.randomNumberString(9);
-    final double nonemployeeCompensation = TestUtils.randomDouble(4000);
+    final Double nonemployeeCompensation = TestUtils.randomDouble(4000);
 
     final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
     final String payerStateId = TestUtils.randomAlphabetic();
-    final double stateIncome = TestUtils.randomDouble(20_000);
+    final Double stateIncome = TestUtils.randomDouble(20_000);
 
     final StateTaxInfoWithIncome stateTaxInfo =
         StateTaxInfoWithIncome.builder()
@@ -435,7 +467,7 @@ public class DocumentsTest extends AbstractAboundTest {
     assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99NEC);
     assertThat(createdDocument.getYear()).isEqualTo("2020");
     assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(1000L));
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
   }
 
   @Test

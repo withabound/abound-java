@@ -95,7 +95,7 @@ public class ExpensesTest extends AbstractAboundTest {
     final Expense first = response.getData().get(0);
 
     assertThat(first).isNotNull();
-    assertThat(first.getAmount().orElse(null)).isEqualTo(randAmount);
+    assertThat(first.getAmount()).isEqualTo(randAmount);
     assertThat(first.getDescription().orElse(null)).isEqualTo(randDescription);
     assertThat(first.getExpenseType().orElse(null)).isEqualTo(ExpenseType.PERSONAL);
     assertThat(first.getDate().orElse(null)).isEqualTo("2021-02-13");
@@ -104,7 +104,7 @@ public class ExpensesTest extends AbstractAboundTest {
     ExpenseAssert.assertThat(second).hasExpensePredictions();
 
     assertThat(second).isNotNull();
-    assertThat(second.getAmount().orElse(null)).isEqualTo(600.88);
+    assertThat(second.getAmount()).isEqualTo(600.88);
     assertThat(second.getDeductionAmount()).isEqualTo(300.44);
     assertThat(second.getDescription().orElse(null)).isEqualTo("tires");
     assertThat(second.getExpenseType().orElse(null)).isEqualTo(ExpenseType.BUSINESS);
@@ -147,7 +147,8 @@ public class ExpensesTest extends AbstractAboundTest {
     Assertions.assertThatThrownBy(
             () -> getAboundClient().expenses().create(TestUtils.TEST_USER_ID, toCreate))
         .isInstanceOf(AboundApiException.class)
-        .hasMessage("Expected amount to be a number greater than zero, but received undefined (undefined)")
+        .hasMessage(
+            "Expected amount to be a number greater than zero, but received undefined (undefined)")
         .hasFieldOrPropertyWithValue("statusCode", 400)
         .hasFieldOrProperty("request");
   }
@@ -168,7 +169,7 @@ public class ExpensesTest extends AbstractAboundTest {
 
     Assertions.assertThat(updated.getExpenseId()).isEqualTo(ExpensesTest.TEST_EXPENSE_ID);
     Assertions.assertThat(updated.getTaxCategory().orElse(null)).isEqualTo("Meals");
-    Assertions.assertThat(updated.getAmount().orElse(null)).isEqualTo(123.54);
+    Assertions.assertThat(updated.getAmount()).isEqualTo(123.54);
     Assertions.assertThat(updated.getDeductionAmount()).isEqualTo(61.77);
     Assertions.assertThat(updated.getDate().orElse(null)).isEqualTo("2020-05-12");
     Assertions.assertThat(updated.getForeignId()).isEmpty();

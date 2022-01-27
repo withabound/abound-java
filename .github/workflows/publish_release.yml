@@ -1,0 +1,71 @@
+on:
+  release:
+    types:
+      - published
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+jobs:
+  publish_release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: act10ns/slack@v1
+        with:
+          status: starting
+          channel: "#deployments"
+        if: always()
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Validate Github release version and build.gradle version match
+        env:
+          RELEASE_TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          if [[ $(./gradlew -q printVersion) != "${RELEASE_TAG_NAME:1}" ]]
+            then
+              echo "Release tag (${RELEASE_TAG_NAME:1}) does not match the build.gradle version"
+              exit 1
+          fi
+          echo "Release tag matches the build.gradle version. Proceeding with publish_release workflow."
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: "8"
+
+      - name: Publish com.withabound.withabound-java
+        run: ./gradlew publish --no-daemon --no-parallel
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
+
+      - name: Close and release com.withabound.withabound-java
+        run: |
+          if ! ./gradlew closeAndReleaseRepository; then
+            echo "🛑🛑🛑"
+            echo "Publish to Nexus Sonatype succeeded, but failed to close and release. This step assumes there
+            is only one staging repository active when it is called. Stale staging repositories may need
+            to be purged manually before proceeding. They can be removed by logging into
+            https://s01.oss.sonatype.org/."
+            echo "🛑🛑🛑"
+            exit 1
+          fi
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
+
+      # Upon completion of the release step, OSSRH will sync components to Maven Central typically within
+      # 30 minutes, though updates to search may take up to four hours.
+      # Ref https://central.sonatype.org/publish/publish-guide/#releasing-to-central
+
+      - uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: "#deployments"
+        if: always()

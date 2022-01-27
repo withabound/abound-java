@@ -1,29 +1,17 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
     id "com.diffplug.spotless" version "5.16.0"
+
+    // https://github.com/vanniktech/gradle-maven-publish-plugin
+    id 'com.vanniktech.maven.publish' version '0.18.0'
 }
 
-group 'com.withabound'
+// from gradle.properties
+group = project.property('GROUP')
 version = getResources().getText().fromFile('src/main/resources/VERSION').asString().trim()
 
 task printVersion {
-    println version
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-
-    repositories {
-        maven {
-            name = 'maven'
-            url = layout.buildDirectory.dir("repo")
-        }
-    }
+    println project.version
 }
 
 repositories {
@@ -66,5 +54,16 @@ test {
 
     testLogging {
         exceptionFormat = 'full'
+    }
+}
+
+/**
+ * Publishing to Maven Central. See https://github.com/vanniktech/gradle-maven-publish-plugin
+ */
+allprojects {
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
     }
 }

@@ -32,7 +32,7 @@ public class TaxPaymentAssert extends AbstractAssert<TaxPaymentAssert, TaxPaymen
       Assertions.assertThat(document.getDocumentURL())
           .startsWith("https://tax-documents-sandbox.s3.us-west-2.amazonaws.com");
       Assertions.assertThat(document.getDocumentName())
-          .isEqualTo("2020 Q2 Federal Estimated Tax Payment");
+          .isEqualTo("2020 Q2 IRS Estimated Tax Payment");
       Assertions.assertThat(document.getType()).isEqualTo(TaxPaymentDocumentType.TEN40ES);
       Assertions.assertThat(document.getYear()).isEqualTo("2020");
     } else {

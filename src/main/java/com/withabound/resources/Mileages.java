@@ -6,6 +6,7 @@ import com.withabound.models.mileages.MileageRequest;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
 import com.withabound.resources.base.AboundUserScopedResource;
+import com.withabound.resources.base.EmptyJsonObject;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,10 @@ public class Mileages extends AboundUserScopedResource<MileageRequest, Mileage> 
     return "/mileage";
   }
 
+  public AboundBulkResponse<Mileage> list(final String userId) throws IOException {
+    return super.listForUser(userId);
+  }
+
   public AboundBulkResponse<Mileage> create(
       final String userId, final List<MileageRequest> toCreate) throws IOException {
     final Map<String, List<MileageRequest>> requestPayload =
@@ -33,5 +38,19 @@ public class Mileages extends AboundUserScopedResource<MileageRequest, Mileage> 
   public AboundResponse<Mileage> retrieve(final String userId, final String mileageId)
       throws IOException {
     return super.retrieveForUser(userId, mileageId);
+  }
+
+  public AboundResponse<Mileage> update(
+      final String userId, final String mileageId, final MileageRequest toUpdate)
+      throws IOException {
+    final Map<String, MileageRequest> requestPayload =
+        Collections.singletonMap("mileage", toUpdate);
+
+    return super.updateForUser(userId, mileageId, requestPayload);
+  }
+
+  public AboundResponse<EmptyJsonObject> delete(final String userId, final String mileageId)
+      throws IOException {
+    return super.deleteForUser(userId, mileageId);
   }
 }

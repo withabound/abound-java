@@ -37,10 +37,13 @@ public class IncomesTest extends AbstractAboundTest {
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
     final List<Income> listed = response.getData();
-    assertThat(listed).hasSize(1);
+    assertThat(listed).hasSize(2);
 
-    final Income income = listed.get(0);
-    IncomeAssert.assertThat(income).isDesignServicesClientInvoice();
+    final Income first = listed.get(0);
+    IncomeAssert.assertThat(first).isDesignServicesClientInvoice();
+
+    final Income second = listed.get(1);
+    IncomeAssert.assertThat(second).isDesignServicesSSA1099ClientInvoice();
   }
 
   @Test

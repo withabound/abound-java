@@ -195,6 +195,16 @@ System.out.println(response.getData()); // {}
 
 #### Mileage
 
+List `Mileage`s:
+
+```java
+String userId = "userId_506...";
+
+AboundBulkResponse<Mileage> response = abound.mileages().list(userId);
+
+System.out.println(response.getData()); // list of Mileages
+```
+
 Create `Mileage`s:
 
 ```java
@@ -220,6 +230,33 @@ String mileageId = "mileageId_4af...";
 AboundResponse<Mileage> response = abound.mileages().retrieve(userId, mileageId);
 
 System.out.println(response.getData().getDistance());
+```
+
+Update a `Mileage`:
+
+```java
+String userId = "userId_506...";
+String mileageId = "mileageId_4af...";
+MileageRequest mileageUpdates = MileageRequest.builder()
+  .distance(56.1)
+  .date("2021-08-04")
+  .description("Client visit")
+  .build();
+
+AboundResponse<Mileage> response = abound.mileages().update(userId, mileageId, mileageUpdates);
+
+System.out.println(response.getData().getDistance()); // 56.1
+```
+
+Delete a `Mileage`:
+
+```java
+String userId = "userId_506...";
+String mileageId = "mileageId_4af...";
+
+AboundResponse<EmptyJsonObject> response = abound.mileages().delete(userId, mileageId);
+
+System.out.println(response.getData()); // {}
 ```
 
 #### Payment Methods

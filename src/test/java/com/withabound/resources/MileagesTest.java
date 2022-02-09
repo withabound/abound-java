@@ -11,16 +11,31 @@ import com.withabound.resources.asserts.AboundResponseAssert;
 import com.withabound.resources.asserts.MileageAssert;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
+import com.withabound.resources.base.EmptyJsonObject;
 import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class MileagesTest extends AbstractAboundTest {
   public static final String TEST_MILEAGE_ID = "mileageId_test4af7070cfb04a12552a1950e2f0afa660fba";
+
+  @Test
+  public void testList() throws IOException {
+    final AboundBulkResponse<Mileage> listed =
+        getAboundClient().mileages().list(TestUtils.TEST_USER_ID);
+
+    AboundBulkResponseAssert.assertThat(listed).hasResponseMetadata();
+
+    assertThat(listed.getData()).hasSize(1);
+
+    final Mileage mileage = listed.getData().get(0);
+    MileageAssert.assertThat(mileage).is09Jan2020OnSiteClientVisit();
+  }
 
   @Test
   public void testCreate() throws IOException {
@@ -81,5 +96,39 @@ public class MileagesTest extends AbstractAboundTest {
     final Mileage retrieved = response.getData();
 
     MileageAssert.assertThat(retrieved).is09Jan2020OnSiteClientVisit();
+  }
+
+  @Test
+  public void testUpdate() throws IOException {
+    final double newDistance = TestUtils.randomDouble();
+    final String newDescription = TestUtils.randomAlphabetic();
+    final String newDate = TestUtils.randomDate();
+
+    final MileageRequest mileageUpdates =
+        MileageRequest.builder()
+            .distance(newDistance)
+            .description(newDescription)
+            .date(newDate)
+            .build();
+
+    final AboundResponse<Mileage> response =
+        getAboundClient()
+            .mileages()
+            .update(TestUtils.TEST_USER_ID, TEST_MILEAGE_ID, mileageUpdates);
+
+    AboundResponseAssert.assertThat(response).hasResponseMetadata();
+
+    final Mileage updated = response.getData();
+    assertThat(updated.getDistance()).isEqualTo(newDistance);
+    assertThat(updated.getDescription()).isEqualTo(Optional.of(newDescription));
+    assertThat(updated.getDate()).isEqualTo(newDate);
+  }
+
+  @Test
+  public void testDelete() throws IOException {
+    final AboundResponse<EmptyJsonObject> response =
+        getAboundClient().mileages().delete(TestUtils.TEST_USER_ID, TEST_MILEAGE_ID);
+
+    AboundResponseAssert.assertThat(response).hasResponseMetadata().hasEmptyDataObject();
   }
 }

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -99,11 +100,15 @@ public class MileagesTest extends AbstractAboundTest {
 
   @Test
   public void testUpdate() throws IOException {
+    final double newDistance = TestUtils.randomDouble();
+    final String newDescription = TestUtils.randomAlphabetic();
+    final String newDate = TestUtils.randomDate();
+
     final MileageRequest mileageUpdates =
         MileageRequest.builder()
-            .distance(TestUtils.randomDouble())
-            .description(TestUtils.randomAlphabetic())
-            .date(TestUtils.randomDate())
+            .distance(newDistance)
+            .description(newDescription)
+            .date(newDate)
             .build();
 
     final AboundResponse<Mileage> response =
@@ -114,7 +119,9 @@ public class MileagesTest extends AbstractAboundTest {
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
     final Mileage updated = response.getData();
-    MileageAssert.assertThat(updated).is09Jan2020OnSiteClientVisit();
+    assertThat(updated.getDistance()).isEqualTo(newDistance);
+    assertThat(updated.getDescription()).isEqualTo(Optional.of(newDescription));
+    assertThat(updated.getDate()).isEqualTo(newDate);
   }
 
   @Test

@@ -494,6 +494,7 @@ The recommended extensions and settings for Java development with VS Code have b
 Install Java 8 on Mac:
 
 ```console
+brew tap homebrew/cask-versions
 brew install temurin8
 echo "export JAVA_HOME=$(/usr/libexec/java_home -v1.8)" >> ~/.zprofile
 echo "export GRADLE_USER_HOME=\"$HOME/.gradle\"" >> ~/.zprofile
@@ -532,13 +533,13 @@ In order to provide a consistent, predictable experience for consumers of the SD
 established patterns should be followed:
 
 - Avoid using primitives as instance variables and return types for `public` methods on
-resources, since they delegate and (de)serialize to
-[default values](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html) if
-they are `null`.
+  resources, since they delegate and (de)serialize to
+  [default values](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html) if
+  they are `null`.
 - `Optional<T>` can be leveraged to provide callers with hints about potential nullability.
 - `Optional` variants for boxed primitives (e.g. `OptionalLong`, `OptionalInt`, `OptionalDouble`,
-etc.) have been avoided since their propensity for throwing `NoSuchElementException` makes them
-more difficult to use in Optional chains.
+  etc.) have been avoided since their propensity for throwing `NoSuchElementException` makes them
+  more difficult to use in Optional chains.
 
 #### A note about Notes
 

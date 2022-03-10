@@ -27,8 +27,8 @@ public class IncomeRequest {
 
   private JsonElement notes;
 
-  public IncomeType getIncomeType() {
-    return incomeType;
+  public Optional<IncomeType> getIncomeType() {
+    return Optional.ofNullable(incomeType);
   }
 
   public Double getAmount() {
@@ -39,8 +39,8 @@ public class IncomeRequest {
     return date;
   }
 
-  public Optional<String> getDescription() {
-    return Optional.ofNullable(description);
+  public String getDescription() {
+    return description;
   }
 
   public Optional<String> getCategory() {

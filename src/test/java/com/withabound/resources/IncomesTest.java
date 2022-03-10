@@ -122,20 +122,30 @@ public class IncomesTest extends AbstractAboundTest {
             .foreignId("personal_foreign_id")
             .build();
 
+    final IncomeRequest noIncomeType =
+        IncomeRequest.builder()
+            .amount(101.10)
+            .date("2020-05-01")
+            .category("Personal income")
+            .description("Personal description")
+            .foreignId("personal_foreign_id")
+            .build();
+
     final AboundBulkResponse<Income> response =
         getAboundClient()
             .incomes()
-            .create(TestUtils.TEST_USER_ID, Arrays.asList(ten99, ten99Int, w2, personal));
+            .create(
+                TestUtils.TEST_USER_ID, Arrays.asList(ten99, ten99Int, w2, personal, noIncomeType));
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
     final List<Income> created = response.getData();
-    assertThat(created).hasSize(4);
+    assertThat(created).hasSize(5);
 
     final Income createdTen99 = created.get(0);
     assertThat(createdTen99).isNotNull();
     assertThat(createdTen99.getIncomeId()).isNotEmpty();
-    assertThat(createdTen99.getIncomeType()).isEqualTo(IncomeType.TEN99);
+    assertThat(createdTen99.getIncomeType()).isEqualTo(ten99.getIncomeType());
     assertThat(createdTen99.getAmount()).isEqualTo(ten99.getAmount());
     assertThat(createdTen99.getDate()).isEqualTo(ten99.getDate());
     assertThat(createdTen99.getDescription()).isEqualTo(ten99.getDescription());
@@ -171,13 +181,18 @@ public class IncomesTest extends AbstractAboundTest {
     final Income createdPersonal = created.get(3);
     assertThat(createdPersonal).isNotNull();
     assertThat(createdPersonal.getIncomeId()).isNotEmpty();
-    assertThat(createdPersonal.getIncomeType()).isEqualTo(IncomeType.PERSONAL);
+    assertThat(createdPersonal.getIncomeType()).isEqualTo(personal.getIncomeType());
     assertThat(createdPersonal.getAmount()).isEqualTo(personal.getAmount());
     assertThat(createdPersonal.getDate()).isEqualTo(personal.getDate());
     assertThat(createdPersonal.getDescription()).isEqualTo(personal.getDescription());
     assertThat(createdPersonal.getCategory()).isEqualTo(personal.getCategory());
     assertThat(createdPersonal.getForeignId()).isEqualTo(personal.getForeignId());
     assertThat(createdPersonal.getDocumentType()).isEmpty();
+
+    final Income createNoIncomeType = created.get(4);
+    assertThat(createNoIncomeType).isNotNull();
+    assertThat(createNoIncomeType.getIncomeId()).isNotEmpty();
+    assertThat(createNoIncomeType.getAmount()).isEqualTo(noIncomeType.getAmount());
   }
 
   @Test
@@ -188,6 +203,7 @@ public class IncomesTest extends AbstractAboundTest {
             .amount(123.45)
             .date("2020-01-01")
             .category("1099 income")
+            .description(TestUtils.randomAlphabetic())
             // test the builder
             .notes("hello world")
             .build();
@@ -218,6 +234,7 @@ public class IncomesTest extends AbstractAboundTest {
             .amount(123.45)
             .date("2020-01-01")
             .category("1099 income")
+            .description(TestUtils.randomAlphabetic())
             .build();
 
     // test the setter
@@ -275,11 +292,11 @@ public class IncomesTest extends AbstractAboundTest {
 
     assertThat(updated).isNotNull();
     assertThat(updated.getIncomeId()).isEqualTo(TEST_INCOME_ID);
-    assertThat(updated.getDescription()).isEqualTo(Optional.of(description));
+    assertThat(updated.getDescription()).isEqualTo(description);
     assertThat(updated.getDate()).isEqualTo(date);
     assertThat(updated.getCategory()).isEqualTo(Optional.of(category));
     assertThat(updated.getAmount()).isEqualTo(amount);
-    assertThat(updated.getIncomeType()).isEqualTo(IncomeType.TEN99);
+    assertThat(updated.getIncomeType()).isEqualTo(Optional.of(IncomeType.TEN99));
   }
 
   @Test

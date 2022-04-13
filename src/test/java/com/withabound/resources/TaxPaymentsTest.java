@@ -24,10 +24,10 @@ public class TaxPaymentsTest extends AbstractAboundTest {
 
   @Test
   public void testCreate() throws IOException {
-    final Calendar calendar = Calendar.getInstance();
+    final String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
     final TaxPaymentRequest toCreate =
         TaxPaymentRequest.builder()
-            .year(String.valueOf(calendar.get(Calendar.YEAR)))
+            .year(currentYear)
             .period(TaxPeriod.Q1)
             .amount(333.99)
             .entity(TaxPaymentEntity.IRS)
@@ -42,7 +42,7 @@ public class TaxPaymentsTest extends AbstractAboundTest {
     final TaxPayment created = response.getData();
 
     assertThat(created).isNotNull();
-    assertThat(created.getYear()).isEqualTo("2022");
+    assertThat(created.getYear()).isEqualTo(currentYear);
     assertThat(created.getAmount()).isEqualTo(333.99);
     assertThat(created.getEntity()).isEqualTo(TaxPaymentEntity.IRS);
     assertThat(created.getPaymentMethodId()).isEqualTo(PaymentMethodsTest.TEST_PAYMENT_METHOD_ID);

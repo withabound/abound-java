@@ -14,6 +14,7 @@ import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
 import com.withabound.util.TestUtils;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +24,10 @@ public class TaxPaymentsTest extends AbstractAboundTest {
 
   @Test
   public void testCreate() throws IOException {
+    final Calendar calendar = Calendar.getInstance();
     final TaxPaymentRequest toCreate =
         TaxPaymentRequest.builder()
-            .year("2020")
+            .year(String.valueOf(calendar.get(Calendar.YEAR)))
             .period(TaxPeriod.Q1)
             .amount(333.99)
             .entity(TaxPaymentEntity.IRS)
@@ -40,7 +42,7 @@ public class TaxPaymentsTest extends AbstractAboundTest {
     final TaxPayment created = response.getData();
 
     assertThat(created).isNotNull();
-    assertThat(created.getYear()).isEqualTo("2020");
+    assertThat(created.getYear()).isEqualTo("2022");
     assertThat(created.getAmount()).isEqualTo(333.99);
     assertThat(created.getEntity()).isEqualTo(TaxPaymentEntity.IRS);
     assertThat(created.getPaymentMethodId()).isEqualTo(PaymentMethodsTest.TEST_PAYMENT_METHOD_ID);

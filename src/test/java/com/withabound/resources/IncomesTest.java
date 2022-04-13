@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 
 public class IncomesTest extends AbstractAboundTest {
   public static final String TEST_INCOME_ID = "incomeId_test8cb0d56b942722b6d719fa5aa9c5a8dbaa0f";
+  public static final String TEST_INCOME_ID_2 = "incomeId_teste8c6bf02953ca4f2691e05ce98138c50a56a";
 
   @Test
   public void testList() throws IOException {

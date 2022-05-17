@@ -82,61 +82,29 @@ public class IncomesTest extends AbstractAboundTest {
 
   @Test
   public void testCreate() throws IOException {
-    final IncomeRequest ten99 =
-        IncomeRequest.builder()
-            .incomeType(IncomeType.TEN99)
-            .amount(123.45)
-            .date("2020-01-01")
-            .category("1099 income")
-            .description("1099 description")
-            .foreignId("1099_foreign_id")
-            .build();
+    final IncomeRequest ten99 = IncomeRequest.builder().incomeType(IncomeType.TEN99).amount(123.45)
+        .date("2020-01-01").category("1099 income").description("1099 description")
+        .foreignId("1099_foreign_id").build();
 
     final IncomeRequest ten99Int =
-        IncomeRequest.builder()
-            .incomeType(IncomeType.TEN99)
-            .amount(444.77)
-            .date("2020-02-01")
-            .category("1099-INT income")
-            .description("1099-INT description")
-            .foreignId("1099int_foreign_id")
-            .documentType(IncomeDocumentType.TEN99INT)
-            .build();
+        IncomeRequest.builder().incomeType(IncomeType.TEN99).amount(444.77).date("2020-02-01")
+            .category("1099-INT income").description("1099-INT description")
+            .foreignId("1099int_foreign_id").documentType(IncomeDocumentType.TEN99INT).build();
 
     final IncomeRequest w2 =
-        IncomeRequest.builder()
-            .incomeType(IncomeType.W2)
-            .amount(32000.99)
-            .date("2020-03-01")
-            .category("W2 income")
-            .description("W2 description")
-            .foreignId("w2_foreign_id")
-            .build();
+        IncomeRequest.builder().incomeType(IncomeType.W2).amount(32000.99).date("2020-03-01")
+            .category("W2 income").description("W2 description").foreignId("w2_foreign_id").build();
 
-    final IncomeRequest personal =
-        IncomeRequest.builder()
-            .incomeType(IncomeType.PERSONAL)
-            .amount(999.10)
-            .date("2020-04-01")
-            .category("Personal income")
-            .description("Personal description")
-            .foreignId("personal_foreign_id")
-            .build();
+    final IncomeRequest personal = IncomeRequest.builder().incomeType(IncomeType.PERSONAL)
+        .amount(999.10).date("2020-04-01").category("Personal income")
+        .description("Personal description").foreignId("personal_foreign_id").build();
 
     final IncomeRequest noIncomeType =
-        IncomeRequest.builder()
-            .amount(101.10)
-            .date("2020-05-01")
-            .category("Personal income")
-            .description("Personal description")
-            .foreignId("personal_foreign_id")
-            .build();
+        IncomeRequest.builder().amount(101.10).date("2020-05-01").category("Personal income")
+            .description("Personal description").foreignId("personal_foreign_id_no_income").build();
 
-    final AboundBulkResponse<Income> response =
-        getAboundClient()
-            .incomes()
-            .create(
-                TestUtils.TEST_USER_ID, Arrays.asList(ten99, ten99Int, w2, personal, noIncomeType));
+    final AboundBulkResponse<Income> response = getAboundClient().incomes()
+        .create(TestUtils.TEST_USER_ID, Arrays.asList(ten99, ten99Int, w2, personal, noIncomeType));
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -198,23 +166,13 @@ public class IncomesTest extends AbstractAboundTest {
 
   @Test
   public void testNotesString() throws IOException {
-    final IncomeRequest income =
-        IncomeRequest.builder()
-            .incomeType(IncomeType.TEN99)
-            .amount(123.45)
-            .date("2020-01-01")
-            .category("1099 income")
-            .description(TestUtils.randomAlphabetic())
-            // test the builder
-            .notes("hello world")
-            .build();
+    final IncomeRequest income = IncomeRequest.builder().incomeType(IncomeType.TEN99).amount(123.45)
+        .date("2020-01-01").category("1099 income").description(TestUtils.randomAlphabetic())
+        // test the builder
+        .notes("hello world").build();
 
-    final Income created =
-        getAboundClient()
-            .incomes()
-            .create(TestUtils.TEST_USER_ID, Collections.singletonList(income))
-            .getData()
-            .get(0);
+    final Income created = getAboundClient().incomes()
+        .create(TestUtils.TEST_USER_ID, Collections.singletonList(income)).getData().get(0);
 
     assertThat(created.getNotes()).isPresent();
     final JsonElement notes = created.getNotes().get();
@@ -230,23 +188,14 @@ public class IncomesTest extends AbstractAboundTest {
     notes.addProperty("id", 101);
 
     final IncomeRequest income =
-        IncomeRequest.builder()
-            .incomeType(IncomeType.TEN99)
-            .amount(123.45)
-            .date("2020-01-01")
-            .category("1099 income")
-            .description(TestUtils.randomAlphabetic())
-            .build();
+        IncomeRequest.builder().incomeType(IncomeType.TEN99).amount(123.45).date("2020-01-01")
+            .category("1099 income").description(TestUtils.randomAlphabetic()).build();
 
     // test the setter
     income.setNotes(notes);
 
-    final Income created =
-        getAboundClient()
-            .incomes()
-            .create(TestUtils.TEST_USER_ID, Collections.singletonList(income))
-            .getData()
-            .get(0);
+    final Income created = getAboundClient().incomes()
+        .create(TestUtils.TEST_USER_ID, Collections.singletonList(income)).getData().get(0);
 
     assertThat(created.getNotes()).isPresent();
     final JsonElement createdNotes = created.getNotes().get();
@@ -276,13 +225,8 @@ public class IncomesTest extends AbstractAboundTest {
     final String category = TestUtils.randomAlphabetic();
     final Double amount = TestUtils.randomCurrencyAmount();
 
-    final IncomeRequest toUpdate =
-        IncomeRequest.builder()
-            .description(description)
-            .date(date)
-            .category(category)
-            .amount(amount)
-            .build();
+    final IncomeRequest toUpdate = IncomeRequest.builder().description(description).date(date)
+        .category(category).amount(amount).build();
 
     final AboundResponse<Income> response =
         getAboundClient().incomes().update(TestUtils.TEST_USER_ID, TEST_INCOME_ID, toUpdate);

@@ -14,4 +14,7 @@ public enum FilingStatus {
 
   @SerializedName("headOfHousehold")
   HEAD_OF_HOUSEHOLD,
+
+  @SerializedName("qualifiedWidow")
+  QUALIFIED_WIDOW,
 }

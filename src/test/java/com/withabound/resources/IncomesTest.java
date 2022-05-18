@@ -129,7 +129,7 @@ public class IncomesTest extends AbstractAboundTest {
             .date("2020-05-01")
             .category("Personal income")
             .description("Personal description")
-            .foreignId("personal_foreign_id")
+            .foreignId("personal_foreign_id_no_income")
             .build();
 
     final AboundBulkResponse<Income> response =

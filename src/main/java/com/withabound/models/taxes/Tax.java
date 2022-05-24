@@ -34,6 +34,8 @@ public class Tax extends TaxRequest {
 
   private Long stateTaxPayments;
 
+  private Double stateTaxTotal;
+
   private Double taxBalance;
 
   private Double taxWithholdings;
@@ -118,6 +120,10 @@ public class Tax extends TaxRequest {
 
   public Long getStateTaxPayments() {
     return stateTaxPayments;
+  }
+
+  public Double getStateTaxTotal() {
+    return stateTaxTotal;
   }
 
   public Double getTaxBalance() {

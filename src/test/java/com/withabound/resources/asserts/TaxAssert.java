@@ -35,6 +35,7 @@ public class TaxAssert extends AbstractAssert<TaxAssert, Tax> {
     Assertions.assertThat(actual.getStateIncomeTax()).isEqualTo(6026.71);
     Assertions.assertThat(actual.getStateTaxOutstanding()).isEqualTo(6026.71);
     Assertions.assertThat(actual.getStateTaxPayments()).isZero();
+    Assertions.assertThat(actual.getStateTaxTotal()).isEqualTo(6026.71);
     Assertions.assertThat(actual.getTaxBalance()).isEqualTo(27332.02);
     Assertions.assertThat(actual.getTaxTotalOutstanding()).isEqualTo(27332.02);
     Assertions.assertThat(actual.getTaxWithholdings()).isZero();

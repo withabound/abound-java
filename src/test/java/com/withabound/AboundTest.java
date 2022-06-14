@@ -8,19 +8,19 @@ import org.junit.jupiter.api.Test;
 
 class AboundTest extends AbstractAboundTest {
   @Test
-  public void testAboundClientSetsUserAgentHeader() throws IOException, InterruptedException {
+  public void testAboundClientSetsAboundSDKHeader() throws IOException, InterruptedException {
     getMockAboundClient().users().list();
 
     final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
-    final String userAgentValue = recordedRequest.getHeader("User-Agent");
+    final String aboundSDKValue = recordedRequest.getHeader("Abound-SDK");
 
-    assertThat(userAgentValue).startsWith("JavaSDK/");
-    assertThat(userAgentValue).doesNotEndWith("null");
-    assertThat(userAgentValue).doesNotEndWith("unknown");
+    assertThat(aboundSDKValue).startsWith("JavaSDK/");
+    assertThat(aboundSDKValue).doesNotEndWith("null");
+    assertThat(aboundSDKValue).doesNotEndWith("unknown");
 
     // assert the first character after JavaSDK/ is numerical; it's imperfect but fairly reasonable,
     // won't require manual updating upon new versions being released, would pass on both -SNAPSHOT
     // and non-SNAPSHOT versions, etc. as long as the SDK adheres to semantic versioning
-    assertThat(Character.isDigit(userAgentValue.charAt("JavaSDK/".length()))).isTrue();
+    assertThat(Character.isDigit(aboundSDKValue.charAt("JavaSDK/".length()))).isTrue();
   }
 }

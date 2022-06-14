@@ -16,7 +16,8 @@ import org.junit.jupiter.api.Test;
 public class AccessTokensTest extends AbstractAboundTest {
   @Test
   public void testCreate() throws IOException {
-    final AccessTokenRequest toCreate = AccessTokenRequest.builder().userId(TestUtils.TEST_USER_ID).build();
+    final AccessTokenRequest toCreate =
+        AccessTokenRequest.builder().userId(TestUtils.TEST_USER_ID).build();
 
     final AboundResponse<AccessToken> response = getAboundClient().accessTokens().create(toCreate);
 
@@ -35,4 +36,3 @@ public class AccessTokensTest extends AbstractAboundTest {
         .hasFieldOrProperty("request");
   }
 }
-

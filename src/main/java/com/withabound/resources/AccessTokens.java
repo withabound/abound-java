@@ -22,10 +22,9 @@ public class AccessTokens extends AboundBaseResource<AccessTokenRequest, AccessT
   }
 
   public AboundResponse<AccessToken> create(final AccessTokenRequest toCreate) throws IOException {
-    final Map<String, AccessTokenRequest> requestPayload = Collections.singletonMap("accessToken", toCreate);
+    final Map<String, AccessTokenRequest> requestPayload =
+        Collections.singletonMap("accessToken", toCreate);
 
     return super.create(requestPayload);
   }
 }
-
-

@@ -1,4 +1,4 @@
-package com.withabound.models.payment_methods;
+package com.withabound.models.payers;
 
 import com.withabound.resources.base.AboundQueryParameters;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class PaymentMethodParams extends AboundQueryParameters {
+public class PayerParams extends AboundQueryParameters {
   /**
    * A customer-specific unique identifier associated to an Abound record. Allows developers to
    * forego making their own tables every time they integrate and/or add an application.

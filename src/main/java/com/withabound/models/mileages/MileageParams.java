@@ -1,4 +1,4 @@
-package com.withabound.models.payment_methods;
+package com.withabound.models.mileages;
 
 import com.withabound.resources.base.AboundQueryParameters;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class PaymentMethodParams extends AboundQueryParameters {
+public class MileageParams extends AboundQueryParameters {
   /**
    * A customer-specific unique identifier associated to an Abound record. Allows developers to
    * forego making their own tables every time they integrate and/or add an application.
@@ -21,12 +21,16 @@ public class PaymentMethodParams extends AboundQueryParameters {
    */
   private String page;
 
+  /** Filters the list of mileages based on the year field. */
+  private String year;
+
   @Override
   public Map<String, Object> asMap() {
     final Map<String, Object> queryParams = new HashMap<>();
 
     queryParams.put("foreignId", foreignId);
     queryParams.put("page", page);
+    queryParams.put("year", year);
 
     return queryParams;
   }

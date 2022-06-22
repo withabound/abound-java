@@ -106,6 +106,22 @@ public class PaymentMethodsTest extends AbstractAboundTest {
   }
 
   @Test
+  public void testListWithManyParams() throws IOException, InterruptedException {
+    final String foreignId = TestUtils.randomAlphabetic();
+    final String nextPage = TestUtils.randomAlphabetic();
+    final PaymentMethodParams params =
+        PaymentMethodParams.builder().foreignId(foreignId).page(nextPage).build();
+
+    getMockAboundClient().paymentMethods().list(TestUtils.TEST_USER_ID, params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
+    assertThat(requestUrl.queryParameter("foreignId")).isEqualTo(foreignId);
+  }
+
+  @Test
   public void testRetrieve() throws IOException {
     final AboundResponse<PaymentMethod> response =
         getAboundClient().paymentMethods().retrieve(TestUtils.TEST_USER_ID, TEST_PAYMENT_METHOD_ID);

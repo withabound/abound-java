@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.tax_payments.TaxPayment;
 import com.withabound.models.tax_payments.TaxPaymentEntity;
+import com.withabound.models.tax_payments.TaxPaymentParams;
 import com.withabound.models.tax_payments.TaxPaymentRequest;
 import com.withabound.models.tax_payments.TaxPeriod;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
@@ -16,6 +17,8 @@ import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 public class TaxPaymentsTest extends AbstractAboundTest {
@@ -63,6 +66,22 @@ public class TaxPaymentsTest extends AbstractAboundTest {
 
     TaxPaymentAssert.assertThat(retrieved.get(0))
         .is2020Q2FederalEstimatedTaxPayment(false, "created");
+  }
+
+  @Test
+  public void testListWithManyParams() throws IOException, InterruptedException {
+    final String foreignId = TestUtils.randomAlphabetic();
+    final String nextPage = TestUtils.randomAlphabetic();
+    final TaxPaymentParams params =
+        TaxPaymentParams.builder().foreignId(foreignId).page(nextPage).build();
+
+    getMockAboundClient().taxPayments().list(TestUtils.TEST_USER_ID, params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
+    assertThat(requestUrl.queryParameter("foreignId")).isEqualTo(foreignId);
   }
 
   @Test

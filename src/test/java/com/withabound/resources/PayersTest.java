@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.payers.Payer;
+import com.withabound.models.payers.PayerParams;
 import com.withabound.models.payers.PayerRequest;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
 import com.withabound.resources.asserts.AboundResponseAssert;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 public class PayersTest extends AbstractAboundTest {
@@ -76,6 +79,21 @@ public class PayersTest extends AbstractAboundTest {
     assertThat(payers).isNotNull().hasSize(1);
     final Payer payer = payers.get(0);
     PayerAssert.assertThat(payer).isHooli();
+  }
+
+  @Test
+  public void testListWithManyParams() throws IOException, InterruptedException {
+    final String foreignId = TestUtils.randomAlphabetic();
+    final String nextPage = TestUtils.randomAlphabetic();
+    final PayerParams params = PayerParams.builder().foreignId(foreignId).page(nextPage).build();
+
+    getMockAboundClient().payers().list(params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
+    assertThat(requestUrl.queryParameter("foreignId")).isEqualTo(foreignId);
   }
 
   @Test

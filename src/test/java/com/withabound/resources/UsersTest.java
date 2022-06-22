@@ -15,6 +15,7 @@ import com.withabound.resources.base.AboundResponse;
 import com.withabound.util.TestUtils;
 import java.io.IOException;
 import java.util.List;
+import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -90,9 +91,10 @@ public class UsersTest extends AbstractAboundTest {
     getMockAboundClient().users().list(params);
 
     final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
-    final String requestUrl = recordedRequest.getPath();
-    assertThat(requestUrl)
-        .isEqualTo(String.format("/users?foreignId=%s&page=%s", foreignId, nextPage));
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
+    assertThat(requestUrl.queryParameter("foreignId")).isEqualTo(foreignId);
   }
 
   @Test

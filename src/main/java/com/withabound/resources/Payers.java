@@ -2,6 +2,7 @@ package com.withabound.resources;
 
 import com.withabound.AboundConfig;
 import com.withabound.models.payers.Payer;
+import com.withabound.models.payers.PayerParams;
 import com.withabound.models.payers.PayerRequest;
 import com.withabound.resources.base.AboundBaseResource;
 import com.withabound.resources.base.AboundBulkResponse;
@@ -34,6 +35,10 @@ public class Payers extends AboundBaseResource<PayerRequest, Payer> {
   @Override
   public AboundBulkResponse<Payer> list() throws IOException {
     return super.list();
+  }
+
+  public AboundBulkResponse<Payer> list(final PayerParams params) throws IOException {
+    return super.list(params);
   }
 
   @Override

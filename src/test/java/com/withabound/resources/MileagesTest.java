@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.withabound.AbstractAboundTest;
 import com.withabound.exceptions.AboundApiException;
 import com.withabound.models.mileages.Mileage;
+import com.withabound.models.mileages.MileageParams;
 import com.withabound.models.mileages.MileageRequest;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
 import com.withabound.resources.asserts.AboundResponseAssert;
@@ -18,6 +19,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -35,6 +38,24 @@ public class MileagesTest extends AbstractAboundTest {
 
     final Mileage mileage = listed.getData().get(0);
     MileageAssert.assertThat(mileage).is09Jan2020OnSiteClientVisit();
+  }
+
+  @Test
+  public void testListWithManyParams() throws IOException, InterruptedException {
+    final String foreignId = TestUtils.randomAlphabetic();
+    final String year = "2022";
+    final String nextPage = TestUtils.randomAlphabetic();
+    final MileageParams params =
+        MileageParams.builder().foreignId(foreignId).year(year).page(nextPage).build();
+
+    getMockAboundClient().mileages().list(TestUtils.TEST_USER_ID, params);
+
+    final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
+    assertThat(requestUrl.queryParameter("foreignId")).isEqualTo(foreignId);
+    assertThat(requestUrl.queryParameter("year")).isEqualTo("2022");
   }
 
   @Test

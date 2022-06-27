@@ -55,7 +55,7 @@ public class UsersTest extends AbstractAboundTest {
 
     assertThat(users).hasSize(1);
 
-    UserAssert.assertThat(users.get(0)).isAdaLovelace();
+    UserAssert.assertThat(users.get(0)).isBaseAdaLovelace();
   }
 
   @Test

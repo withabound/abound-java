@@ -2,6 +2,7 @@ package com.withabound.resources;
 
 import com.withabound.AboundConfig;
 import com.withabound.models.mileages.Mileage;
+import com.withabound.models.mileages.MileageParams;
 import com.withabound.models.mileages.MileageRequest;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
@@ -25,6 +26,11 @@ public class Mileages extends AboundUserScopedResource<MileageRequest, Mileage> 
 
   public AboundBulkResponse<Mileage> list(final String userId) throws IOException {
     return super.listForUser(userId);
+  }
+
+  public AboundBulkResponse<Mileage> list(final String userId, final MileageParams params)
+      throws IOException {
+    return super.listForUser(userId, params);
   }
 
   public AboundBulkResponse<Mileage> create(

@@ -12,11 +12,17 @@ public class UserAssert extends AbstractAssert<UserAssert, User> {
     return new UserAssert(actual);
   }
 
-  public UserAssert isAdaLovelace() {
+  public UserAssert isBaseAdaLovelace() {
     Assertions.assertThat(actual).isNotNull();
     Assertions.assertThat(actual.getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
     Assertions.assertThat(actual.getEmail()).isEqualTo(Optional.of("your_users_email@domain.com"));
-    Assertions.assertThat(actual.getForeignId()).isEqualTo(Optional.of("your_foreign_id"));
+    Assertions.assertThat(actual.getForeignId()).isEmpty();
+
+    return this;
+  }
+
+  public UserAssert isAdaLovelace() {
+    isBaseAdaLovelace();
 
     final UserProfile profile = actual.getProfile().orElse(null);
 

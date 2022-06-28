@@ -2,6 +2,7 @@ package com.withabound.resources;
 
 import com.withabound.AboundConfig;
 import com.withabound.models.tax_payments.TaxPayment;
+import com.withabound.models.tax_payments.TaxPaymentParams;
 import com.withabound.models.tax_payments.TaxPaymentRequest;
 import com.withabound.resources.base.AboundBulkResponse;
 import com.withabound.resources.base.AboundResponse;
@@ -32,6 +33,11 @@ public class TaxPayments extends AboundUserScopedResource<TaxPaymentRequest, Tax
   @Override
   public AboundBulkResponse<TaxPayment> list(final String userId) throws IOException {
     return super.listForUser(userId);
+  }
+
+  public AboundBulkResponse<TaxPayment> list(final String userId, final TaxPaymentParams params)
+      throws IOException {
+    return super.listForUser(userId, params);
   }
 
   public AboundResponse<TaxPayment> retrieve(final String userId, final String taxPaymentId)

@@ -66,8 +66,9 @@ public class UsersTest extends AbstractAboundTest {
     getMockAboundClient().users().list(params);
 
     final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
-    final String requestUrl = recordedRequest.getPath();
-    assertThat(requestUrl).isEqualTo(String.format("/users?foreignId=%s", foreignId));
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("foreignId")).isEqualTo(foreignId);
   }
 
   @Test
@@ -78,8 +79,9 @@ public class UsersTest extends AbstractAboundTest {
     getMockAboundClient().users().list(params);
 
     final RecordedRequest recordedRequest = getMockAboundServer().takeRequest();
-    final String requestUrl = recordedRequest.getPath();
-    assertThat(requestUrl).isEqualTo(String.format("/users?page=%s", nextPage));
+    final HttpUrl requestUrl = recordedRequest.getRequestUrl();
+    assertThat(requestUrl).isNotNull();
+    assertThat(requestUrl.queryParameter("page")).isEqualTo(nextPage);
   }
 
   @Test

@@ -78,6 +78,7 @@ AboundResponse<User> response = abound.users().create(UserRequest.builder()
     .address2("Apt 101")
     .city("Anytown")
     .state("PA")
+    .country("US")
     .zipcode("17101")
     .phoneNumber("5555555555")
     .dateOfBirth("1989-05-01")
@@ -508,14 +509,16 @@ echo "export GRADLE_USER_HOME=\"$HOME/.gradle\"" >> ~/.zprofile
 │  └── workflows — CI/release configuration
 └── src
     ├── main
-    │  └── java
-    │      └── com
-    │          └── withabound
-    │              ├── exceptions — HTTP 4xx/5xx responses map to these Java exceptions
-    │              ├── http — OkHttp request helpers
-    │              ├── models — Java objects that represent request/response bodies
-    │              └── resources — Defines the public APIs, e.g. abound.users(), and available verbs, e.g. abound.users().list()
-    │                   └── base — Abstract classes that make it easier to define new resources
+    │  ├── java
+    │  │   └── com
+    │  │       └── withabound
+    │  │           ├── exceptions — HTTP 4xx/5xx responses map to these Java exceptions
+    │  │           ├── http — OkHttp request helpers
+    │  │           ├── models — Java objects that represent request/response bodies
+    │  │           └── resources — Defines the public APIs, e.g. abound.users(), and available verbs, e.g. abound.users().list()
+    │  │                └── base — Abstract classes that make it easier to define new resources
+    │  └── resources
+    │      └── VERSION — Defines the versions of this SDK
     └── test
         └── java
             └── com

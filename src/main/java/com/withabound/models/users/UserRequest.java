@@ -1,5 +1,6 @@
 package com.withabound.models.users;
 
+import com.google.gson.JsonElement;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
@@ -10,7 +11,9 @@ import lombok.Setter;
 public class UserRequest {
   private String email;
   private String foreignId;
+  private JsonElement notes;
   private UserProfile profile;
+  private UserBusiness business;
 
   public Optional<String> getEmail() {
     return Optional.ofNullable(email);
@@ -20,7 +23,15 @@ public class UserRequest {
     return Optional.ofNullable(foreignId);
   }
 
+  public Optional<JsonElement> getNotes() {
+    return Optional.ofNullable(notes);
+  }
+
   public Optional<UserProfile> getProfile() {
     return Optional.ofNullable(profile);
+  }
+
+  public Optional<UserBusiness> getBusiness() {
+    return Optional.ofNullable(business);
   }
 }

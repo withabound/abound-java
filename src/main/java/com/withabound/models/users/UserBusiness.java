@@ -6,25 +6,27 @@ import lombok.Setter;
 
 @Setter
 @Builder
-public class UserProfile {
-  private String firstName;
-  private String lastName;
+public class UserBusiness {
+  private String ein;
+  private String name;
+  private TaxClassification taxClassification;
   private String address;
   private String address2;
   private String city;
   private String state;
   private String zipcode;
   private String country;
-  private String phoneNumber; // no country code, numerical digits only
-  private String dateOfBirth; // YYYY-MM-DD
-  private String socialSecurityNumber; // no hyphens, numerical digits only
 
-  public Optional<String> getFirstName() {
-    return Optional.ofNullable(firstName);
+  public String getEin() {
+    return ein;
   }
 
-  public Optional<String> getLastName() {
-    return Optional.ofNullable(lastName);
+  public String getName() {
+    return name;
+  }
+
+  public Optional<TaxClassification> getTaxClassification() {
+    return Optional.ofNullable(taxClassification);
   }
 
   public Optional<String> getAddress() {
@@ -49,17 +51,5 @@ public class UserProfile {
 
   public Optional<String> getCountry() {
     return Optional.ofNullable(country);
-  }
-
-  public Optional<String> getPhoneNumber() {
-    return Optional.ofNullable(phoneNumber);
-  }
-
-  public Optional<String> getDateOfBirth() {
-    return Optional.ofNullable(dateOfBirth);
-  }
-
-  public Optional<String> getSocialSecurityNumber() {
-    return Optional.ofNullable(socialSecurityNumber);
   }
 }

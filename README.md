@@ -311,7 +311,6 @@ TaxPaymentRequest taxPaymentRequest = TaxPaymentRequest.builder()
   .year("2021")
   .period(TaxPeriod.Q1)
   .amount(840.81)
-  .entity(TaxPaymentEntity.IRS)
   .build();
 
 AboundResponse<TaxPayment> response = abound.taxPayments().create(userId, taxPaymentRequest);

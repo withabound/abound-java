@@ -16,8 +16,6 @@ public class TaxPaymentRequest {
 
   private Double amount;
 
-  private TaxPaymentEntity entity;
-
   private String paymentMethodId;
 
   private JsonElement notes;
@@ -32,10 +30,6 @@ public class TaxPaymentRequest {
 
   public Double getAmount() {
     return amount;
-  }
-
-  public TaxPaymentEntity getEntity() {
-    return entity;
   }
 
   public String getPaymentMethodId() {

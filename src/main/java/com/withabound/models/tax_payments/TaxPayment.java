@@ -16,10 +16,9 @@ public class TaxPayment extends TaxPaymentRequest {
       final String year,
       final TaxPeriod period,
       final Double amount,
-      final TaxPaymentEntity entity,
       final String paymentMethodId,
       final JsonElement notes) {
-    super(year, period, amount, entity, paymentMethodId, notes);
+    super(year, period, amount, paymentMethodId, notes);
   }
 
   public String getTaxPaymentId() {

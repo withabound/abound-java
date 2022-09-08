@@ -30,10 +30,6 @@ public class Tax extends TaxRequest {
 
   private Double stateIncomeTax;
 
-  private Double stateTaxOutstanding;
-
-  private Long stateTaxPayments;
-
   private Double stateTaxTotal;
 
   private Double taxBalance;
@@ -41,8 +37,6 @@ public class Tax extends TaxRequest {
   private Double taxWithholdings;
 
   private Long taxWithholdingsPending;
-
-  private Double taxTotalOutstanding;
 
   private Double totalTax;
 
@@ -114,14 +108,6 @@ public class Tax extends TaxRequest {
     return stateIncomeTax;
   }
 
-  public Double getStateTaxOutstanding() {
-    return stateTaxOutstanding;
-  }
-
-  public Long getStateTaxPayments() {
-    return stateTaxPayments;
-  }
-
   public Double getStateTaxTotal() {
     return stateTaxTotal;
   }
@@ -136,10 +122,6 @@ public class Tax extends TaxRequest {
 
   public Long getTaxWithholdingsPending() {
     return taxWithholdingsPending;
-  }
-
-  public Double getTaxTotalOutstanding() {
-    return taxTotalOutstanding;
   }
 
   public Double getTotalTax() {

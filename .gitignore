@@ -42,5 +42,6 @@ cmake-build-*/
 
 # Gradle files
 .gradle/
+bin/
 build/
 out/

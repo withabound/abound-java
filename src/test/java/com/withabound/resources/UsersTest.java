@@ -2,6 +2,7 @@ package com.withabound.resources;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.gson.JsonObject;
 import com.withabound.AbstractAboundTest;
 import com.withabound.exceptions.AboundApiException;
 import com.withabound.models.users.User;
@@ -34,6 +35,23 @@ public class UsersTest extends AbstractAboundTest {
     assertThat(response.getData()).isNotNull();
     assertThat(response.getData().getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
     assertThat(response.getData().getEmail().orElse(null)).isEqualTo(email);
+  }
+
+  @Test
+  public void testCreateWithMetadata() throws IOException {
+    final JsonObject metadata = new JsonObject();
+    metadata.addProperty("key", "value");
+
+    final UserRequest toCreate = UserRequest.builder().metadata(metadata).build();
+
+    final User created = getAboundClient().users().create(toCreate).getData();
+
+    assertThat(created).isNotNull();
+    assertThat(created.getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
+    final JsonObject createdMetadata = created.getMetadata().get();
+    assertThat(createdMetadata.isJsonObject()).isTrue();
+    assertThat(createdMetadata.getAsJsonObject().size()).isEqualTo(1);
+    assertThat(createdMetadata.getAsJsonObject().get("key").getAsString()).isEqualTo("value");
   }
 
   @Test

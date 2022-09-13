@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.withabound.AbstractAboundTest;
 import com.withabound.models.tax_payments.TaxPayment;
-import com.withabound.models.tax_payments.TaxPaymentEntity;
 import com.withabound.models.tax_payments.TaxPaymentParams;
 import com.withabound.models.tax_payments.TaxPaymentRequest;
 import com.withabound.models.tax_payments.TaxPeriod;
@@ -33,7 +32,6 @@ public class TaxPaymentsTest extends AbstractAboundTest {
             .year(currentYear)
             .period(TaxPeriod.Q1)
             .amount(333.99)
-            .entity(TaxPaymentEntity.IRS)
             .paymentMethodId(PaymentMethodsTest.TEST_PAYMENT_METHOD_ID)
             .build();
 
@@ -47,7 +45,6 @@ public class TaxPaymentsTest extends AbstractAboundTest {
     assertThat(created).isNotNull();
     assertThat(created.getYear()).isEqualTo(currentYear);
     assertThat(created.getAmount()).isEqualTo(333.99);
-    assertThat(created.getEntity()).isEqualTo(TaxPaymentEntity.IRS);
     assertThat(created.getPaymentMethodId()).isEqualTo(PaymentMethodsTest.TEST_PAYMENT_METHOD_ID);
     assertThat(created.getDocument()).isEmpty();
     assertThat(created.getStatus()).isEqualTo("created");

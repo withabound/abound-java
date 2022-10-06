@@ -9,6 +9,7 @@ import lombok.Setter;
 public class UserBusiness {
   private String ein;
   private String name;
+  private String dbaName;
   private TaxClassification taxClassification;
   private String address;
   private String address2;
@@ -23,6 +24,10 @@ public class UserBusiness {
 
   public String getName() {
     return name;
+  }
+
+  public Optional<String> getDbaName() {
+    return Optional.ofNullable(dbaName);
   }
 
   public Optional<TaxClassification> getTaxClassification() {

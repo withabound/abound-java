@@ -20,6 +20,8 @@ import com.withabound.models.documents.ten99k.PayerClassification;
 import com.withabound.models.documents.ten99k.TransactionsReportedClassification;
 import com.withabound.models.documents.ten99misc.Form1099MISCDocumentRequest;
 import com.withabound.models.documents.ten99nec.Form1099NECDocumentRequest;
+import com.withabound.models.documents.w9.ExemptFatcaCode;
+import com.withabound.models.documents.w9.ExemptPayeeCode;
 import com.withabound.models.documents.w9.FormW9DocumentRequest;
 import com.withabound.models.documents.w9.W9TaxClassification;
 import com.withabound.resources.asserts.AboundBulkResponseAssert;
@@ -297,6 +299,8 @@ public class DocumentsTest extends AbstractAboundTest {
             .payerId(PayersTest.TEST_PAYER_ID)
             .year(2020)
             .taxClassification(W9TaxClassification.SOLE_PROPRIETOR)
+            .exemptPayeeCode(ExemptPayeeCode.ONE)
+            .exemptFatcaCode(ExemptFatcaCode.A)
             .certificationTimestamp((int) System.currentTimeMillis())
             .accountNumbers(Collections.singletonList(accountNumber))
             .build();

@@ -12,8 +12,8 @@ public enum DocumentType {
   @SerializedName("1099k")
   TEN99K,
 
-  @SerializedName("1099misc")
-  TEN99MISC,
+  // @SerializedName("1099misc")
+  // TEN99MISC,
 
   @SerializedName("1099nec")
   TEN99NEC,

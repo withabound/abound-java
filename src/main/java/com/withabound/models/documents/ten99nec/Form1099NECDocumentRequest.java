@@ -3,7 +3,6 @@ package com.withabound.models.documents.ten99nec;
 import com.withabound.models.documents.DocumentRequest;
 import com.withabound.models.documents.DocumentType;
 import com.withabound.models.documents.StateTaxInfoWithIncome;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.Builder;
@@ -56,6 +55,6 @@ public class Form1099NECDocumentRequest extends DocumentRequest {
   }
 
   public List<StateTaxInfoWithIncome> getStateTaxInfo() {
-    return stateTaxInfo == null ? Collections.emptyList() : stateTaxInfo;
+    return stateTaxInfo;
   }
 }

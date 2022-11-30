@@ -17,8 +17,8 @@ public class StateTaxInfo {
     return stateTaxWithheld;
   }
 
-  public Optional<String> getFilingState() {
-    return Optional.ofNullable(filingState);
+  public String getFilingState() {
+    return filingState;
   }
 
   public Optional<String> getPayerStateId() {

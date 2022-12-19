@@ -13,6 +13,8 @@ public class StateTaxInfo {
 
   private String payerStateId;
 
+  private String userStateId;
+
   public Double getStateTaxWithheld() {
     return stateTaxWithheld;
   }
@@ -23,5 +25,9 @@ public class StateTaxInfo {
 
   public Optional<String> getPayerStateId() {
     return Optional.ofNullable(payerStateId);
+  }
+
+  public Optional<String> getUserStateId() {
+    return Optional.ofNullable(userStateId);
   }
 }

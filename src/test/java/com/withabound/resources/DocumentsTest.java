@@ -121,7 +121,6 @@ public class DocumentsTest extends AbstractAboundTest {
     final Double interestIncome = TestUtils.randomCurrencyAmount(1000);
     final Double earlyWithdrawalPenalty = TestUtils.randomCurrencyAmount();
     final Double usSavingsBondsInterest = TestUtils.randomCurrencyAmount(500);
-    final Double federalIncomeTaxWithheld = TestUtils.randomCurrencyAmount(1000);
     final Double investmentExpenses = TestUtils.randomCurrencyAmount(800);
     final Double foreignTaxPaid = TestUtils.randomCurrencyAmount(4000);
     final Double taxExemptInterest = TestUtils.randomCurrencyAmount();
@@ -131,14 +130,13 @@ public class DocumentsTest extends AbstractAboundTest {
     final Double bondPremiumTreasury = TestUtils.randomCurrencyAmount();
     final Double bondPremiumTaxExemptBond = TestUtils.randomCurrencyAmount();
 
-    final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
-    final String payerStateId = TestUtils.randomAlphabetic();
+    final String userStateId = TestUtils.randomAlphabetic();
 
     final StateTaxInfo stateTaxInfo =
         StateTaxInfo.builder()
             .filingState("CA")
-            .payerStateId(payerStateId)
-            .stateTaxWithheld(stateTaxWithheld)
+            .userStateId(userStateId)
+            .stateTaxWithheld(0.00)
             .build();
 
     final Form1099INTDocumentRequest form1099INTDocumentRequest =
@@ -151,7 +149,7 @@ public class DocumentsTest extends AbstractAboundTest {
             .interestIncome(interestIncome)
             .earlyWithdrawalPenalty(earlyWithdrawalPenalty)
             .usSavingsBondsInterest(usSavingsBondsInterest)
-            .federalIncomeTaxWithheld(federalIncomeTaxWithheld)
+            .federalIncomeTaxWithheld(0.00)
             .investmentExpenses(investmentExpenses)
             .foreignTaxPaid(foreignTaxPaid)
             .foreignTaxPaidCountry("France")
@@ -206,7 +204,7 @@ public class DocumentsTest extends AbstractAboundTest {
             .pseName(pseName)
             .psePhoneNumber(psePhoneNumber)
             .transactionsReportedClassification(TransactionsReportedClassification.PAYMENT_CARD)
-            .aggregateGrossAmount(aggregateGrossAmount)
+            .aggregateGrossAmount(january)
             .numberOfPaymentTransactions(numberOfPaymentTransactions)
             .grossAmountsByMonth(grossAmountsByMonth)
             .stateTaxInfo(Collections.singletonList(stateTaxInfo))
@@ -249,7 +247,7 @@ public class DocumentsTest extends AbstractAboundTest {
             .pseName(TestUtils.randomAlphabetic())
             .psePhoneNumber(TestUtils.randomNumberString(10))
             .transactionsReportedClassification(TransactionsReportedClassification.PAYMENT_CARD)
-            .aggregateGrossAmount(TestUtils.randomCurrencyAmount(150_000))
+            .aggregateGrossAmount(january)
             .grossAmountsByMonth(grossAmountsByMonth)
             .stateTaxInfo(Collections.singletonList(stateTaxInfo))
             .build();
@@ -367,7 +365,6 @@ public class DocumentsTest extends AbstractAboundTest {
   //     final Double rents = TestUtils.randomDouble(8000);
   //     final Double royalties = TestUtils.randomDouble(1000);
   //     final Double otherIncome = TestUtils.randomDouble(8000);
-  //     final Double federalIncomeTaxWithheld = TestUtils.randomDouble();
   //     final Double fishingBoatProceeds = TestUtils.randomDouble();
   //     final Double medicalPayments = TestUtils.randomDouble(1500);
   //     final Double substitutePayments = TestUtils.randomDouble(2000);
@@ -378,7 +375,6 @@ public class DocumentsTest extends AbstractAboundTest {
   //     final Double excessGoldenParachutePayments = TestUtils.randomDouble(14000);
   //     final Double nqdc = TestUtils.randomDouble(10000);
 
-  //     final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
   //     final String payerStateId = TestUtils.randomAlphabetic();
   //     final Double stateIncome = TestUtils.randomDouble(20_000);
 
@@ -386,7 +382,7 @@ public class DocumentsTest extends AbstractAboundTest {
   //         StateTaxInfoWithIncome.builder()
   //             .filingState("ca")
   //             .payerStateId(payerStateId)
-  //             .stateTaxWithheld(stateTaxWithheld)
+  //             .stateTaxWithheld(0.00)
   //             .stateIncome(stateIncome)
   //             .build();
 
@@ -398,7 +394,7 @@ public class DocumentsTest extends AbstractAboundTest {
   //             .rents(rents)
   //             .royalties(royalties)
   //             .otherIncome(otherIncome)
-  //             .federalIncomeTaxWithheld(federalIncomeTaxWithheld)
+  //             .federalIncomeTaxWithheld(0.00)
   //             .fishingBoatProceeds(fishingBoatProceeds)
   //             .medicalPayments(medicalPayments)
   //             .hasDirectSalesOver5000(false)
@@ -439,7 +435,6 @@ public class DocumentsTest extends AbstractAboundTest {
     final String accountNumber = TestUtils.randomNumberString(9);
     final Double nonemployeeCompensation = TestUtils.randomDouble(4000);
 
-    final Double stateTaxWithheld = TestUtils.randomCurrencyAmount(8000);
     final String payerStateId = TestUtils.randomAlphabetic();
     final Double stateIncome = TestUtils.randomDouble(20_000);
 
@@ -447,7 +442,7 @@ public class DocumentsTest extends AbstractAboundTest {
         StateTaxInfoWithIncome.builder()
             .filingState("CA")
             .payerStateId(payerStateId)
-            .stateTaxWithheld(stateTaxWithheld)
+            .stateTaxWithheld(0.00)
             .stateIncome(stateIncome)
             .build();
 

@@ -194,6 +194,55 @@ AboundResponse<EmptyJsonObject> response = abound.expenses().delete(userId, expe
 System.out.println(response.getData()); // {}
 ```
 
+#### Mailings
+
+List `Mailing`s:
+
+```java
+String userId = "userId_506...";
+String documentId = "documentId_efb...";
+
+AboundBulkResponse<Mailing> response = abound.mailings().list(userId, documentId);
+
+System.out.println(response.getData()); // list of Mailings
+```
+
+Create a `Mailing`:
+
+```java
+String userId = "userId_506...";
+String documentId = "documentId_efb...";
+
+AboundResponse<Mailing> response =
+  abound.mailings().create(userId, documentId);
+
+System.out.println(response.getData()); // created Mailing
+```
+
+Retrieve a `Mailing`:
+
+```java
+String userId = "userId_506...";
+String documentId = "documentId_efb...";
+String mailingId = "mailingId_d01...";
+
+AboundResponse<Mailing> response = abound.mailings().retrieve(userId, documentId, mailingId);
+
+System.out.println(response.getData());
+```
+
+Delete a `Mailing`:
+
+```java
+String userId = "userId_506...";
+String documentId = "documentId_efb...";
+String mailingId = "mailingId_d01...";
+
+AboundResponse<EmptyJsonObject> response = abound.mailings().delete(userId, documentId, mailingId);
+
+System.out.println(response.getData()); // {}
+```
+
 #### Mileage
 
 List `Mileage`s:

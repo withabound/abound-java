@@ -4,6 +4,7 @@ import com.withabound.resources.AccessTokens;
 import com.withabound.resources.Documents;
 import com.withabound.resources.Expenses;
 import com.withabound.resources.Incomes;
+import com.withabound.resources.Mailings;
 import com.withabound.resources.Mileages;
 import com.withabound.resources.Payers;
 import com.withabound.resources.PaymentMethods;
@@ -23,6 +24,7 @@ public final class Abound {
   private final Documents documents;
   private final Expenses expenses;
   private final Incomes incomes;
+  private final Mailings mailings;
   private final Mileages mileages;
   private final Payers payers;
   private final PaymentMethods paymentMethods;
@@ -51,6 +53,7 @@ public final class Abound {
     this.documents = new Documents(aboundConfig, httpClient);
     this.expenses = new Expenses(aboundConfig, httpClient);
     this.incomes = new Incomes(aboundConfig, httpClient);
+    this.mailings = new Mailings(aboundConfig, httpClient);
     this.mileages = new Mileages(aboundConfig, httpClient);
     this.payers = new Payers(aboundConfig, httpClient);
     this.paymentMethods = new PaymentMethods(aboundConfig, httpClient);

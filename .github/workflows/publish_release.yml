@@ -17,7 +17,7 @@ jobs:
         if: always()
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Validate Github release version and build.gradle version match
         env:

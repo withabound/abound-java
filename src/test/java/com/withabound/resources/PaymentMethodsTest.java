@@ -32,7 +32,7 @@ public class PaymentMethodsTest extends AbstractAboundTest {
     final String routingNumber = "102001017";
 
     final AboundResponse<PaymentMethod> response =
-        getAboundClient()
+        getV2AboundClient()
             .paymentMethods()
             .create(
                 TestUtils.TEST_USER_ID,
@@ -70,7 +70,7 @@ public class PaymentMethodsTest extends AbstractAboundTest {
             .build();
 
     final PaymentMethod created =
-        getAboundClient()
+        getV2AboundClient()
             .paymentMethods()
             .create(TestUtils.TEST_USER_ID, paymentMethodRequest)
             .getData();
@@ -83,7 +83,7 @@ public class PaymentMethodsTest extends AbstractAboundTest {
   @Test
   public void testList() throws IOException {
     final AboundBulkResponse<PaymentMethod> response =
-        getAboundClient().paymentMethods().list(TestUtils.TEST_USER_ID);
+        getV2AboundClient().paymentMethods().list(TestUtils.TEST_USER_ID);
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -124,7 +124,9 @@ public class PaymentMethodsTest extends AbstractAboundTest {
   @Test
   public void testRetrieve() throws IOException {
     final AboundResponse<PaymentMethod> response =
-        getAboundClient().paymentMethods().retrieve(TestUtils.TEST_USER_ID, TEST_PAYMENT_METHOD_ID);
+        getV2AboundClient()
+            .paymentMethods()
+            .retrieve(TestUtils.TEST_USER_ID, TEST_PAYMENT_METHOD_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 

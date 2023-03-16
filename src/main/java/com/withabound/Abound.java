@@ -22,15 +22,73 @@ import okhttp3.Request;
 public final class Abound {
   private final AccessTokens accessTokens;
   private final Documents documents;
-  private final Expenses expenses;
-  private final Incomes incomes;
+
+  /**
+   * @deprecated Our v2 API is now deprecated and will become completely unavailable on Tuesday May
+   *     16, 2023. Please consider upgrading to our v3 API as a way to prepare for the sunsetting of
+   *     v2. For more detail on these product changes, what endpoints are changing in v3 and how
+   *     that may affect your company, please view our <a
+   *     href="https://docs.withabound.com/changelog">API Changelog</a>.
+   */
+  @Deprecated private final Expenses expenses;
+
+  /**
+   * @deprecated Our v2 API is now deprecated and will become completely unavailable on Tuesday May
+   *     16, 2023. Please consider upgrading to our v3 API as a way to prepare for the sunsetting of
+   *     v2. For more detail on these product changes, what endpoints are changing in v3 and how
+   *     that may affect your company, please view our <a
+   *     href="https://docs.withabound.com/changelog">API Changelog</a>.
+   */
+  @Deprecated private final Incomes incomes;
+
   private final Mailings mailings;
-  private final Mileages mileages;
+  /**
+   * @deprecated Our v2 API is now deprecated and will become completely unavailable on Tuesday May
+   *     16, 2023. Please consider upgrading to our v3 API as a way to prepare for the sunsetting of
+   *     v2. For more detail on these product changes, what endpoints are changing in v3 and how
+   *     that may affect your company, please view our <a
+   *     href="https://docs.withabound.com/changelog">API Changelog</a>.
+   */
+  @Deprecated private final Mileages mileages;
+
   private final Payers payers;
-  private final PaymentMethods paymentMethods;
-  private final Taxes taxes;
-  private final TaxCategories taxCategories;
-  private final TaxPayments taxPayments;
+
+  /**
+   * @deprecated Our v2 API is now deprecated and will become completely unavailable on Tuesday May
+   *     16, 2023. Please consider upgrading to our v3 API as a way to prepare for the sunsetting of
+   *     v2. For more detail on these product changes, what endpoints are changing in v3 and how
+   *     that may affect your company, please view our <a
+   *     href="https://docs.withabound.com/changelog">API Changelog</a>.
+   */
+  @Deprecated private final PaymentMethods paymentMethods;
+
+  /**
+   * @deprecated Our v2 API is now deprecated and will become completely unavailable on Tuesday May
+   *     16, 2023. Please consider upgrading to our v3 API as a way to prepare for the sunsetting of
+   *     v2. For more detail on these product changes, what endpoints are changing in v3 and how
+   *     that may affect your company, please view our <a
+   *     href="https://docs.withabound.com/changelog">API Changelog</a>.
+   */
+  @Deprecated private final Taxes taxes;
+
+  /**
+   * @deprecated Our v2 API is now deprecated and will become completely unavailable on Tuesday May
+   *     16, 2023. Please consider upgrading to our v3 API as a way to prepare for the sunsetting of
+   *     v2. For more detail on these product changes, what endpoints are changing in v3 and how
+   *     that may affect your company, please view our <a
+   *     href="https://docs.withabound.com/changelog">API Changelog</a>.
+   */
+  @Deprecated private final TaxCategories taxCategories;
+
+  /**
+   * @deprecated Our v2 API is now deprecated and will become completely unavailable on Tuesday May
+   *     16, 2023. Please consider upgrading to our v3 API as a way to prepare for the sunsetting of
+   *     v2. For more detail on these product changes, what endpoints are changing in v3 and how
+   *     that may affect your company, please view our <a
+   *     href="https://docs.withabound.com/changelog">API Changelog</a>.
+   */
+  @Deprecated private final TaxPayments taxPayments;
+
   private final Users users;
 
   /** Creates an {@link Abound} client with the default {@link OkHttpClient} settings */

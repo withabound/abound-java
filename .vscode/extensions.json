@@ -1,7 +1,7 @@
 {
   "recommendations": [
-    "gabrielbb.vscode-lombok",
     "redhat.java",
-    "vscjava.vscode-gradle"
+    "vscjava.vscode-gradle",
+    "vscjava.vscode-lombok"
   ]
 }

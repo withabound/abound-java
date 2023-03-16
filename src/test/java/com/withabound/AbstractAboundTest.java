@@ -27,7 +27,7 @@ public abstract class AbstractAboundTest {
   }
 
   /** Performs real requests against the Abound Sandbox environment with test credentials */
-  protected Abound getAboundClient() {
+  protected Abound getV2AboundClient() {
     if (aboundClient == null) {
       final AboundConfig config =
           new AboundConfig(
@@ -35,6 +35,22 @@ public abstract class AbstractAboundTest {
               TestUtils.TEST_APP_SECRET,
               AboundEnvironment.SANDBOX,
               AboundApiVersion.V2);
+
+      aboundClient = new Abound(config);
+    }
+
+    return aboundClient;
+  }
+
+  /** Performs real requests against the Abound Sandbox environment with test credentials */
+  protected Abound getAboundClient() {
+    if (aboundClient == null) {
+      final AboundConfig config =
+          new AboundConfig(
+              TestUtils.TEST_APP_ID,
+              TestUtils.TEST_APP_SECRET,
+              AboundEnvironment.SANDBOX,
+              AboundApiVersion.V3);
 
       aboundClient = new Abound(config);
     }

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class TaxCategoriesTest extends AbstractAboundTest {
   @Test
   public void testRetrieve() throws IOException {
-    final AboundResponse<String[]> response = getAboundClient().taxCategories().retrieve("2020");
+    final AboundResponse<String[]> response = getV2AboundClient().taxCategories().retrieve("2020");
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 

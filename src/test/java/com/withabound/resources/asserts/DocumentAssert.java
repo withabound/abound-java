@@ -31,6 +31,24 @@ public class DocumentAssert extends AbstractAssert<DocumentAssert, Document> {
     return this;
   }
 
+  public DocumentAssert isFormW9() {
+    Assertions.assertThat(actual).isNotNull();
+    Assertions.assertThat(actual.getType()).isEqualTo(DocumentType.W9);
+    Assertions.assertThat(actual.getDocumentId().orElse(null))
+        .isEqualTo(DocumentsTest.TEST_DOCUMENT_ID);
+    Assertions.assertThat(actual.getDocumentURL().orElse(null))
+        .startsWith(
+            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_W-9.pdf");
+    Assertions.assertThat(actual.getDocumentName()).isEqualTo("2023 Form W-9");
+    Assertions.assertThat(actual.getYear()).isEqualTo("2023");
+    Assertions.assertThat(actual.getStatus()).isEmpty();
+    Assertions.assertThat(actual.getMessage()).isEmpty();
+    Assertions.assertThat(actual.getCreatedTimestamp())
+        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
+
+    return this;
+  }
+
   private DocumentAssert(final Document actual) {
     super(actual, DocumentAssert.class);
   }

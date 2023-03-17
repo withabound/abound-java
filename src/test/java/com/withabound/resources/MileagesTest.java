@@ -30,7 +30,7 @@ public class MileagesTest extends AbstractAboundTest {
   @Test
   public void testList() throws IOException {
     final AboundBulkResponse<Mileage> listed =
-        getAboundClient().mileages().list(TestUtils.TEST_USER_ID);
+        getV2AboundClient().mileages().list(TestUtils.TEST_USER_ID);
 
     AboundBulkResponseAssert.assertThat(listed).hasResponseMetadata();
 
@@ -80,7 +80,7 @@ public class MileagesTest extends AbstractAboundTest {
                 .build());
 
     final AboundBulkResponse<Mileage> created =
-        getAboundClient().mileages().create(TestUtils.TEST_USER_ID, toCreate);
+        getV2AboundClient().mileages().create(TestUtils.TEST_USER_ID, toCreate);
 
     AboundBulkResponseAssert.assertThat(created).hasResponseMetadata();
 
@@ -100,7 +100,7 @@ public class MileagesTest extends AbstractAboundTest {
     final List<MileageRequest> toCreate = Collections.emptyList();
 
     Assertions.assertThatThrownBy(
-            () -> getAboundClient().mileages().create(TestUtils.TEST_USER_ID, toCreate))
+            () -> getV2AboundClient().mileages().create(TestUtils.TEST_USER_ID, toCreate))
         .isInstanceOf(AboundApiException.class)
         .hasMessage("Missing mileages objects in request body (code b7c845bd)")
         .hasFieldOrPropertyWithValue("statusCode", 400)
@@ -110,7 +110,7 @@ public class MileagesTest extends AbstractAboundTest {
   @Test
   public void testRetrieve() throws IOException {
     final AboundResponse<Mileage> response =
-        getAboundClient().mileages().retrieve(TestUtils.TEST_USER_ID, TEST_MILEAGE_ID);
+        getV2AboundClient().mileages().retrieve(TestUtils.TEST_USER_ID, TEST_MILEAGE_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -133,7 +133,7 @@ public class MileagesTest extends AbstractAboundTest {
             .build();
 
     final AboundResponse<Mileage> response =
-        getAboundClient()
+        getV2AboundClient()
             .mileages()
             .update(TestUtils.TEST_USER_ID, TEST_MILEAGE_ID, mileageUpdates);
 
@@ -148,7 +148,7 @@ public class MileagesTest extends AbstractAboundTest {
   @Test
   public void testDelete() throws IOException {
     final AboundResponse<EmptyJsonObject> response =
-        getAboundClient().mileages().delete(TestUtils.TEST_USER_ID, TEST_MILEAGE_ID);
+        getV2AboundClient().mileages().delete(TestUtils.TEST_USER_ID, TEST_MILEAGE_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata().hasEmptyDataObject();
   }

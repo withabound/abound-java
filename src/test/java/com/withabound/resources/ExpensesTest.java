@@ -31,7 +31,7 @@ public class ExpensesTest extends AbstractAboundTest {
   @Test
   public void testList() throws IOException {
     final AboundBulkResponse<Expense> response =
-        getAboundClient().expenses().list(TestUtils.TEST_USER_ID);
+        getV2AboundClient().expenses().list(TestUtils.TEST_USER_ID);
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -61,7 +61,7 @@ public class ExpensesTest extends AbstractAboundTest {
   @Test
   public void testRetrieve() throws IOException {
     final AboundResponse<Expense> response =
-        getAboundClient().expenses().retrieve(TestUtils.TEST_USER_ID, TEST_EXPENSE_ID);
+        getV2AboundClient().expenses().retrieve(TestUtils.TEST_USER_ID, TEST_EXPENSE_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -85,7 +85,7 @@ public class ExpensesTest extends AbstractAboundTest {
         ExpenseRequest.builder().amount(600.88).date("2020-12-12").description("tires").build();
 
     final AboundBulkResponse<Expense> response =
-        getAboundClient()
+        getV2AboundClient()
             .expenses()
             .create(TestUtils.TEST_USER_ID, Arrays.asList(randomExpense, tires));
 
@@ -128,7 +128,7 @@ public class ExpensesTest extends AbstractAboundTest {
             .build();
 
     final Expense created =
-        getAboundClient()
+        getV2AboundClient()
             .expenses()
             .create(TestUtils.TEST_USER_ID, Collections.singletonList(expense))
             .getData()
@@ -145,7 +145,7 @@ public class ExpensesTest extends AbstractAboundTest {
         Collections.singletonList(ExpenseRequest.builder().build());
 
     Assertions.assertThatThrownBy(
-            () -> getAboundClient().expenses().create(TestUtils.TEST_USER_ID, toCreate))
+            () -> getV2AboundClient().expenses().create(TestUtils.TEST_USER_ID, toCreate))
         .isInstanceOf(AboundApiException.class)
         .hasMessage(
             "Expected amount to be a number greater than zero, but received undefined (undefined)")
@@ -156,7 +156,7 @@ public class ExpensesTest extends AbstractAboundTest {
   @Test
   public void testUpdate() throws IOException {
     final AboundResponse<Expense> response =
-        getAboundClient()
+        getV2AboundClient()
             .expenses()
             .update(
                 TestUtils.TEST_USER_ID,
@@ -179,7 +179,7 @@ public class ExpensesTest extends AbstractAboundTest {
   @Test
   public void testDelete() throws IOException {
     final AboundResponse<EmptyJsonObject> response =
-        getAboundClient().expenses().delete(TestUtils.TEST_USER_ID, TEST_EXPENSE_ID);
+        getV2AboundClient().expenses().delete(TestUtils.TEST_USER_ID, TEST_EXPENSE_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata().hasEmptyDataObject();
   }

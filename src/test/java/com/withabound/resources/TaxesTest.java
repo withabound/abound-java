@@ -19,7 +19,8 @@ import org.junit.jupiter.api.Test;
 public class TaxesTest extends AbstractAboundTest {
   @Test
   public void testList() throws IOException {
-    final AboundBulkResponse<Tax> response = getAboundClient().taxes().list(TestUtils.TEST_USER_ID);
+    final AboundBulkResponse<Tax> response =
+        getV2AboundClient().taxes().list(TestUtils.TEST_USER_ID);
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -32,7 +33,7 @@ public class TaxesTest extends AbstractAboundTest {
   @Test
   public void testRetrieve() throws IOException {
     final AboundResponse<Tax> response =
-        getAboundClient().taxes().retrieve(TestUtils.TEST_USER_ID, "2020");
+        getV2AboundClient().taxes().retrieve(TestUtils.TEST_USER_ID, "2020");
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -52,7 +53,7 @@ public class TaxesTest extends AbstractAboundTest {
             .build();
 
     final AboundResponse<Tax> response =
-        getAboundClient().taxes().calculate(TestUtils.TEST_USER_ID, "2020", toUpdate);
+        getV2AboundClient().taxes().calculate(TestUtils.TEST_USER_ID, "2020", toUpdate);
 
     final Tax calculated = response.getData();
 

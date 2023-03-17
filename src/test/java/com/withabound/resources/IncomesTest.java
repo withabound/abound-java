@@ -33,7 +33,7 @@ public class IncomesTest extends AbstractAboundTest {
   @Test
   public void testList() throws IOException {
     final AboundBulkResponse<Income> response =
-        getAboundClient().incomes().list(TestUtils.TEST_USER_ID);
+        getV2AboundClient().incomes().list(TestUtils.TEST_USER_ID);
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -133,7 +133,7 @@ public class IncomesTest extends AbstractAboundTest {
             .build();
 
     final AboundBulkResponse<Income> response =
-        getAboundClient()
+        getV2AboundClient()
             .incomes()
             .create(
                 TestUtils.TEST_USER_ID, Arrays.asList(ten99, ten99Int, w2, personal, noIncomeType));
@@ -210,7 +210,7 @@ public class IncomesTest extends AbstractAboundTest {
             .build();
 
     final Income created =
-        getAboundClient()
+        getV2AboundClient()
             .incomes()
             .create(TestUtils.TEST_USER_ID, Collections.singletonList(income))
             .getData()
@@ -242,7 +242,7 @@ public class IncomesTest extends AbstractAboundTest {
     income.setNotes(notes);
 
     final Income created =
-        getAboundClient()
+        getV2AboundClient()
             .incomes()
             .create(TestUtils.TEST_USER_ID, Collections.singletonList(income))
             .getData()
@@ -260,7 +260,7 @@ public class IncomesTest extends AbstractAboundTest {
   @Test
   public void testRetrieve() throws IOException {
     final AboundResponse<Income> response =
-        getAboundClient().incomes().retrieve(TestUtils.TEST_USER_ID, TEST_INCOME_ID);
+        getV2AboundClient().incomes().retrieve(TestUtils.TEST_USER_ID, TEST_INCOME_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -285,7 +285,7 @@ public class IncomesTest extends AbstractAboundTest {
             .build();
 
     final AboundResponse<Income> response =
-        getAboundClient().incomes().update(TestUtils.TEST_USER_ID, TEST_INCOME_ID, toUpdate);
+        getV2AboundClient().incomes().update(TestUtils.TEST_USER_ID, TEST_INCOME_ID, toUpdate);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -303,7 +303,7 @@ public class IncomesTest extends AbstractAboundTest {
   @Test
   public void testDelete() throws IOException {
     final AboundResponse<EmptyJsonObject> response =
-        getAboundClient().incomes().delete(TestUtils.TEST_USER_ID, TEST_INCOME_ID);
+        getV2AboundClient().incomes().delete(TestUtils.TEST_USER_ID, TEST_INCOME_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata().hasEmptyDataObject();
   }

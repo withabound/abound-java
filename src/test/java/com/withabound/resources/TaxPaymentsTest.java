@@ -36,7 +36,7 @@ public class TaxPaymentsTest extends AbstractAboundTest {
             .build();
 
     final AboundResponse<TaxPayment> response =
-        getAboundClient().taxPayments().create(TestUtils.TEST_USER_ID, toCreate);
+        getV2AboundClient().taxPayments().create(TestUtils.TEST_USER_ID, toCreate);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -53,7 +53,7 @@ public class TaxPaymentsTest extends AbstractAboundTest {
   @Test
   public void testList() throws IOException {
     final AboundBulkResponse<TaxPayment> response =
-        getAboundClient().taxPayments().list(TestUtils.TEST_USER_ID);
+        getV2AboundClient().taxPayments().list(TestUtils.TEST_USER_ID);
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -84,7 +84,7 @@ public class TaxPaymentsTest extends AbstractAboundTest {
   @Test
   public void testRetrieve() throws IOException {
     final AboundResponse<TaxPayment> response =
-        getAboundClient().taxPayments().retrieve(TestUtils.TEST_USER_ID, TEST_TAX_PAYMENT_ID);
+        getV2AboundClient().taxPayments().retrieve(TestUtils.TEST_USER_ID, TEST_TAX_PAYMENT_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
 

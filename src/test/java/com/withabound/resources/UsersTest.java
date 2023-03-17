@@ -41,6 +41,21 @@ public class UsersTest extends AbstractAboundTest {
   }
 
   @Test
+  public void testCreateV2() throws IOException {
+    final String email = TestUtils.randomEmail();
+
+    final UserRequest toCreate = UserRequest.builder().email(email).build();
+
+    final AboundResponse<User> response = getV2AboundClient().users().create(toCreate);
+
+    AboundResponseAssert.assertThat(response).hasResponseMetadata();
+
+    assertThat(response.getData()).isNotNull();
+    assertThat(response.getData().getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
+    assertThat(response.getData().getEmail().orElse(null)).isEqualTo(email);
+  }
+
+  @Test
   public void testCreateUserWithProfileAndBusiness() throws IOException {
     final String email = TestUtils.randomEmail();
 
@@ -102,6 +117,67 @@ public class UsersTest extends AbstractAboundTest {
   }
 
   @Test
+  public void testCreateUserWithProfileAndBusinessV2() throws IOException {
+    final String email = TestUtils.randomEmail();
+
+    final UserProfile profile =
+        UserProfile.builder()
+            .firstName("Erlich")
+            .lastName("Bachman")
+            .address("3338 Thunder Road")
+            .city("Palo Alto")
+            .state("CA")
+            .zipcode("94306")
+            .phoneNumber("8773427222")
+            .dateOfBirth("1981-04-06")
+            .build();
+
+    final UserBusiness business =
+        UserBusiness.builder()
+            .ein("950361345")
+            .name("Aviato Corporation")
+            .dbaName("Aviato")
+            .taxClassification(TaxClassification.C_CORPORATION)
+            .address("3338 Thunder Road")
+            .city("Palo Alto")
+            .state("CA")
+            .zipcode("94306")
+            .build();
+
+    final UserRequest toCreate =
+        UserRequest.builder().email(email).profile(profile).business(business).build();
+
+    final AboundResponse<User> response = getV2AboundClient().users().create(toCreate);
+
+    AboundResponseAssert.assertThat(response).hasResponseMetadata();
+
+    assertThat(response.getData()).isNotNull();
+    assertThat(response.getData().getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
+    assertThat(response.getData().getEmail().orElse(null)).isEqualTo(email);
+
+    final UserProfile profileResponse = response.getData().getProfile().orElse(null);
+    assertThat(profileResponse).isNotNull();
+    assertThat(profileResponse.getFirstName()).isEqualTo(profile.getFirstName());
+    assertThat(profileResponse.getLastName()).isEqualTo(profile.getLastName());
+    assertThat(profileResponse.getAddress()).isEqualTo(profile.getAddress());
+    assertThat(profileResponse.getCity()).isEqualTo(profile.getCity());
+    assertThat(profileResponse.getState()).isEqualTo(profile.getState());
+    assertThat(profileResponse.getZipcode()).isEqualTo(profile.getZipcode());
+    assertThat(profileResponse.getPhoneNumber()).isEqualTo(profile.getPhoneNumber());
+    assertThat(profileResponse.getDateOfBirth()).isEqualTo(profile.getDateOfBirth());
+
+    final UserBusiness businessResponse = response.getData().getBusiness().orElse(null);
+    assertThat(businessResponse).isNotNull();
+    assertThat(businessResponse.getName()).isEqualTo(business.getName());
+    assertThat(businessResponse.getDbaName()).isEqualTo(business.getDbaName());
+    assertThat(businessResponse.getTaxClassification()).isEqualTo(business.getTaxClassification());
+    assertThat(businessResponse.getAddress()).isEqualTo(business.getAddress());
+    assertThat(businessResponse.getCity()).isEqualTo(business.getCity());
+    assertThat(businessResponse.getState()).isEqualTo(business.getState());
+    assertThat(businessResponse.getZipcode()).isEqualTo(business.getZipcode());
+  }
+
+  @Test
   public void testCreateWithMetadata() throws IOException {
     final JsonObject metadata = new JsonObject();
     metadata.addProperty("key", "value");
@@ -109,6 +185,23 @@ public class UsersTest extends AbstractAboundTest {
     final UserRequest toCreate = UserRequest.builder().metadata(metadata).build();
 
     final User created = getAboundClient().users().create(toCreate).getData();
+
+    assertThat(created).isNotNull();
+    assertThat(created.getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
+    final JsonObject createdMetadata = created.getMetadata().get();
+    assertThat(createdMetadata.isJsonObject()).isTrue();
+    assertThat(createdMetadata.getAsJsonObject().size()).isEqualTo(1);
+    assertThat(createdMetadata.getAsJsonObject().get("key").getAsString()).isEqualTo("value");
+  }
+
+  @Test
+  public void testCreateWithMetadataV2() throws IOException {
+    final JsonObject metadata = new JsonObject();
+    metadata.addProperty("key", "value");
+
+    final UserRequest toCreate = UserRequest.builder().metadata(metadata).build();
+
+    final User created = getV2AboundClient().users().create(toCreate).getData();
 
     assertThat(created).isNotNull();
     assertThat(created.getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
@@ -128,8 +221,30 @@ public class UsersTest extends AbstractAboundTest {
   }
 
   @Test
+  public void testCreateWithNullRequestBodyThrowsAboundApiExceptionV2() {
+    Assertions.assertThatThrownBy(() -> getV2AboundClient().users().create(null))
+        .isInstanceOf(AboundApiException.class)
+        .hasMessage("Missing user object in request")
+        .hasFieldOrPropertyWithValue("statusCode", 400)
+        .hasFieldOrProperty("request");
+  }
+
+  @Test
   public void testList() throws IOException {
     final AboundBulkResponse<User> response = getAboundClient().users().list();
+
+    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
+
+    final List<User> users = response.getData();
+
+    assertThat(users).hasSize(1);
+
+    UserAssert.assertThat(users.get(0)).isBaseAdaLovelace();
+  }
+
+  @Test
+  public void testListV2() throws IOException {
+    final AboundBulkResponse<User> response = getV2AboundClient().users().list();
 
     AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
 
@@ -192,6 +307,16 @@ public class UsersTest extends AbstractAboundTest {
   }
 
   @Test
+  public void testRetrieveV2() throws IOException {
+    final AboundResponse<User> response =
+        getV2AboundClient().users().retrieve(TestUtils.TEST_USER_ID);
+
+    AboundResponseAssert.assertThat(response).hasResponseMetadata();
+
+    UserAssert.assertThat(response.getData()).isAdaLovelace();
+  }
+
+  @Test
   public void testUpdate() throws IOException {
     final AboundResponse<User> original =
         getAboundClient().users().retrieve(TestUtils.TEST_USER_ID);
@@ -206,6 +331,26 @@ public class UsersTest extends AbstractAboundTest {
 
     final AboundResponse<User> updated =
         getAboundClient().users().update(originalUser.getUserId(), toUpdate);
+
+    AboundResponseAssert.assertThat(updated).hasResponseMetadata();
+    assertThat(updated.getData().getEmail().orElse(null)).isEqualTo(newEmail);
+  }
+
+  @Test
+  public void testUpdateV2() throws IOException {
+    final AboundResponse<User> original =
+        getAboundClient().users().retrieve(TestUtils.TEST_USER_ID);
+    AboundResponseAssert.assertThat(original).hasResponseMetadata();
+    UserAssert.assertThat(original.getData()).isAdaLovelace();
+
+    final String newEmail = TestUtils.randomEmail();
+    final User originalUser = original.getData();
+
+    final UserRequest toUpdate = originalUser;
+    toUpdate.setEmail(newEmail);
+
+    final AboundResponse<User> updated =
+        getV2AboundClient().users().update(originalUser.getUserId(), toUpdate);
 
     AboundResponseAssert.assertThat(updated).hasResponseMetadata();
     assertThat(updated.getData().getEmail().orElse(null)).isEqualTo(newEmail);

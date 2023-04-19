@@ -1,7 +1,7 @@
 package com.withabound.models.documents.account_statements;
 
-import com.withabound.models.documents.DocumentRequest;
 import com.withabound.models.documents.DocumentType;
+import com.withabound.models.documents.IDocumentRequest;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.Setter;
@@ -18,7 +18,9 @@ import lombok.Setter;
 @Deprecated
 @Builder
 @Setter
-public class AccountStatementDocumentRequest extends DocumentRequest {
+public class AccountStatementDocumentRequest implements IDocumentRequest {
+  private final DocumentType type = DocumentType.ACCOUNT_STATEMENT;
+
   private Integer year;
 
   private String beginDate; // YYYY-MM-DD. The date representing the start of this period.
@@ -33,9 +35,8 @@ public class AccountStatementDocumentRequest extends DocumentRequest {
 
   private String disclosure;
 
-  @Override
   public DocumentType getType() {
-    return DocumentType.ACCOUNT_STATEMENT;
+    return type;
   }
 
   public Integer getYear() {

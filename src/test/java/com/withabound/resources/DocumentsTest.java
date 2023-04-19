@@ -6,7 +6,6 @@ import com.withabound.AbstractAboundTest;
 import com.withabound.exceptions.AboundApiException;
 import com.withabound.models.documents.Document;
 import com.withabound.models.documents.DocumentParams;
-import com.withabound.models.documents.DocumentRequest;
 import com.withabound.models.documents.DocumentType;
 import com.withabound.models.documents.StateTaxInfo;
 import com.withabound.models.documents.StateTaxInfoWithIncome;
@@ -183,6 +182,7 @@ public class DocumentsTest extends AbstractAboundTest {
         .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
   }
 
+  @Test
   public void testCreate1099INTV2() throws IOException {
     final String accountNumber = TestUtils.randomNumberString(9);
     final String routingNumber = "102001017";
@@ -255,7 +255,6 @@ public class DocumentsTest extends AbstractAboundTest {
   public void testCreate1099K() throws IOException {
     final String pseName = TestUtils.randomAlphabetic();
     final String psePhoneNumber = TestUtils.randomNumberString(10);
-    final Double aggregateGrossAmount = TestUtils.randomCurrencyAmount(150_000);
     final Integer numberOfPaymentTransactions = TestUtils.randomInt(10_000);
 
     final Double january = TestUtils.randomCurrencyAmount();
@@ -303,7 +302,6 @@ public class DocumentsTest extends AbstractAboundTest {
   public void testCreate1099KV2() throws IOException {
     final String pseName = TestUtils.randomAlphabetic();
     final String psePhoneNumber = TestUtils.randomNumberString(10);
-    final Double aggregateGrossAmount = TestUtils.randomCurrencyAmount(150_000);
     final Integer numberOfPaymentTransactions = TestUtils.randomInt(10_000);
 
     final Double january = TestUtils.randomCurrencyAmount();
@@ -368,10 +366,13 @@ public class DocumentsTest extends AbstractAboundTest {
             .stateTaxInfo(Collections.singletonList(stateTaxInfo))
             .build();
 
-    final List<DocumentRequest> toCreate = Collections.singletonList(form1099KDocumentRequest);
-
     Assertions.assertThatThrownBy(
-            () -> getAboundClient().documents().create(TestUtils.TEST_USER_ID, toCreate))
+            () ->
+                getAboundClient()
+                    .documents()
+                    .create(
+                        TestUtils.TEST_USER_ID,
+                        Collections.singletonList(form1099KDocumentRequest)))
         .isInstanceOf(AboundApiException.class)
         .hasMessage(
             "Expected numberOfPaymentTransactions to be of type number, but received undefined")
@@ -400,10 +401,13 @@ public class DocumentsTest extends AbstractAboundTest {
             .stateTaxInfo(Collections.singletonList(stateTaxInfo))
             .build();
 
-    final List<DocumentRequest> toCreate = Collections.singletonList(form1099KDocumentRequest);
-
     Assertions.assertThatThrownBy(
-            () -> getV2AboundClient().documents().create(TestUtils.TEST_USER_ID, toCreate))
+            () ->
+                getV2AboundClient()
+                    .documents()
+                    .create(
+                        TestUtils.TEST_USER_ID,
+                        Collections.singletonList(form1099KDocumentRequest)))
         .isInstanceOf(AboundApiException.class)
         .hasMessage(
             "Expected numberOfPaymentTransactions to be of type number, but received undefined")

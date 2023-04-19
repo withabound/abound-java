@@ -1,33 +1,21 @@
 package com.withabound.models.documents.ten99nec;
 
-import com.withabound.models.documents.DocumentRequest;
 import com.withabound.models.documents.DocumentType;
-import com.withabound.models.documents.StateTaxInfoWithIncome;
-import java.util.List;
-import java.util.Optional;
-import lombok.Builder;
+import com.withabound.models.documents.IDocumentRequest;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @Setter
-public class Form1099NECDocumentRequest extends DocumentRequest {
+public class Form1099NECDocumentRequest extends Form1099NECFormFields implements IDocumentRequest {
+  private final DocumentType type = DocumentType.TEN99NEC;
+
   private String payerId;
 
   private Integer year;
 
-  private String accountNumber;
-
-  private Double nonemployeeCompensation;
-
-  private Boolean hasDirectSalesOver5000;
-
-  private Double federalIncomeTaxWithheld;
-
-  private List<StateTaxInfoWithIncome> stateTaxInfo;
-
-  @Override
   public DocumentType getType() {
-    return DocumentType.TEN99NEC;
+    return type;
   }
 
   public String getPayerId() {
@@ -36,25 +24,5 @@ public class Form1099NECDocumentRequest extends DocumentRequest {
 
   public Integer getYear() {
     return year;
-  }
-
-  public Optional<String> getAccountNumber() {
-    return Optional.ofNullable(accountNumber);
-  }
-
-  public Double getNonemployeeCompensation() {
-    return nonemployeeCompensation;
-  }
-
-  public Boolean getHasDirectSalesOver5000() {
-    return hasDirectSalesOver5000;
-  }
-
-  public Double getFederalIncomeTaxWithheld() {
-    return federalIncomeTaxWithheld;
-  }
-
-  public List<StateTaxInfoWithIncome> getStateTaxInfo() {
-    return stateTaxInfo;
   }
 }

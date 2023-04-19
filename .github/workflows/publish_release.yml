@@ -55,6 +55,13 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY_PASSWORD }}
 
+      - name: Send Slack notification
+        uses: tokorom/action-slack-incoming-webhook@main
+        with:
+          text: "com.withabound/withabound-java@${{ steps.npm-publish.outputs.version }} has been published."
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SUCCESS_DEPLOYMENT_PRODUCT_URL }}
+
       # Upon completion of the release step, OSSRH will sync components to Maven Central typically within
       # 30 minutes, though updates to search may take up to four hours.
       # Ref https://central.sonatype.org/publish/publish-guide/#releasing-to-central

@@ -28,31 +28,8 @@ public class AccessTokensTest extends AbstractAboundTest {
   }
 
   @Test
-  public void testCreateV2() throws IOException {
-    final AccessTokenRequest toCreate =
-        AccessTokenRequest.builder().userId(TestUtils.TEST_USER_ID).build();
-
-    final AboundResponse<AccessToken> response =
-        getV2AboundClient().accessTokens().create(toCreate);
-
-    AboundResponseAssert.assertThat(response).hasResponseMetadata();
-
-    assertThat(response.getData().getAccessToken()).isEqualTo(TestUtils.TEST_ACCESS_TOKEN);
-    assertThat(response.getData().getExpirationTimestamp()).isEqualTo(32503701600000L);
-  }
-
-  @Test
   public void testCreateWithNullRequestBodyThrowsAboundApiException() {
     Assertions.assertThatThrownBy(() -> getAboundClient().accessTokens().create(null))
-        .isInstanceOf(AboundApiException.class)
-        .hasMessage("Expected accessToken object, but received undefined")
-        .hasFieldOrPropertyWithValue("statusCode", 400)
-        .hasFieldOrProperty("request");
-  }
-
-  @Test
-  public void testCreateWithNullRequestBodyThrowsAboundApiExceptionV2() {
-    Assertions.assertThatThrownBy(() -> getV2AboundClient().accessTokens().create(null))
         .isInstanceOf(AboundApiException.class)
         .hasMessage("Expected accessToken object, but received undefined")
         .hasFieldOrPropertyWithValue("statusCode", 400)

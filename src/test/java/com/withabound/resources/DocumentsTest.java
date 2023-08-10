@@ -9,9 +9,6 @@ import com.withabound.models.documents.DocumentParams;
 import com.withabound.models.documents.DocumentType;
 import com.withabound.models.documents.StateTaxInfo;
 import com.withabound.models.documents.StateTaxInfoWithIncome;
-import com.withabound.models.documents.account_statements.AccountStatementDocumentBank;
-import com.withabound.models.documents.account_statements.AccountStatementDocumentRequest;
-import com.withabound.models.documents.account_statements.AccountStatementDocumentSummary;
 import com.withabound.models.documents.ten99int.Form1099INTDocumentRequest;
 import com.withabound.models.documents.ten99k.Form1099KDocumentRequest;
 import com.withabound.models.documents.ten99k.GrossAmountsByMonth;
@@ -45,73 +42,6 @@ public class DocumentsTest extends AbstractAboundTest {
 
   public static final String PUBLIC_BANK_LOGO_URL =
       "https://www.chase.com/etc/designs/chase-ux/css/img/newheaderlogo.svg";
-
-  @Test
-  public void testCreateAccountStatementV2() throws IOException {
-    final String accountNumber = TestUtils.randomNumberString(9);
-    final String last4 = accountNumber.substring(accountNumber.length() - 4);
-
-    final AccountStatementDocumentBank.CustomerService customerService =
-        AccountStatementDocumentBank.CustomerService.builder()
-            .phoneNumber("555-555-5555")
-            .email(TestUtils.randomEmail())
-            .website("www.example.com")
-            .build();
-
-    final AccountStatementDocumentBank bank =
-        AccountStatementDocumentBank.builder()
-            .name(TestUtils.randomAlphabetic())
-            .logo(PUBLIC_BANK_LOGO_URL)
-            .address(TestUtils.randomAlphabetic())
-            .city(TestUtils.randomAlphabetic())
-            .state("CA")
-            .zipcode(TestUtils.randomNumberString(5))
-            .customerService(customerService)
-            .build();
-
-    final AccountStatementDocumentSummary summary =
-        AccountStatementDocumentSummary.builder()
-            .beginningBalance(1234.89)
-            .endingBalance(4321.89)
-            .interestPercentage(1.23)
-            .interestAmount(6.78)
-            .totalFees(5.25)
-            .build();
-
-    final AccountStatementDocumentRequest accountStatementDocumentRequest =
-        AccountStatementDocumentRequest.builder()
-            .year(2020)
-            .beginDate("2020-03-01")
-            .endDate("2020-05-31")
-            .accountNumber(accountNumber)
-            .bank(bank)
-            .summary(summary)
-            .build();
-
-    final AboundBulkResponse<Document> response =
-        getV2AboundClient()
-            .documents()
-            .create(
-                TestUtils.TEST_USER_ID, Collections.singletonList(accountStatementDocumentRequest));
-
-    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
-
-    final List<Document> createdDocuments = response.getData();
-    assertThat(createdDocuments).isNotNull().hasSize(1);
-
-    final Document createdDocument = createdDocuments.get(0);
-    assertThat(createdDocument).isNotNull();
-    assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
-    assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
-    assertThat(createdDocument.getDocumentName())
-        .isEqualTo(String.format("2020-03-01 - 2020-05-31 Account Statement (%s)", last4));
-    assertThat(createdDocument.getDocumentURL().orElse(null))
-        .startsWith(
-            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2020-01-01_2020-01-31_Account_Statement_7890.pdf");
-    assertThat(createdDocument.getType()).isEqualTo(DocumentType.ACCOUNT_STATEMENT);
-    assertThat(createdDocument.getYear()).isEqualTo("2020");
-  }
 
   @Test
   public void testCreate1099INT() throws IOException {
@@ -183,75 +113,6 @@ public class DocumentsTest extends AbstractAboundTest {
   }
 
   @Test
-  public void testCreate1099INTV2() throws IOException {
-    final String accountNumber = TestUtils.randomNumberString(9);
-    final String routingNumber = "102001017";
-    final Double interestIncome = TestUtils.randomCurrencyAmount(1000);
-    final Double earlyWithdrawalPenalty = TestUtils.randomCurrencyAmount();
-    final Double usSavingsBondsInterest = TestUtils.randomCurrencyAmount(500);
-    final Double investmentExpenses = TestUtils.randomCurrencyAmount(800);
-    final Double foreignTaxPaid = TestUtils.randomCurrencyAmount(4000);
-    final Double taxExemptInterest = TestUtils.randomCurrencyAmount();
-    final Double specifiedPrivateActivityBondInterest = TestUtils.randomCurrencyAmount(2000);
-    final Double marketDiscount = TestUtils.randomCurrencyAmount(300);
-    final Double bondPremium = TestUtils.randomCurrencyAmount();
-    final Double bondPremiumTreasury = TestUtils.randomCurrencyAmount();
-    final Double bondPremiumTaxExemptBond = TestUtils.randomCurrencyAmount();
-
-    final String userStateId = TestUtils.randomAlphabetic();
-
-    final StateTaxInfo stateTaxInfo =
-        StateTaxInfo.builder()
-            .filingState("CA")
-            .userStateId(userStateId)
-            .stateTaxWithheld(0.00)
-            .build();
-
-    final Form1099INTDocumentRequest form1099INTDocumentRequest =
-        Form1099INTDocumentRequest.builder()
-            .year(2020)
-            .payerId(PayersTest.TEST_PAYER_ID)
-            .hasFatcaFilingRequirement(true)
-            .accountNumber(accountNumber)
-            .payersRoutingNumber(routingNumber)
-            .interestIncome(interestIncome)
-            .earlyWithdrawalPenalty(earlyWithdrawalPenalty)
-            .usSavingsBondsInterest(usSavingsBondsInterest)
-            .federalIncomeTaxWithheld(0.00)
-            .investmentExpenses(investmentExpenses)
-            .foreignTaxPaid(foreignTaxPaid)
-            .foreignTaxPaidCountry("France")
-            .taxExemptInterest(taxExemptInterest)
-            .specifiedPrivateActivityBondInterest(specifiedPrivateActivityBondInterest)
-            .marketDiscount(marketDiscount)
-            .bondPremium(bondPremium)
-            .bondPremiumTreasury(bondPremiumTreasury)
-            .bondPremiumTaxExemptBond(bondPremiumTaxExemptBond)
-            .stateTaxInfo(Collections.singletonList(stateTaxInfo))
-            .build();
-
-    final AboundBulkResponse<Document> response =
-        getV2AboundClient()
-            .documents()
-            .create(TestUtils.TEST_USER_ID, Collections.singletonList(form1099INTDocumentRequest));
-
-    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
-    final List<Document> created = response.getData();
-    assertThat(created).isNotNull().hasSize(1);
-    final Document createdDocument = created.get(0);
-    assertThat(createdDocument).isNotNull();
-    assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
-    assertThat(createdDocument.getDocumentURL().orElse(null))
-        .startsWith(
-            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_1099-INT.pdf");
-    assertThat(createdDocument.getDocumentName()).isEqualTo("2020 Form 1099-INT");
-    assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99INT);
-    assertThat(createdDocument.getYear()).isEqualTo("2020");
-    assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
-  }
-
-  @Test
   public void testCreate1099K() throws IOException {
     final String pseName = TestUtils.randomAlphabetic();
     final String psePhoneNumber = TestUtils.randomNumberString(10);
@@ -279,53 +140,6 @@ public class DocumentsTest extends AbstractAboundTest {
 
     final AboundBulkResponse<Document> response =
         getAboundClient()
-            .documents()
-            .create(TestUtils.TEST_USER_ID, Collections.singletonList(form1099KDocumentRequest));
-
-    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
-    final List<Document> created = response.getData();
-    assertThat(created).isNotNull().hasSize(1);
-    final Document createdDocument = created.get(0);
-    assertThat(createdDocument).isNotNull();
-    assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
-    assertThat(createdDocument.getDocumentURL().orElse(null))
-        .startsWith(
-            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_1099-K.pdf");
-    assertThat(createdDocument.getDocumentName()).isEqualTo("2020 Form 1099-K");
-    assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99K);
-    assertThat(createdDocument.getYear()).isEqualTo("2020");
-    assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
-  }
-
-  @Test
-  public void testCreate1099KV2() throws IOException {
-    final String pseName = TestUtils.randomAlphabetic();
-    final String psePhoneNumber = TestUtils.randomNumberString(10);
-    final Integer numberOfPaymentTransactions = TestUtils.randomInt(10_000);
-
-    final Double january = TestUtils.randomCurrencyAmount();
-    final GrossAmountsByMonth grossAmountsByMonth =
-        GrossAmountsByMonth.builder().january(january).build();
-
-    final StateTaxInfo stateTaxInfo = StateTaxInfo.builder().filingState("CA").build();
-
-    final Form1099KDocumentRequest form1099KDocumentRequest =
-        Form1099KDocumentRequest.builder()
-            .year(2020)
-            .payerId(PayersTest.TEST_PAYER_ID)
-            .payerClassification(PayerClassification.PAYMENT_SETTLEMENT_ENTITY)
-            .pseName(pseName)
-            .psePhoneNumber(psePhoneNumber)
-            .transactionsReportedClassification(TransactionsReportedClassification.PAYMENT_CARD)
-            .aggregateGrossAmount(january)
-            .numberOfPaymentTransactions(numberOfPaymentTransactions)
-            .grossAmountsByMonth(grossAmountsByMonth)
-            .stateTaxInfo(Collections.singletonList(stateTaxInfo))
-            .build();
-
-    final AboundBulkResponse<Document> response =
-        getV2AboundClient()
             .documents()
             .create(TestUtils.TEST_USER_ID, Collections.singletonList(form1099KDocumentRequest));
 
@@ -381,41 +195,6 @@ public class DocumentsTest extends AbstractAboundTest {
   }
 
   @Test
-  public void testCreate1099KThrowsWhenMissingNumberOfPaymentTransactionsV2() {
-    final Double january = TestUtils.randomCurrencyAmount();
-    final GrossAmountsByMonth grossAmountsByMonth =
-        GrossAmountsByMonth.builder().january(january).build();
-
-    final StateTaxInfo stateTaxInfo = StateTaxInfo.builder().filingState("CA").build();
-
-    final Form1099KDocumentRequest form1099KDocumentRequest =
-        Form1099KDocumentRequest.builder()
-            .year(2020)
-            .payerId(PayersTest.TEST_PAYER_ID)
-            .payerClassification(PayerClassification.PAYMENT_SETTLEMENT_ENTITY)
-            .pseName(TestUtils.randomAlphabetic())
-            .psePhoneNumber(TestUtils.randomNumberString(10))
-            .transactionsReportedClassification(TransactionsReportedClassification.PAYMENT_CARD)
-            .aggregateGrossAmount(january)
-            .grossAmountsByMonth(grossAmountsByMonth)
-            .stateTaxInfo(Collections.singletonList(stateTaxInfo))
-            .build();
-
-    Assertions.assertThatThrownBy(
-            () ->
-                getV2AboundClient()
-                    .documents()
-                    .create(
-                        TestUtils.TEST_USER_ID,
-                        Collections.singletonList(form1099KDocumentRequest)))
-        .isInstanceOf(AboundApiException.class)
-        .hasMessage(
-            "Expected numberOfPaymentTransactions to be of type number, but received undefined")
-        .hasFieldOrPropertyWithValue("statusCode", 400)
-        .hasFieldOrProperty("request");
-  }
-
-  @Test
   public void testCreateFormW9WithoutOptionalFields() throws IOException {
     final FormW9DocumentRequest toCreate =
         FormW9DocumentRequest.builder()
@@ -426,36 +205,6 @@ public class DocumentsTest extends AbstractAboundTest {
 
     final AboundBulkResponse<Document> response =
         getAboundClient()
-            .documents()
-            .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
-
-    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
-    assertThat(response.getData()).isNotNull().hasSize(1);
-
-    final Document created = response.getData().get(0);
-    assertThat(created).isNotNull();
-    assertThat(created.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
-    assertThat(created.getDocumentURL().orElse(null))
-        .startsWith(
-            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_W-9.pdf");
-    assertThat(created.getDocumentName()).isEqualTo("2020 Form W-9");
-    assertThat(created.getType()).isEqualTo(DocumentType.W9);
-    assertThat(created.getYear()).isEqualTo("2020");
-    assertThat(created.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
-  }
-
-  @Test
-  public void testCreateFormW9WithoutOptionalFieldsV2() throws IOException {
-    final FormW9DocumentRequest toCreate =
-        FormW9DocumentRequest.builder()
-            .year(2020)
-            .taxClassification(W9TaxClassification.SOLE_PROPRIETOR)
-            .certificationTimestamp((int) System.currentTimeMillis())
-            .build();
-
-    final AboundBulkResponse<Document> response =
-        getV2AboundClient()
             .documents()
             .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
 
@@ -492,42 +241,6 @@ public class DocumentsTest extends AbstractAboundTest {
 
     final AboundBulkResponse<Document> response =
         getAboundClient()
-            .documents()
-            .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
-
-    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
-    assertThat(response.getData()).isNotNull().hasSize(1);
-
-    final Document created = response.getData().get(0);
-    assertThat(created).isNotNull();
-    assertThat(created.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
-    assertThat(created.getDocumentURL().orElse(null))
-        .startsWith(
-            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_W-9.pdf");
-    assertThat(created.getDocumentName()).isEqualTo("2020 Form W-9");
-    assertThat(created.getType()).isEqualTo(DocumentType.W9);
-    assertThat(created.getYear()).isEqualTo("2020");
-    assertThat(created.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
-  }
-
-  @Test
-  public void testCreateFormW9WithOptionalFieldsV2() throws IOException {
-    final String accountNumber = TestUtils.randomNumberString(9);
-
-    final FormW9DocumentRequest toCreate =
-        FormW9DocumentRequest.builder()
-            .payerId(PayersTest.TEST_PAYER_ID)
-            .year(2020)
-            .taxClassification(W9TaxClassification.SOLE_PROPRIETOR)
-            .exemptPayeeCode(ExemptPayeeCode.ONE)
-            .exemptFatcaCode(ExemptFatcaCode.A)
-            .certificationTimestamp((int) System.currentTimeMillis())
-            .accountNumbers(Collections.singletonList(accountNumber))
-            .build();
-
-    final AboundBulkResponse<Document> response =
-        getV2AboundClient()
             .documents()
             .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
 
@@ -695,52 +408,6 @@ public class DocumentsTest extends AbstractAboundTest {
   }
 
   @Test
-  public void testCreate1099NECV2() throws IOException {
-    final String accountNumber = TestUtils.randomNumberString(9);
-    final Double nonemployeeCompensation = TestUtils.randomDouble(4000);
-
-    final String payerStateId = TestUtils.randomAlphabetic();
-    final Double stateIncome = TestUtils.randomDouble(20_000);
-
-    final StateTaxInfoWithIncome stateTaxInfo =
-        StateTaxInfoWithIncome.builder()
-            .filingState("CA")
-            .payerStateId(payerStateId)
-            .stateTaxWithheld(0.00)
-            .stateIncome(stateIncome)
-            .build();
-
-    final Form1099NECDocumentRequest toCreate =
-        Form1099NECDocumentRequest.builder()
-            .payerId(PayersTest.TEST_PAYER_ID)
-            .accountNumber(accountNumber)
-            .nonemployeeCompensation(nonemployeeCompensation)
-            .year(2020)
-            .stateTaxInfo(Collections.singletonList(stateTaxInfo))
-            .build();
-
-    final AboundBulkResponse<Document> response =
-        getV2AboundClient()
-            .documents()
-            .create(TestUtils.TEST_USER_ID, Collections.singletonList(toCreate));
-
-    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
-    final List<Document> created = response.getData();
-    assertThat(created).isNotNull().hasSize(1);
-    final Document createdDocument = created.get(0);
-    assertThat(createdDocument).isNotNull();
-    assertThat(createdDocument.getDocumentId().orElse(null)).isEqualTo(TEST_DOCUMENT_ID);
-    assertThat(createdDocument.getDocumentURL().orElse(null))
-        .startsWith(
-            "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_1099-NEC.pdf");
-    assertThat(createdDocument.getDocumentName()).isEqualTo("2020 Form 1099-NEC");
-    assertThat(createdDocument.getType()).isEqualTo(DocumentType.TEN99NEC);
-    assertThat(createdDocument.getYear()).isEqualTo("2020");
-    assertThat(createdDocument.getCreatedTimestamp())
-        .isCloseTo(System.currentTimeMillis(), Offset.offset(30000L));
-  }
-
-  @Test
   public void testList() throws IOException {
     final AboundBulkResponse<Document> response =
         getAboundClient().documents().list(TestUtils.TEST_USER_ID);
@@ -752,20 +419,6 @@ public class DocumentsTest extends AbstractAboundTest {
 
     final Document document = documents.get(0);
     DocumentAssert.assertThat(document).isFormW9();
-  }
-
-  @Test
-  public void testListV2() throws IOException {
-    final AboundBulkResponse<Document> response =
-        getV2AboundClient().documents().list(TestUtils.TEST_USER_ID);
-
-    AboundBulkResponseAssert.assertThat(response).hasResponseMetadata();
-
-    final List<Document> documents = response.getData();
-    assertThat(documents).isNotNull().hasSize(1);
-
-    final Document document = documents.get(0);
-    DocumentAssert.assertThat(document).is7890AccountStatement();
   }
 
   @Test

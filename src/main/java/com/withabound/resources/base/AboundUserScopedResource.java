@@ -8,7 +8,7 @@ import okhttp3.OkHttpClient;
 
 /**
  * Abstract class for all user-scoped resources, wherein a user-scoped resource is one having the
- * relative path `https://baseURL/v2/users/{userId}/{resourceName}`
+ * relative path `https://baseURL/v3/users/{userId}/{resourceName}`
  *
  * @param <I> input — the data type of the request body
  * @param <O> output — the data type of the payloads returned by SDK methods.
@@ -66,12 +66,12 @@ public abstract class AboundUserScopedResource<I, O> extends AbstractAboundResou
     return super.delete(url);
   }
 
-  /** @return e.g., "https://baseURL/v2/users/{userId}/{resourceName}" */
+  /** @return e.g., "https://baseURL/v3/users/{userId}/{resourceName}" */
   private String getUserScopedResourcesUrl(final String userId) {
     return String.format("%s%s%s%s", aboundConfig.getBaseUrl(), "/users/", userId, getPath());
   }
 
-  /** @return e.g., "https://baseURL/v2/users/{userId}/{resourceName}/{resourceId}" */
+  /** @return e.g., "https://baseURL/v3/users/{userId}/{resourceName}/{resourceId}" */
   private String getUserScopedResourceUrl(final String userId, final String id) {
     return String.format(
         "%s%s%s%s/%s", aboundConfig.getBaseUrl(), "/users/", userId, getPath(), id);

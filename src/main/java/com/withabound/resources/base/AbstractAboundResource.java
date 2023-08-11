@@ -32,7 +32,7 @@ abstract class AbstractAboundResource<I, O> {
   protected final AboundConfig aboundConfig;
   private final OkHttpClient httpClient;
 
-  /** @return the endpoint path of the resource. e.g., "/users", "/taxes", "/documents", etc. */
+  /** @return the endpoint path of the resource. e.g., "/users", "/documents", etc. */
   protected abstract String getPath();
 
   /**

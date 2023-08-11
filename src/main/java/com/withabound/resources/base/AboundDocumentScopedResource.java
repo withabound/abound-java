@@ -8,7 +8,7 @@ import okhttp3.OkHttpClient;
 /**
  * Abstract class for all document-scoped resources, wherein a document-scoped resource is one
  * having the relative path
- * `https://baseURL/v2/users/{userId}/documents/{documentId}/{resourceName}`
+ * `https://baseURL/v3/users/{userId}/documents/{documentId}/{resourceName}`
  *
  * @param <I> input — the data type of the request body
  * @param <O> output — the data type of the payloads returned by SDK methods.
@@ -54,7 +54,7 @@ public abstract class AboundDocumentScopedResource<I, O> extends AboundUserScope
     return super.delete(url);
   }
 
-  /** @return e.g., "https://baseURL/v2/users/{userId}/documents/{documentId}/{resourceName}" */
+  /** @return e.g., "https://baseURL/v3/users/{userId}/documents/{documentId}/{resourceName}" */
   private String getDocumentScopedResourcesUrl(final String userId, final String documentId) {
     return String.format(
         "%s%s%s%s%s%s",
@@ -63,7 +63,7 @@ public abstract class AboundDocumentScopedResource<I, O> extends AboundUserScope
 
   /**
    * @return e.g.,
-   *     "https://baseURL/v2/users/{userId}/documents/{documentId}/{resourceName}/{resourceId}"
+   *     "https://baseURL/v3/users/{userId}/documents/{documentId}/{resourceName}/{resourceId}"
    */
   private String getDocumentScopedResourceUrl(
       final String userId, final String documentId, final String id) {

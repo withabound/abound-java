@@ -445,7 +445,8 @@ public class DocumentsTest extends AbstractAboundTest {
         getAboundClient().documents().retrieve(TestUtils.TEST_USER_ID, TEST_DOCUMENT_ID);
 
     AboundResponseAssert.assertThat(response).hasResponseMetadata();
-    DocumentAssert.assertThat(response.getData()).is7890AccountStatement();
+    final Document retrieved = response.getData();
+    DocumentAssert.assertThat(retrieved).isFormW9();
   }
 
   @Test

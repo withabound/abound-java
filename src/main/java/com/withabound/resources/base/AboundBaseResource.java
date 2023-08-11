@@ -8,7 +8,7 @@ import okhttp3.OkHttpClient;
 
 /**
  * Abstract class for all base resources, wherein a base resource is one having the relative path
- * `https://baseURL/v2/resource` (i.e. it is not scoped to a user).
+ * `https://baseURL/v3/resource` (i.e. it is not scoped to a user).
  *
  * @param <I> input — the data type of the request body
  * @param <O> output — the data type of the payloads returned by SDK methods.
@@ -49,7 +49,7 @@ public abstract class AboundBaseResource<I, O> extends AbstractAboundResource<I,
     return super.retrieve(url);
   }
 
-  /** Updates a single object by issuing a PUT request to /v2/{resourceName}/{resourceId} */
+  /** Updates a single object by issuing a PUT request to /v3/{resourceName}/{resourceId} */
   protected AboundResponse<O> update(final String id, final Map<String, I> requestPayload)
       throws IOException {
     final String url = getResourceUrl(id);
@@ -66,7 +66,7 @@ public abstract class AboundBaseResource<I, O> extends AbstractAboundResource<I,
 
   /**
    * @return returns the baseUrl + the resource path. e.g.,
-   *     "https://sandbox-api.withabound.com/v2/users"
+   *     "https://sandbox-api.withabound.com/v3/users"
    */
   private String getResourcesUrl() {
     return String.format("%s%s", aboundConfig.getBaseUrl(), getPath());
@@ -74,7 +74,7 @@ public abstract class AboundBaseResource<I, O> extends AbstractAboundResource<I,
 
   /**
    * @return returns the baseUrl + the resource path + the id of the resource. e.g.,
-   *     "https://sandbox-api.withabound.com/v2/users/{userId}"
+   *     "https://sandbox-api.withabound.com/v3/users/{userId}"
    */
   private String getResourceUrl(final String id) {
     return String.format("%s%s/%s", aboundConfig.getBaseUrl(), getPath(), id);

@@ -15,7 +15,7 @@ class AboundConfigTest {
                     null,
                     UUID.randomUUID().toString(),
                     AboundEnvironment.SANDBOX,
-                    AboundApiVersion.V2))
+                    AboundApiVersion.V3))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("appId cannot be empty!");
 
@@ -25,7 +25,7 @@ class AboundConfigTest {
                     "",
                     UUID.randomUUID().toString(),
                     AboundEnvironment.SANDBOX,
-                    AboundApiVersion.V2))
+                    AboundApiVersion.V3))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("appId cannot be empty!");
   }
@@ -38,7 +38,7 @@ class AboundConfigTest {
                     UUID.randomUUID().toString(),
                     null,
                     AboundEnvironment.SANDBOX,
-                    AboundApiVersion.V2))
+                    AboundApiVersion.V3))
         .isInstanceOf(IllegalArgumentException.class);
 
     assertThatThrownBy(
@@ -47,7 +47,7 @@ class AboundConfigTest {
                     UUID.randomUUID().toString(),
                     "",
                     AboundEnvironment.SANDBOX,
-                    AboundApiVersion.V2))
+                    AboundApiVersion.V3))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -59,7 +59,7 @@ class AboundConfigTest {
                     UUID.randomUUID().toString(),
                     UUID.randomUUID().toString(),
                     null,
-                    AboundApiVersion.V2))
+                    AboundApiVersion.V3))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -81,11 +81,11 @@ class AboundConfigTest {
     final String appSecret = UUID.randomUUID().toString();
 
     final AboundConfig validConfig =
-        new AboundConfig(appId, appSecret, AboundEnvironment.SANDBOX, AboundApiVersion.V2);
+        new AboundConfig(appId, appSecret, AboundEnvironment.SANDBOX, AboundApiVersion.V3);
 
     assertThat(validConfig.getAppId()).isEqualTo(appId);
     assertThat(validConfig.getAppSecret()).isEqualTo(appSecret);
     assertThat(validConfig.getEnvironment()).isEqualTo(AboundEnvironment.SANDBOX);
-    assertThat(validConfig.getApiVersion()).isEqualTo(AboundApiVersion.V2);
+    assertThat(validConfig.getApiVersion()).isEqualTo(AboundApiVersion.V3);
   }
 }

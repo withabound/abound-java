@@ -20,7 +20,7 @@ jobs:
           fi
           echo "Release tag matches the build.gradle version. Proceeding with publish_release workflow."
 
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: "8"

@@ -3,6 +3,7 @@ package com.withabound.resources.asserts;
 import com.withabound.models.documents.Document;
 import com.withabound.models.documents.DocumentType;
 import com.withabound.resources.DocumentsTest;
+import java.time.Year;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Offset;
@@ -20,8 +21,9 @@ public class DocumentAssert extends AbstractAssert<DocumentAssert, Document> {
     Assertions.assertThat(actual.getDocumentURL().orElse(null))
         .startsWith(
             "https://tax-documents-sandbox.s3.us-west-2.amazonaws.com/test62ae93bafa6310aa9952e8b3bf5796443111/2021_Form_W-9.pdf");
-    Assertions.assertThat(actual.getDocumentName()).isEqualTo("2023 Form W-9");
-    Assertions.assertThat(actual.getYear()).isEqualTo("2023");
+    final String year = String.valueOf(Year.now().getValue());
+    Assertions.assertThat(actual.getDocumentName()).isEqualTo(year + " Form W-9");
+    Assertions.assertThat(actual.getYear()).isEqualTo(year);
     Assertions.assertThat(actual.getStatus()).isEmpty();
     Assertions.assertThat(actual.getMessage()).isEmpty();
     Assertions.assertThat(actual.getCreatedTimestamp())

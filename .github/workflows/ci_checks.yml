@@ -26,7 +26,7 @@ jobs:
 
       # https://github.com/gradle/wrapper-validation-action
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v2
+        uses: gradle/wrapper-validation-action@v3
 
       - name: Display version
         run: ./gradlew --version
